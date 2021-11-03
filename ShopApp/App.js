@@ -15,6 +15,9 @@ import redux from './config/redux';
 import MainScreen from './screens/MainScreen';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
+import AccountSettingScreen from './screens/AccountSettingScreen';
+import ProfileDetailScreen from './screens/ProfileDetailScreen';
+import ProfileEditScreen from './screens/ProfileEditScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +29,7 @@ const App = () => {
         <Stack.Navigator
           screenOptions={{ headerShown: false }}
           backBehavior='none'
+          initialRouteName='ProfileEditScreen'
         >
           <Stack.Screen
             name="LoginScreen"
@@ -38,6 +42,18 @@ const App = () => {
           <Stack.Screen
             name="MainScreen"
             component={MainScreen}
+          />
+          <Stack.Screen
+            name="AccountSettingScreen"
+            component={AccountSettingScreen}
+          />
+          <Stack.Screen
+            name="ProfileDetailScreen"
+            component={ProfileDetailScreen}
+          />
+          <Stack.Screen
+            name="ProfileEditScreen"
+            component={ProfileEditScreen}
           />
         </Stack.Navigator>
       </NavigationContainer>

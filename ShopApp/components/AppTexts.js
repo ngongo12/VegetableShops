@@ -13,6 +13,15 @@ export const DefautText = ( props ) => {
     )
 }
 
+export const LargeText = ( props ) => {
+    const { children, style } = props
+    return (
+        <Text style={[styles.font, { fontSize: 17 }, style]}>
+            { children }
+        </Text>
+    )
+}
+
 export const Title = ( props ) => {
     const { children, style } = props
     return (
@@ -66,7 +75,7 @@ const styles = StyleSheet.create({
         
     },
     title: {
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: 'bold'
     },
 

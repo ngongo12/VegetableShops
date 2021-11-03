@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
     StyleSheet,
     View,
-    StatusBar,
     Pressable,
     TextInput
 } from 'react-native';

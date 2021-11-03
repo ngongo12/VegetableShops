@@ -15,7 +15,7 @@ import SearchBar from './SearchBar';
 
 const ProfileHeader = ( props ) => {
     const { user } = props;
-    console.log(user)
+    //console.log(user)
     return (
         <View>
             <StatusBar backgroundColor={MainColor} translucent={false} />

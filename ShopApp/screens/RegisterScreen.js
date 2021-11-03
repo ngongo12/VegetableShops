@@ -57,8 +57,8 @@ const Register = (props) => {
                         keyboardType='phone-pad'
                     />
                     <TextInputLayout
-                        placeholder='Họ và tên'
-                        autoCapitalize='none'
+                        placeholder='Họ tên'
+                        autoCapitalize='words'
                         value={ fullname }
                         onChangeText = { setFullname }
                         name='user'

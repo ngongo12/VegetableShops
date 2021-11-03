@@ -26,7 +26,7 @@ const LoginScreen = (props) => {
     const [phone, setPhone] = useState('0123456789');
     const [password, setPassword] = useState('vinhquoc');
     const value = new Animated.Value(0);
-    console.log('LoginScreen props ', user)
+
     const onLogin = () => {
         //gọi action khi user click vào nút đăng nhập
         actions.actionLogin({
