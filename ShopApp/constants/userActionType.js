@@ -1,11 +1,17 @@
 export const HANDLE_LOGIN = 'HANDLE_LOGIN';
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 export const LOGOUT = 'LOGOUT';
+export const EDIT_PROFILES = 'EDIT_PROFILES';
+export const USER_SUCCESS = 'USER_SUCCESS';
+export const USER_FAILURE = 'USER_FAILURE';
+export const USER_ACTION = 'USER_ACTION';
+export const UPDATE_LOGIN_STATE = 'UPDATE_LOGIN_STATE';
 
 export default {
     HANDLE_LOGIN,
-    LOGIN_SUCCESS,
-    LOGIN_FAILURE,
-    LOGOUT
+    USER_SUCCESS,
+    USER_FAILURE,
+    LOGOUT,
+    EDIT_PROFILES,
+    USER_ACTION,
+    UPDATE_LOGIN_STATE
 }

@@ -8,7 +8,8 @@ import {
     Animated,
     ActivityIndicator,
     Modal,
-    View
+    View,
+    ToastAndroid
 } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -18,6 +19,7 @@ import { DefautText, HeaderText } from '../components/AppTexts';
 import TextInputLayout from '../components/TextInputLayout';
 import GradientButton from '../components/GradientButton';
 import StrokeButton from '../components/StrokeButton';
+import userActionType from '../constants/userActionType';
 
 const { height } = Dimensions.get('window');
 
@@ -26,19 +28,23 @@ const LoginScreen = (props) => {
     const [phone, setPhone] = useState('0123456789');
     const [password, setPassword] = useState('vinhquoc');
     const value = new Animated.Value(0);
-
     const onLogin = () => {
         //gọi action khi user click vào nút đăng nhập
         actions.actionLogin({
             phone,
             password
-        })
+        });
     }
+    console.log(user);
 
     useEffect(() => {
         //nếu có user thì vào thẳng main screen
-        if (user.user) {
+        if (user.user && !user.isLogined) {
+            actions.updateLoginState(true);
             navigate('MainScreen');
+        };
+        if(user.message){
+            ToastAndroid.show(user.message, ToastAndroid.SHORT);
         }
     }, [user])
 

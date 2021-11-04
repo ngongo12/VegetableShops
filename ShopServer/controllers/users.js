@@ -1,17 +1,38 @@
 const userService = require('../services/users');
 const bcrypt = require('bcrypt');
 
+exports.editProfile = async (user) => {
+    const result = await userService.editProfile(user);
+    if (result.matchedCount > 0) {
+        return {
+            result: true,
+            user: await userService.getProfile(user._id),
+            message: 'Cập nhật thành công'
+        }
+    }
+    else {
+        return {
+            result: false,
+            message: 'Cập nhật thất bại'
+        }
+    }
+}
+
 exports.register = async (user) => {
     if (await userService.checkPhoneExist(user.phone) == 0) {
         //Tiến hành đăng ký tài khoản
         //salt = Math.random().toString(36).substring(2,12);
         const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync(user.password, salt);
-        const newUser = await userService.register({ ...user, password: hash, salt });
+        const newUser = await userService.register({ ...user, password: hash, salt, createdAt: new Date() });
+
         if (newUser) {
+            const { phone, fullname, _id } = newUser;
             return {
                 result: true,
-                user: newUser
+                user: {
+                    phone, fullname, _id
+                }
             }
         }
         else {
@@ -31,22 +52,23 @@ exports.register = async (user) => {
 
 exports.login = async (user) => {
     const userRep = await userService.getUserByPhone(user.phone);
-    if(!userRep){
+    if (!userRep) {
         return {
             result: false,
             message: 'Tài khoản chưa được đăng ký'
         }
-    }else{
+    } else {
         //Kiểm tra mật khẩu nhập vào với mk đã hash
-        const checkPassword = await bcrypt.compareSync(user.password ,userRep.password);
-        if(checkPassword){
+        const checkPassword = await bcrypt.compareSync(user.password, userRep.password);
+        if (checkPassword) {
             //Đúng
             return {
                 result: true,
-                user: {...userRep._doc, password: null, salt: null}
+                user: await userService.getProfile(userRep._id),
+                message: 'Đăng nhập thành công'
             }
         }
-        else{
+        else {
             return {
                 result: false,
                 message: 'Sai mật khẩu'

@@ -3,54 +3,83 @@ import {
     View,
     StyleSheet,
     Pressable,
-    Image,
-    Text
+    Dimensions,
+    Modal
 } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Title } from '../components/AppTexts';
 import userActions from '../actions/userActions';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ProfileTextView from '../components/ProfileTextView';
-import { MainColor } from '../constants/colors';
+import GradientButton from '../components/GradientButton';
+import { formatVNDate } from '../config/format';
+
+const { height } = Dimensions.get('window');
 
 const ProfileEditScreen = (props) => {
-    const {user:{ user }, navigation: {navigate}} = props;
-    console.log('>>>>>ProfileEditScreen ', user);
+    const { user: { user }, navigation: { navigate }, actions } = props;
+    //console.log('>>>>>ProfileEditScreen ', actions);
     const [fullname, setFullname] = useState('');
     const [gender, setGender] = useState('');
-    const [dob, setDob] = useState('');
+    const [dob, setDob] = useState();
     const [email, setEmail] = useState('');
+    const [isShowModal, setIsShowModal] = useState(false);
+    const [isShowDatePicker, setIsShowDatePicker] = useState(false);
+    const [date, setDate] = useState(new Date('01/01/1990'))
     useEffect(() => {
-        if(user.fullname){
+        if (user.fullname) {
             setFullname(user.fullname);
         };
-        if(user.dob){
-            setDob(user.dob);
+        if (user.dob) {
+            const tempDate = new Date(user.dob);
+            setDob(tempDate);
+            setDate(tempDate);
         };
-        if(user.gender){
+        if (user.gender) {
             setGender(user.gender);
         };
-        if(user.email){
+        if (user.email) {
             setEmail(user.email);
         };
     }, [user])
+    
+    const onChangeDate = (events , selectedDate) => {
+        if(selectedDate){
+            setDob(selectedDate);
+        }
+        setIsShowDatePicker(false)
+    }
+
+    const onEditPost = () => {
+        console.log('Edit profile clicked')
+        actions.actionEditProfile({
+            user: {
+                ...user,
+                dob,
+                gender,
+                email
+            }
+        })
+    }
+    
     return (
         <View style={styles.container}>
-            <Title style={styles.title}>Thay đổi thông tin tài khoản</Title>
-            
+            <Title style={styles.title}>Cập nhật thông tin cá nhân</Title>
+
             <View style={styles.groupView}>
-                <ProfileTextView 
-                    edit={true} 
+                <ProfileTextView
+                    edit={true}
                     name='user'
                     autoCapitalize='words'
                     placeholder='Họ tên'
                     value={fullname}
                     onChangeText={setFullname}
                 />
-                <ProfileTextView name='transgender'>{gender ? gender : 'Giới tính'}</ProfileTextView>
-                <ProfileTextView name='birthday-cake'>{dob ? dob : 'Ngày sinh'}</ProfileTextView>
-                <ProfileTextView name='phone'>{user.phone ? user.phone : 'Không rõ'}</ProfileTextView>
+                <ProfileTextView name='transgender' onPress={() => setIsShowModal(true)}>{gender ? gender : 'Giới tính'}</ProfileTextView>
+                <ProfileTextView onPress={()=>setIsShowDatePicker(true)} name='birthday-cake'>{dob ? formatVNDate(dob) : 'Ngày sinh'}</ProfileTextView>
+                <ProfileTextView name='phone'>{user.phone ? user.phone : 'Chưa cập nhật'}</ProfileTextView>
                 <ProfileTextView name='envelope-o'
                     edit={true}
                     placeholder='Email'
@@ -59,7 +88,45 @@ const ProfileEditScreen = (props) => {
                     autoCapitalize='none'
                     keyboardType='email-address'
                 />
+                <GradientButton onPress={onEditPost}>Cập Nhật</GradientButton>
             </View>
+            <Modal
+                visible={isShowModal}
+                transparent={true}
+                animationType='slide'
+                style={{ alignItems: 'flex-end', justifyContent: 'flex-end' }}
+            >
+                <Pressable style={{ flex: 1 }} onPress={() => setIsShowModal(false)} />
+                <View style={styles.modal}>
+                    <Title style={[styles.title, { borderTopWidth: 0.5 }]}>Chọn giới tính</Title>
+                    <Pressable style={{ flexDirection: 'row', alignItems: 'center' }}
+                        onPress={() => [setGender('Nam'), setIsShowModal(false)]}
+                    >
+                        <Title style={{ flex: 1, padding: 10 }}>Nam</Title>
+                        {(gender === 'Nam') && <Icon name='check' size={18} style={{ marginRight: 20 }} />}
+                    </Pressable>
+                    <Pressable style={{ flexDirection: 'row', alignItems: 'center' }}
+                        onPress={() => [setGender('Nữ'), setIsShowModal(false)]}
+                    >
+                        <Title style={{ flex: 1, padding: 10 }}>Nữ</Title>
+                        {(gender === 'Nữ') && <Icon name='check' size={18} style={{ marginRight: 20 }} />}
+                    </Pressable>
+                    <Pressable style={{ flexDirection: 'row', alignItems: 'center' }}
+                        onPress={() => [setGender('Khác'), setIsShowModal(false)]}
+                    >
+                        <Title style={{ flex: 1, padding: 10 }}>Khác</Title>
+                        {(gender === 'Khác') && <Icon name='check' size={18} style={{ marginRight: 20 }} />}
+                    </Pressable>
+                </View>
+            </Modal>
+            {isShowDatePicker && (
+                <DateTimePicker
+                    value={date}
+                    mode='date'
+                    minimumDate={new Date(1950, 0, 1)}
+                    onChange={onChangeDate}
+                />
+            )}
         </View>
     )
 }
@@ -96,13 +163,13 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: '#fff',
         borderBottomWidth: 0.5,
-        borderBottomColor: 'silver'
+        borderColor: 'silver'
     },
-    pressable:{
+    pressable: {
         alignSelf: 'center',
         margin: 32
     },
-    image:{
+    image: {
         width: 150,
         height: 150,
         resizeMode: 'cover'
@@ -115,7 +182,9 @@ const styles = StyleSheet.create({
         bottom: 10,
         right: 10
     },
-
+    modal: {
+        flex: 1
+    }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileEditScreen);

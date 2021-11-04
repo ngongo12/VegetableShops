@@ -10,9 +10,9 @@ import { MainColor } from '../constants/colors';
 import { LargeText } from './AppTexts';
 
 const ProfileTextView = (props) => {
-    const { name, children, edit, value, onChangeText, placeholder, autoCapitalize, keyboardType } = props;
+    const { name, children, edit, value, onChangeText, placeholder, autoCapitalize, keyboardType, onPress } = props;
     return (
-        <Pressable style={styles.container}>
+        <Pressable style={styles.container} onPress={onPress}>
             <Icon name={name} size={20} color={MainColor} style={styles.icon} />
             {!edit ? (<LargeText style={styles.text}>{children}</LargeText>)
                 : (<TextInput {...{value, placeholder, onChangeText, autoCapitalize, keyboardType}} style={styles.text} />)

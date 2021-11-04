@@ -1,8 +1,5 @@
 import React from 'react'
 import {
-    View,
-    ScrollView,
-    Text,
     StyleSheet,
     Pressable
 } from 'react-native';
@@ -17,7 +14,7 @@ const ButtonSetting = ( props ) =>{
             onPress={onPress}
             style={[buttonStyles.container, style]}
         >
-            <Icon name={iconName} size={20} color={MainColor} />
+            <Icon name={iconName} size={24} color={MainColor} />
             <DefautText style={buttonStyles.text}>{name}</DefautText>
             <Icon name='right' size={20} color={MainColor} />
         </Pressable>

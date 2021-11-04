@@ -4,9 +4,11 @@ import {
     ScrollView,
     Text,
     StyleSheet
-} from 'react-native'
-import HomeHeader from '../components/HomeHeader'
-import ProductMainList from '../components/ProductMainList'
+} from 'react-native';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import userActions from '../actions/userActions';
+import HomeHeader from '../components/HomeHeader';
 
 const NotificationScreen = (props) => {
     
@@ -24,4 +26,17 @@ const styles = StyleSheet.create({
     }
 })
 
-export default NotificationScreen
+const mapStateToProps = (state) => {
+    return {
+        user: state.userReducer
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        actions: bindActionCreators(userActions, dispatch)
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(NotificationScreen)

@@ -4,18 +4,33 @@ import {
     ScrollView,
     Text,
     StyleSheet
-} from 'react-native'
-import HomeHeader from '../components/HomeHeader'
-import ProductMainList from '../components/ProductMainList'
+} from 'react-native';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import userActions from '../actions/userActions';
+import { Title } from '../components/AppTexts';
+import DefaultHeader from '../components/DefaultHeader';
 
 const StoreScreen = (props) => {
     
     return (
         <View style={styles.container}>
-            <HomeHeader />
+            <DefaultHeader title='Cửa hàng của tôi' />
             
         </View>
     )
+}
+
+const mapStateToProps = (state) => {
+    return {
+        user: state.userReducer
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        actions: bindActionCreators(userActions, dispatch)
+    }
 }
 
 const styles = StyleSheet.create({
@@ -24,4 +39,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default StoreScreen
+export default connect(mapStateToProps, mapDispatchToProps)(StoreScreen)

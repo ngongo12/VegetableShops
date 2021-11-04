@@ -12,6 +12,9 @@ const userSchema = new Schema({
     address: { type: Array },
     avatar: { type: String },
     createdAt: { type: Date },
+    dob: { type: Date },
+    gender: { type: String },
+    email: { type: String }
 })
 
 module.exports = mongoose.model('user', userSchema);

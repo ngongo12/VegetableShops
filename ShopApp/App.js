@@ -29,7 +29,7 @@ const App = () => {
         <Stack.Navigator
           screenOptions={{ headerShown: false }}
           backBehavior='none'
-          initialRouteName='ProfileEditScreen'
+          initialRouteName='LoginScreen'
         >
           <Stack.Screen
             name="LoginScreen"
