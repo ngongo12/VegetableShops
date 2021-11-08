@@ -2,9 +2,10 @@ import { storage } from '../config/firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 export const uploadFile = async (filePath, folder, fileName) => {
-    const arr = filePath.split('.');
-    const fileExtention = arr[arr.length - 1];
-    const storageRef = ref(storage, `${folder}/${fileName}.${fileExtention}`);
+    const arr = filePath.split('/');
+    const fileNameDetail = arr[arr.length - 1].split('.'); //tenfile.extention
+    
+    const storageRef = ref(storage, `${folder}/${fileName ? fileName : fileNameDetail[0]}.${fileNameDetail[1]}`);
     
     const blob = await new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
@@ -27,4 +28,21 @@ export const uploadFile = async (filePath, folder, fileName) => {
     return url;
 }
 
-export default uploadFile;
+export const uploadMultiFile = async (filePaths, folder) =>{
+    console.log(filePaths)
+    const arrName = filePaths.map( e => {
+        let temp = e.split('/');
+        return temp[temp.length - 1].split('.')[0];
+    })
+
+    const urls = filePaths.map( async (e) => {
+        return await uploadFile(e, folder);
+    })
+    console.log(arrName);
+    return urls;
+}
+
+export default {
+    uploadFile,
+    uploadMultiFile
+}

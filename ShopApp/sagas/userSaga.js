@@ -15,7 +15,12 @@ export const postLoginAction = function* (phone, password) {
         let response = yield call(userAPI.login, phone, password); //gọi Api login
         yield call(saveUserToStore, response);
         console.log('>>>>>>>>>>>>>>>User saga response login: ', response);
-        yield put({ type: userActionType.USER_SUCCESS, payload: response }); //gọi action login success
+        if(response){
+            yield put({ type: userActionType.USER_SUCCESS, payload: response }); //gọi action login success
+        }
+        else{
+            yield put({ type: userActionType.USER_FAILURE, payload: 'Login thất bại' });
+        }
     }
     catch (e) {
         yield put({ type: userActionType.USER_FAILURE, payload: e });

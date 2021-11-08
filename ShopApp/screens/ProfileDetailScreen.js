@@ -16,9 +16,7 @@ import ProfileTextView from '../components/ProfileTextView';
 import { MainColor } from '../constants/colors';
 import { formatVNDate } from '../config/format';
 import ModalChooseCamera from '../components/ModalChooseCamera';
-import { storage } from '../config/firebase';
-import { ref } from 'firebase/storage';
-import uploadFile from '../api/uploadFile';
+import { uploadFile } from '../api/uploadFile';
 import requestCameraPermission from '../components/RequestCameraPermission';
 
 const ProfileDetailScreen = (props) => {
@@ -40,7 +38,7 @@ const ProfileDetailScreen = (props) => {
     }
 
     const openCamera = () => {
-        console.log('openCamera');
+        //console.log('openCamera');
         ImageCropPicker.openCamera({
             cropping: true,
             width: 500,

@@ -1,24 +1,21 @@
 import React, { useState } from 'react';
 import {
     StyleSheet,
+    View,
     Pressable,
     Text
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import { MainColor } from '../constants/colors';
 
-const GradientButton = ( props ) => {
+const NomalButton = ( props ) => {
     const  { children, style } = props;
     return (
         <Pressable {...props} style={style}>
-            <LinearGradient
-                locations={[0, 1.0]}
-                start={{ x: 1.0, y: 1.0 }}
-                end={{ x: 0, y: 0 }}
-                colors={['#7BE495', '#529D9C']}
+            <View
                 style={styles.container}
             >
                 <Text style={styles.text}>{children}</Text>
-            </LinearGradient>
+            </View>
         </Pressable>
     )
 }
@@ -26,8 +23,9 @@ const GradientButton = ( props ) => {
 const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
-        borderRadius: 20,
-        marginTop: 20
+        borderRadius: 5,
+        marginTop: 20,
+        backgroundColor: MainColor
     },
     text: {
         textAlign: 'center',
@@ -38,4 +36,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default GradientButton
+export default NomalButton

@@ -11,7 +11,7 @@ import {
 import { CartIcon, ChatBubleIcon } from './AppIcons';
 import { Title } from './AppTexts';
 
-const HomeHeader = ( props ) => {
+const DefaultHeader = ( props ) => {
     const { title } = props
     return (
         <View>
@@ -40,4 +40,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default HomeHeader
+export default DefaultHeader

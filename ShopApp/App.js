@@ -18,6 +18,7 @@ import RegisterScreen from './screens/RegisterScreen';
 import AccountSettingScreen from './screens/AccountSettingScreen';
 import ProfileDetailScreen from './screens/ProfileDetailScreen';
 import ProfileEditScreen from './screens/ProfileEditScreen';
+import ShopAddProductScreen from './screens/ShopAddProductScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -54,6 +55,10 @@ const App = () => {
           <Stack.Screen
             name="ProfileEditScreen"
             component={ProfileEditScreen}
+          />
+          <Stack.Screen
+            name="ShopAddProductScreen"
+            component={ShopAddProductScreen}
           />
         </Stack.Navigator>
       </NavigationContainer>

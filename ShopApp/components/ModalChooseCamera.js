@@ -17,7 +17,7 @@ const ModalChooseCamera = (props) => {
             backButtonClose={true}
         >
             <Pressable onPress={dimissModal} style={styles.hidePress} />
-            <View>
+            <View style={{backgroundColor: '#fff'}}>
                 <ButtonSetting onPress={ () => [onItemPress[0](), dimissModal()] } iconName='picture' name='Thư viện ảnh' style={styles.button} />
                 <ButtonSetting onPress={ () => [onItemPress[1](), dimissModal()] } iconName='camerao' name='Máy ảnh' style={styles.button} />
             </View>

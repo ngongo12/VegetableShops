@@ -14,6 +14,7 @@ const userReducer = (state = initData, { type, payload }) => {
             return {
                 ...state,
                 isLoading: true,
+                message: null
             }
         case actions.USER_SUCCESS:
             return {
@@ -24,9 +25,8 @@ const userReducer = (state = initData, { type, payload }) => {
         case actions.USER_FAILURE:
             return {
                 ...state,
-                message: actions.USER_FAILURE,
+                message: payload,
                 isLoading: false,
-                ...payload
             }
         case actions.EDIT_PROFILES:
             return {
