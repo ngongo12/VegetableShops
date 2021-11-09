@@ -29,3 +29,7 @@ exports.update = async ( product ) => {
 exports.getById = async (id) => {
     return await productService.getById(id);
 }
+
+exports.getWithLimit = async (page, num) => {
+    return await productService.getWithLimit(page, num);
+}

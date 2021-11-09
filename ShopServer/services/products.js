@@ -9,6 +9,14 @@ exports.getById = async (id) => {
     return await productModel.findOne({_id: id});
 }
 
+exports.getWithLimit = async (page, num) => {
+    const products = await productModel
+        .find({}, '_id name images sellPrice originPrice')
+        .skip((page-1)*num)
+        .limit(num);
+    return products
+}
+
 
 exports.update = async (product) => {
     return await productModel.updateOne(

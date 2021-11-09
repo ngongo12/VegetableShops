@@ -16,7 +16,7 @@ const CategoryPicker = (props) => {
         }
         fetchAPI();
     }, [])
-    console.log('categories ', categories);
+    //console.log('categories ', categories);
     return (
         <View style={styles.container}>
             <DefautText style={styles.text}>Danh mục</DefautText>

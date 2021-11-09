@@ -4,8 +4,11 @@ import {
     StyleSheet
 } from "react-native";
 
+const fmNumber = (num) => {
+    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+}
 export const DefautText = ( props ) => {
-    const { children, style } = props
+    const { children, style } = props;
     return (
         <Text style={[styles.font, styles.defaultText, style]}>
             { children }
@@ -23,7 +26,7 @@ export const LargeText = ( props ) => {
 }
 
 export const Title = ( props ) => {
-    const { children, style } = props
+    const { children, style } = props;
     return (
         <Text style={[styles.font, styles.title, style]}>
             { children }
@@ -32,7 +35,7 @@ export const Title = ( props ) => {
 }
 
 export const HeaderText = ( props ) => {
-    const { children, style } = props
+    const { children, style } = props;
     return (
         <Text style={[styles.font, styles.header, style]}>
             { children }
@@ -41,7 +44,7 @@ export const HeaderText = ( props ) => {
 }
 
 export const ProductName = ( props ) => {
-    const { children, style } = props
+    const { children, style } = props;
     return (
         <Text style={[styles.font, styles.productName, style]}>
             { children }
@@ -50,19 +53,19 @@ export const ProductName = ( props ) => {
 }
 
 export const SellPrice = ( props ) => {
-    const { children, style } = props
+    const { children, style } = props;
     return (
         <Text style={[styles.font, styles.price, style]}>
-            { children }
+            { fmNumber(children) } đ
         </Text>
     )
 }
 
 export const OriginPrice = ( props ) => {
-    const { children, style } = props
+    const { children, style } = props;
     return (
         <Text style={[styles.font, styles.originPrice, style]}>
-            { children }
+            { fmNumber(children) } đ
         </Text>
     )
 }

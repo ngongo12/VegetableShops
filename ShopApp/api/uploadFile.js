@@ -29,16 +29,21 @@ export const uploadFile = async (filePath, folder, fileName) => {
 }
 
 export const uploadMultiFile = async (filePaths, folder) =>{
-    console.log(filePaths)
+    //console.log(filePaths)
     const arrName = filePaths.map( e => {
         let temp = e.split('/');
         return temp[temp.length - 1].split('.')[0];
     })
 
-    const urls = filePaths.map( async (e) => {
-        return await uploadFile(e, folder);
-    })
-    console.log(arrName);
+    // const urls = filePaths.map( async (e) => {
+    //     return await uploadFile(e, folder);
+    // })
+    let urls = [];
+    for(const filePath of filePaths){
+        const url = await uploadFile(filePath, folder);
+        urls.push(url);
+    }
+
     return urls;
 }
 

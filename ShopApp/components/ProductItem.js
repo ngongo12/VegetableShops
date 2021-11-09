@@ -13,11 +13,11 @@ const ProductItem = ( props ) => {
 
     return (
         <Pressable style={styles.constainer} >
-            <Image source={{uri: item.coverImage}} style={styles.image} />
+            <Image source={{uri: item.images[0]}} style={styles.image} />
             <View style={styles.content}>
                 <ProductName>{item.name}</ProductName>
-                {(item.sellPrice < item.originPrice) && <OriginPrice>{item.originPrice}đ</OriginPrice>}
-                <SellPrice>{item.sellPrice}đ</SellPrice>
+                {(item.sellPrice < item.originPrice) && <OriginPrice>{item.originPrice}</OriginPrice>}
+                <SellPrice>{item.sellPrice}</SellPrice>
             </View>
         </Pressable>
     )

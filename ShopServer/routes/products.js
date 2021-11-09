@@ -23,5 +23,11 @@ router.post('/update', async (req, res, next) =>{
     })
 });
 
+router.get('/getWithLimit', async (req, res, next) =>{
+    const products = await productController.getWithLimit(1, 4)
+    res.json({
+        products
+    })
+});
 
 module.exports = router;

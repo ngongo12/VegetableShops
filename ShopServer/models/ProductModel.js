@@ -7,6 +7,7 @@ const productSchema = new Schema({
     id: { type: ObjectId },
     name: { type: String },
     categoryId: { type: ObjectId },
+    owner: { type: ObjectId },
     brand: { type: String },
     images: { type: Array },
     origin: { type: String },

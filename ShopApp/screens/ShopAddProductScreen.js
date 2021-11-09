@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import uploadFile, { uploadMultiFile } from '../api/uploadFile';
+import { uploadMultiFile } from '../api/uploadFile';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import userActions from '../actions/userActions';
@@ -23,10 +23,15 @@ import { Title, DefautText } from '../components/AppTexts';
 import TextInputForProduct from '../components/TextInputForProduct';
 import NomalButton from '../components/NomalButton';
 import CategoryPicker from '../components/CategoryPicker';
-import { getNew } from '../api/productAPI';
+import { getNew, updateProduct } from '../api/productAPI';
 
 const { width, height } = Dimensions.get('window');
 const ShopAddProductScreen = (props) => {
+    const { 
+        user: { user },
+        navigation: { goBack }
+     } = props;
+    //console.log('add product user ', goBack);
     const [selectedImages, setSelectedImages] = useState();
     const [choosenImage, setChoosenImage] = useState();
     const [isVisibleModal, setIsVisibleModal] = useState(false);
@@ -39,6 +44,7 @@ const ShopAddProductScreen = (props) => {
     const [originPrice, setOriginPrice] = useState('');
     const [sellPrice, setSellPrice] = useState('');
     const [discription, setDiscription] = useState('');
+    let pId;
     const openGallery = () => {
         //console.log('openGallery');
         ImageCropPicker.openPicker({
@@ -47,7 +53,6 @@ const ShopAddProductScreen = (props) => {
             height: width * 3 / 2,
         })
             .then(image => {
-
                 if (selectedImages) {
                     let temp = selectedImages;
                     temp.push(image.path);
@@ -61,7 +66,7 @@ const ShopAddProductScreen = (props) => {
     };
 
     const openCamera = () => {
-        console.log('openCamera');
+        //console.log('openCamera');
         ImageCropPicker.openCamera({
             width: width * 2,
             height: width * 3 / 2,
@@ -90,46 +95,70 @@ const ShopAddProductScreen = (props) => {
     }
 
     const onSubmit = async () => {
-        // if(validated()){
-        //     const id = await getNew();
-        //     //upload tất cả hình ảnh lên firebase
-            
-        // }
-        const images = await uploadMultiFile(selectedImages, `products/${id}`);
-        console.log('images ',images);
+        if (validated()) {
+            if (!pId) {
+                //Chưa có pId tạo mới một product rỗng
+                pId = await getNew();
+            }
+            //upload tất cả hình ảnh lên firebase
+            const images = await uploadMultiFile(selectedImages, `products/${pId}`);
+            //console.log('images ',images);
+            const product = {
+                _id: pId,
+                name: pName,
+                categoryId: category,
+                brand: pBrand,
+                images,
+                origin: pOrigin,
+                unit: pUnit,
+                discription,
+                amount: pAmount,
+                sellPrice,
+                originPrice,
+                owner: user._id
+            }
+            const result = await updateProduct(product);
+            if (result.result) {
+                ToastAndroid.show('Thêm sản phẩm thành công', ToastAndroid.SHORT);
+                goBack();
+            }
+            else {
+                ToastAndroid.show('Thêm sản phẩm thất bại', ToastAndroid.SHORT);
+            }
+        }
     }
 
     const validated = () => {
-        if(!pName){
+        if (!pName) {
             ToastAndroid.show('Tên sản phẩm không được để trống', ToastAndroid.SHORT);
             return false;
         }
 
-        if(!originPrice){
+        if (!originPrice) {
             ToastAndroid.show('Giá gốc không được để trống', ToastAndroid.SHORT);
             return false;
         }
 
-        if(!sellPrice){
+        if (!sellPrice) {
             ToastAndroid.show('Giá bán không được để trống', ToastAndroid.SHORT);
             return false;
         }
 
-        if(!pAmount){
+        if (!pAmount) {
             ToastAndroid.show('Số lượng không được để trống', ToastAndroid.SHORT);
             return false;
         }
 
-        if(pAmount < 0){
+        if (pAmount < 0) {
             ToastAndroid.show('Số lượng phải lớn hơn 0', ToastAndroid.SHORT);
             return false;
         }
 
-        if(!selectedImages || selectedImages.length < 1){
+        if (!selectedImages || selectedImages.length < 1) {
             ToastAndroid.show('Hãy thêm ít nhất một ảnh cho sản phẩm', ToastAndroid.SHORT);
             return false;
         }
-        
+
 
         return true;
     }
@@ -156,7 +185,7 @@ const ShopAddProductScreen = (props) => {
             />
             <View style={styles.editView}>
                 <Title>Thông tin sản phẩm</Title>
-                <DefautText style={{color: 'red', fontStyle: 'italic'}}>(* là thành phần quan trọng bắt buộc phải điền)</DefautText>
+                <DefautText style={{ color: 'red', fontStyle: 'italic' }}>(* là thành phần quan trọng bắt buộc phải điền)</DefautText>
                 <TextInputForProduct
                     name='Tên sản phẩm'
                     placeholder='Hãy điền tên sản phẩm*'
@@ -190,7 +219,7 @@ const ShopAddProductScreen = (props) => {
                     value={pUnit}
                     onChangeText={setPUnit}
                 />
-                <CategoryPicker {...{category, setCategory}} />
+                <CategoryPicker {...{ category, setCategory }} />
                 <TextInputForProduct
                     name='Xuất xứ'
                     placeholder='Hãy điền xuất xứ'
@@ -211,7 +240,7 @@ const ShopAddProductScreen = (props) => {
                     multiline={true}
                     style={styles.input}
                 />
-                <NomalButton onPress={onSubmit}>Hoàn Thành</NomalButton> 
+                <NomalButton onPress={onSubmit}>Hoàn Thành</NomalButton>
             </View>
             <ModalChooseCamera
                 visible={isVisibleModal}
@@ -288,7 +317,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         borderRadius: 10
     },
-    input:{
+    input: {
         borderColor: MainColor,
         borderRadius: 5,
         borderWidth: 1,
