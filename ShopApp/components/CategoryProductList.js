@@ -44,6 +44,7 @@ const CategoryProductList = (props) => {
                         renderItem={ItemView}
                         nestedScrollEnabled={true}
                         horizontal={true}
+                        style={styles.list}
                     />
                 </View>
             )}
@@ -63,6 +64,7 @@ const ItemView = (props) => {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         padding: 3,
         backgroundColor: '#fff',
         marginTop: 2
@@ -79,7 +81,7 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderColor: 'silver',
         margin: 5
-    }
+    },
 })
 
 export default CategoryProductList

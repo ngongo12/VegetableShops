@@ -26,19 +26,7 @@ const HomeScreen = (props) => {
     return (
         <View style={styles.container}>
             <HomeHeader />
-            <ScrollView nestedScrollEnabled={true}>
-                <View>
-                    {
-                        categories && categories.map( e => {
-                            return(
-                                <CategoryProductList category={e} key={e._id} />
-                            )
-                        })
-                    }
-                    <CategoryProductList />
-                    <ProductMainList />
-                </View>
-            </ScrollView>
+            <ProductMainList />
 
         </View>
     )
@@ -46,6 +34,7 @@ const HomeScreen = (props) => {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         backgroundColor: MAIN_BACKGROUND
     }
 })

@@ -20,14 +20,14 @@ import { DefautText, HeaderText } from '../components/AppTexts';
 import TextInputLayout from '../components/TextInputLayout';
 import GradientButton from '../components/GradientButton';
 import StrokeButton from '../components/StrokeButton';
-import userActionType from '../constants/userActionType';
+import { getData } from '../api/asyncStorage';
 
 const { height } = Dimensions.get('window');
 
 const LoginScreen = (props) => {
     const { navigation: { navigate }, actions, user } = props;
-    const [phone, setPhone] = useState('0123456789');
-    const [password, setPassword] = useState('vinhquoc');
+    const [phone, setPhone] = useState('');
+    const [password, setPassword] = useState('');
     const isFocused = useIsFocused();
     const value = new Animated.Value(0);
     const onLogin = () => {
@@ -38,6 +38,19 @@ const LoginScreen = (props) => {
         });
     }
     //console.log(isFocused);
+
+    useEffect(() => {
+        getData('user')
+        .then(res => {
+            const {phone, password} = res;
+            if(phone){
+                setPhone(phone);
+            }
+            if(password){
+                setPassword(password)
+            }
+        });
+    }, [])
 
     useEffect(() => {
         //Nếu không phải đang ở screen này thì không thực hiện task ở phía dưới

@@ -4,7 +4,8 @@ import {
     StyleSheet,
     Pressable,
     Dimensions,
-    Modal
+    Modal,
+    ToastAndroid
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { bindActionCreators } from 'redux';
@@ -13,13 +14,13 @@ import { Title } from '../components/AppTexts';
 import userActions from '../actions/userActions';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ProfileTextView from '../components/ProfileTextView';
-import GradientButton from '../components/GradientButton';
 import { formatVNDate } from '../config/format';
+import NomalButton from '../components/NomalButton';
 
 const { height } = Dimensions.get('window');
 
 const ProfileEditScreen = (props) => {
-    const { user: { user }, navigation: { navigate }, actions } = props;
+    const { user: { user, message }, navigation: { navigate }, actions } = props;
     //console.log('>>>>>ProfileEditScreen ', actions);
     const [fullname, setFullname] = useState('');
     const [gender, setGender] = useState('');
@@ -27,7 +28,8 @@ const ProfileEditScreen = (props) => {
     const [email, setEmail] = useState('');
     const [isShowModal, setIsShowModal] = useState(false);
     const [isShowDatePicker, setIsShowDatePicker] = useState(false);
-    const [date, setDate] = useState(new Date('01/01/1990'))
+    const [date, setDate] = useState(new Date('01/01/1990'));
+    const [isPressed, setIsPressed] = useState(false)
     useEffect(() => {
         if (user.fullname) {
             setFullname(user.fullname);
@@ -43,6 +45,10 @@ const ProfileEditScreen = (props) => {
         if (user.email) {
             setEmail(user.email);
         };
+        if(isPressed){
+            ToastAndroid.show(message, ToastAndroid.SHORT);
+            setIsPressed(false);
+        }
     }, [user])
     
     const onChangeDate = (events , selectedDate) => {
@@ -53,7 +59,8 @@ const ProfileEditScreen = (props) => {
     }
 
     const onEditPost = () => {
-        console.log('Edit profile clicked')
+        //console.log('Edit profile clicked')
+        setIsPressed(true);
         actions.actionEditProfile({
             user: {
                 ...user,
@@ -88,7 +95,7 @@ const ProfileEditScreen = (props) => {
                     autoCapitalize='none'
                     keyboardType='email-address'
                 />
-                <GradientButton onPress={onEditPost}>Cập Nhật</GradientButton>
+                <NomalButton onPress={onEditPost}>Cập Nhật</NomalButton>
             </View>
             <Modal
                 visible={isShowModal}
