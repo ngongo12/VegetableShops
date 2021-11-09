@@ -29,7 +29,6 @@ const styles = StyleSheet.create({
         margin: 4,
         backgroundColor: '#fff',
         borderRadius: 5,
-        borderWidth: 1,
         overflow: 'hidden'
     },
     image: {

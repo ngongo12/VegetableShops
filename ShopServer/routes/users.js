@@ -36,7 +36,21 @@ router.post('/editProfile', async (req, res, next) => {
     })
 
   }
+})
 
+router.post('/changePassword', async (req, res, next) => {
+  const { user } = req.body;
+  if (user) {
+    const userRep = await userController.changePassword(user);
+    res.json(userRep);
+  }
+  else {
+    res.json({
+      message: 'Không có dữ liệu',
+      result: false
+    })
+
+  }
 })
 
 module.exports = router;

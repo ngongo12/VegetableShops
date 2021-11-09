@@ -11,6 +11,7 @@ import {
     View,
     ToastAndroid
 } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import userActions from '../actions/userActions';
@@ -27,6 +28,7 @@ const LoginScreen = (props) => {
     const { navigation: { navigate }, actions, user } = props;
     const [phone, setPhone] = useState('0123456789');
     const [password, setPassword] = useState('vinhquoc');
+    const isFocused = useIsFocused();
     const value = new Animated.Value(0);
     const onLogin = () => {
         //gọi action khi user click vào nút đăng nhập
@@ -35,11 +37,13 @@ const LoginScreen = (props) => {
             password
         });
     }
-    console.log(user);
+    //console.log(isFocused);
 
     useEffect(() => {
+        //Nếu không phải đang ở screen này thì không thực hiện task ở phía dưới
+        if(!isFocused) return;
         //nếu có user thì vào thẳng main screen
-        if (user.user && !user.isLogined) {
+        if (user.user) {
             actions.updateLoginState(true);
             navigate('MainScreen');
         };
@@ -55,7 +59,7 @@ const LoginScreen = (props) => {
             useNativeDriver: true
         }).start();
 
-    }, [])
+    }, [isFocused])
     const translateY = value.interpolate({
         inputRange: [0, 1],
         outputRange: [height, 0]

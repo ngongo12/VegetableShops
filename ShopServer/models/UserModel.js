@@ -13,6 +13,7 @@ const userSchema = new Schema({
     avatar: { type: String },
     createdAt: { type: Date },
     dob: { type: Date },
+    lastUpdate: { type: Date },
     gender: { type: String },
     email: { type: String }
 })

@@ -24,3 +24,11 @@ exports.update = async (product) => {
         { ...product, lastUpdate: new Date() }
     )
 }
+
+exports.getTopProductByCategory = async (id) => {
+    console.log(id);
+    const products = await productModel
+        .find({categoryId: id}, '_id images')
+        .limit(10);
+    return products
+}

@@ -3,6 +3,7 @@ import {
     Text,
     StyleSheet
 } from "react-native";
+import { MainColor } from "../constants/colors";
 
 const fmNumber = (num) => {
     return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
@@ -70,6 +71,15 @@ export const OriginPrice = ( props ) => {
     )
 }
 
+export const PressableText = ( props ) => {
+    const { children, style, onPress } = props;
+    return (
+        <Text onPress={onPress} style={[styles.font, styles.pressableText, style]}>
+            { children }
+        </Text>
+    )
+}
+
 const styles = StyleSheet.create({
     font: {
         fontFamily: 'calibri',
@@ -102,5 +112,9 @@ const styles = StyleSheet.create({
         fontSize: 22,
         textAlign: 'center',
         color: '#529D9C'
+    },
+    pressableText: {
+        color: MainColor,
+        fontSize: 15
     }
 })

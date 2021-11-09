@@ -30,4 +30,12 @@ router.get('/getWithLimit', async (req, res, next) =>{
     })
 });
 
+router.get('/getTopProductByCategory', async (req, res, next) =>{
+    const { id } = req.query;
+    const products = await productController.getTopProductByCategory(id);
+    res.json({
+        products
+    })
+});
+
 module.exports = router;

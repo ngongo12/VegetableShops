@@ -2,6 +2,7 @@ const userService = require('../services/users');
 const bcrypt = require('bcrypt');
 
 exports.editProfile = async (user) => {
+    console.log(user);
     const result = await userService.editProfile(user);
     if (result.matchedCount > 0) {
         return {
@@ -67,6 +68,37 @@ exports.login = async (user) => {
                 user: await userService.getProfile(userRep._id),
                 message: 'Đăng nhập thành công'
             }
+        }
+        else {
+            return {
+                result: false,
+                message: 'Sai mật khẩu'
+            }
+        }
+    }
+}
+
+exports.changePassword = async (user) => {
+    const userRep = await userService.getUserByPhone(user.phone);
+    if (!userRep) {
+        return {
+            result: false,
+            message: 'Không lấy được user'
+        }
+    } else {
+        //Kiểm tra mật khẩu nhập vào với mk đã hash
+        const checkPassword = await bcrypt.compareSync(user.password, userRep.password);
+        if (checkPassword) {
+            //Đúng
+            const salt = bcrypt.genSaltSync(10);
+            const hash = bcrypt.hashSync(user.newPassword, salt);
+            const newUser = {
+                _id: userRep._id,
+                password: hash,
+                salt,
+                lastUpdate: new Date()
+            }
+            return await this.editProfile(newUser);
         }
         else {
             return {

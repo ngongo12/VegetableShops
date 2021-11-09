@@ -33,3 +33,7 @@ exports.getById = async (id) => {
 exports.getWithLimit = async (page, num) => {
     return await productService.getWithLimit(page, num);
 }
+
+exports.getTopProductByCategory = async (id) => {
+    return await productService.getTopProductByCategory(id);
+}
