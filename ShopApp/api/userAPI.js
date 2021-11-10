@@ -31,7 +31,22 @@ export const editProfiles = ( user ) =>{
     .catch(e => console.log(e));
 }
 
+export const register = ( user ) => {
+    const registerUrl = `${apiURL}users/register`;
+    return fetch(registerUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ user })
+    })
+    .then(res => res.json())
+    .then(res => res)
+    .catch(e => console.log(e));
+}
+
 export default {
     login,
-    editProfiles
+    editProfiles,
+    register
 };

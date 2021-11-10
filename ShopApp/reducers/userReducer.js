@@ -16,6 +16,12 @@ const userReducer = (state = initData, { type, payload }) => {
                 isLoading: true,
                 message: null
             }
+        case actions.REGISTER:
+            return {
+                ...state,
+                isLoading: true,
+                message: null
+            }
         case actions.USER_SUCCESS:
             return {
                 ...state,
@@ -39,6 +45,13 @@ const userReducer = (state = initData, { type, payload }) => {
                 ...state,
                 isLoading: false,
                 isLogined: payload
+            }
+        case actions.LOGOUT:
+            return {
+                isLoading: false,
+                isLogined: false,
+                message: null,
+                user: null
             }
         default:
             return state;

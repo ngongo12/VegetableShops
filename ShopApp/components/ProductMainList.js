@@ -11,6 +11,7 @@ import { productUrl } from '../api/productAPI';
 import { Title } from './AppTexts';
 import ProductItem from './ProductItem';
 import CategoryProductList from './CategoryProductList';
+import SaleProductList from './SaleProductList';
 
 const ProductMainList = (props) => {
     const [products, setProducts] = useState([]);
@@ -38,6 +39,7 @@ const ProductMainList = (props) => {
                 keyExtractor={(item, index) => index}
                 nestedScrollEnabled={true}
                 ListHeaderComponent={MainListHeader}
+                showsVerticalScrollIndicator={false}
             />
         </View>
     )
@@ -56,6 +58,7 @@ const MainListHeader = (props) => {
 
     return (
         <View>
+            <SaleProductList />
             {
                 categories && categories.map(e => {
                     return (
@@ -72,11 +75,13 @@ const MainListHeader = (props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 3,
     },
     title: {
-        margin: 10
+        margin: 11
     },
+    list:{
+        padding: 3
+    }
 })
 
 export default ProductMainList

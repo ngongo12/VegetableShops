@@ -5,21 +5,26 @@ import {
     Image,
     Text,
     Animated,
-    Dimensions
+    Dimensions,
+    ToastAndroid
 } from 'react-native';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import userActions from '../../actions/userActions';
 import LinearGradient from 'react-native-linear-gradient';
 import { HeaderText } from '../../components/AppTexts';
 import TextInputLayout from '../../components/TextInputLayout';
 import GradientButton from '../../components/GradientButton';
-import StrokeButton from '../../components/StrokeButton';
+import { useIsFocused } from '@react-navigation/native';
 
 const { height } = Dimensions.get('window');
 
 const Register = (props) => {
-    const { navigation : { navigate } } = props;
+    const { user, actions,navigation : { navigate } } = props;
     const [fullname, setFullname] = useState('');
     const [passWord, setPassWord] = useState('');
     const [phone, setPhone] = useState('');
+    const isFocused = useIsFocused();
     const value = new Animated.Value(0);
 
     useEffect(() => {
@@ -34,6 +39,48 @@ const Register = (props) => {
         inputRange: [0, 1],
         outputRange: [height, 0]
     })
+
+    useEffect(() => {
+        //Nếu không phải đang ở screen này thì không thực hiện task ở phía dưới
+        if(!isFocused) return;
+        //nếu có user thì vào thẳng main screen
+        if (user.user) {
+            actions.updateLoginState(true);
+            navigate('MainScreen');
+        };
+        if(user.message){
+            ToastAndroid.show(user.message, ToastAndroid.SHORT);
+        }
+    }, [user])
+
+    const onRegister = () => {
+        if(validate()){
+            actions.actionRegister({
+                user: {
+                    phone,
+                    password: passWord,
+                    fullname
+                }
+            })
+        }
+    }
+
+    const validate = () => {
+        if(phone.trim().length < 10){
+            ToastAndroid.show('Số điện thoại không hợp lệ', ToastAndroid.SHORT);
+            return false;
+        }
+        if(fullname.trim().length == 0){
+            ToastAndroid.show('Tên không được rỗng', ToastAndroid.SHORT);
+            return false;
+        }
+        if(passWord.trim().length < 6){
+            ToastAndroid.show('Mật khẩu ít nhất 6 ký tự', ToastAndroid.SHORT);
+            return false;
+        }
+        
+        return true;
+    }
 
     return (
         <>
@@ -71,7 +118,7 @@ const Register = (props) => {
                         onChangeText = { setPassWord }
                         name='lock'
                     />
-                    <GradientButton >Tạo Tài Khoản</GradientButton>
+                    <GradientButton onPress={onRegister} >Tạo Tài Khoản</GradientButton>
                 </Animated.View>
             </LinearGradient>
 
@@ -107,4 +154,16 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Register
+const mapStateToProps = (state) => {
+    return {
+        user: state.userReducer
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        actions: bindActionCreators(userActions, dispatch)
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register)

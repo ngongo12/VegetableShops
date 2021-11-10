@@ -2,12 +2,13 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    StatusBar,
+    Dimensions,
     Pressable,
     Image,
 } from 'react-native';
 import { SellPrice, ProductName, OriginPrice} from './AppTexts';
 
+const { width, height } = Dimensions.get('window');
 const ProductItem = ( props ) => {
     const { item } = props;
 
@@ -29,7 +30,8 @@ const styles = StyleSheet.create({
         margin: 4,
         backgroundColor: '#fff',
         borderRadius: 5,
-        overflow: 'hidden'
+        overflow: 'hidden',
+        maxWidth: width/2-7
     },
     image: {
         width: '100%',

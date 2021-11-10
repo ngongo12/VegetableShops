@@ -32,35 +32,52 @@ const LoginScreen = (props) => {
     const value = new Animated.Value(0);
     const onLogin = () => {
         //gọi action khi user click vào nút đăng nhập
-        actions.actionLogin({
-            phone,
-            password
-        });
+        if (validate()) {
+            actions.actionLogin({
+                phone,
+                password
+            });
+        }
+
     }
-    //console.log(isFocused);
+    console.log(user);
+
+    const validate = () => {
+        if (phone.trim().length < 10) {
+            ToastAndroid.show('Số điện thoại không hợp lệ', ToastAndroid.SHORT);
+            return false;
+        }
+        if (password.trim().length < 6) {
+            ToastAndroid.show('Mật khẩu ít nhất 6 ký tự', ToastAndroid.SHORT);
+            return false;
+        }
+
+        return true;
+    }
+    //console.log(user);
 
     useEffect(() => {
         getData('user')
-        .then(res => {
-            const {phone, password} = res;
-            if(phone){
-                setPhone(phone);
-            }
-            if(password){
-                setPassword(password)
-            }
-        });
+            .then(res => {
+                const { phone, password } = res;
+                if (phone) {
+                    setPhone(phone);
+                }
+                if (password) {
+                    setPassword(password)
+                }
+            });
     }, [])
 
     useEffect(() => {
         //Nếu không phải đang ở screen này thì không thực hiện task ở phía dưới
-        if(!isFocused) return;
+        if (!isFocused) return;
         //nếu có user thì vào thẳng main screen
         if (user.user) {
             actions.updateLoginState(true);
             navigate('MainScreen');
         };
-        if(user.message){
+        if (user.message) {
             ToastAndroid.show(user.message, ToastAndroid.SHORT);
         }
     }, [user])

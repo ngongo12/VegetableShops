@@ -182,6 +182,7 @@ const ShopAddProductScreen = (props) => {
                 nestedScrollEnabled={true}
                 ListHeaderComponent={() => <ListHeader onPress={() => setIsVisibleModal(true)} />}
                 horizontal={true}
+                showsHorizontalScrollIndicator={false}
             />
             <View style={styles.editView}>
                 <Title>Thông tin sản phẩm</Title>

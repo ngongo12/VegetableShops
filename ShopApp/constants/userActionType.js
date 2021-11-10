@@ -5,6 +5,7 @@ export const USER_SUCCESS = 'USER_SUCCESS';
 export const USER_FAILURE = 'USER_FAILURE';
 export const USER_ACTION = 'USER_ACTION';
 export const UPDATE_LOGIN_STATE = 'UPDATE_LOGIN_STATE';
+export const REGISTER = 'REGISTER';
 
 export default {
     HANDLE_LOGIN,
@@ -13,5 +14,6 @@ export default {
     LOGOUT,
     EDIT_PROFILES,
     USER_ACTION,
-    UPDATE_LOGIN_STATE
+    UPDATE_LOGIN_STATE,
+    REGISTER
 }

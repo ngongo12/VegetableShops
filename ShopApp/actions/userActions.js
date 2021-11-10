@@ -30,13 +30,19 @@ export const updateLoginState = payload => ({
     payload
 })
 
+export const actionRegister = payload => ({
+    type: actions.REGISTER,
+    payload
+})
+
 export default {
     actionLogOut,
     actionLogin,
     loginSuccess,
     loginFailure,
     actionEditProfile,
-    updateLoginState
+    updateLoginState,
+    actionRegister
 }
 
 

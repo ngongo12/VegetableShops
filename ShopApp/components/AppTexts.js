@@ -3,7 +3,7 @@ import {
     Text,
     StyleSheet
 } from "react-native";
-import { MainColor } from "../constants/colors";
+import { DARK_GREEN, MainColor, RED } from "../constants/colors";
 
 const fmNumber = (num) => {
     return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
@@ -80,6 +80,15 @@ export const PressableText = ( props ) => {
     )
 }
 
+export const SalePercent = ( props ) => {
+    const { children, style, onPress } = props;
+    return (
+        <Text onPress={onPress} style={[styles.font, styles.salePercent, style]}>
+            { children }
+        </Text>
+    )
+}
+
 const styles = StyleSheet.create({
     font: {
         fontFamily: 'calibri',
@@ -96,7 +105,7 @@ const styles = StyleSheet.create({
     price: {
         fontSize: 16,
         fontWeight: 'bold',
-        color: '#E25845'
+        color: RED
     },
 
     productName: {
@@ -112,10 +121,15 @@ const styles = StyleSheet.create({
     header:{
         fontSize: 22,
         textAlign: 'center',
-        color: '#529D9C'
+        color: DARK_GREEN
     },
     pressableText: {
         color: MainColor,
         fontSize: 15
+    },
+    salePercent: {
+        color: RED,
+        fontWeight: 'bold',
+        fontSize: 11
     }
 })

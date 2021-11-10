@@ -13,7 +13,7 @@ import { CartIcon, LogoutIcon } from './AppIcons';
 import { Title } from './AppTexts';
 
 const ProfileHeader = ( props ) => {
-    const { user } = props;
+    const { user, onPressLogout} = props;
     //console.log(user)
     return (
         <View>
@@ -25,7 +25,7 @@ const ProfileHeader = ( props ) => {
                 </View>
                 <View style={styles.iconView}>
                     <CartIcon count={10} />
-                    <LogoutIcon/>
+                    <LogoutIcon onPress={onPressLogout} />
                 </View>
             </View>
         </View>

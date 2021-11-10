@@ -21,7 +21,7 @@ const CategoryProductList = (props) => {
 
 
     const fetchData = (id) => {
-        fetch(`${productUrl}/getTopProductByCategory?id=${id}`)
+        fetch(`${productUrl}getTopProductByCategory?id=${id}`)
             .then(res => res.json())
             .then(res => {
                 if (res.products) {
@@ -44,7 +44,7 @@ const CategoryProductList = (props) => {
                         renderItem={ItemView}
                         nestedScrollEnabled={true}
                         horizontal={true}
-                        style={styles.list}
+                        showsHorizontalScrollIndicator={false}
                     />
                 </View>
             )}
@@ -67,12 +67,14 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 3,
         backgroundColor: '#fff',
-        marginTop: 2
+        marginTop: 2,
+        marginBottom: 6
     },
     title: {
         margin: 5,
+        marginLeft: 7,
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     image: {
         width: 100,

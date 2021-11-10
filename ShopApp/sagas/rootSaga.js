@@ -6,6 +6,7 @@ const rootSaga = function*(){
     yield all([
         takeLatest(userActionType.HANDLE_LOGIN, userSaga),
         takeLatest(userActionType.EDIT_PROFILES, userSaga),
+        takeLatest(userActionType.REGISTER, userSaga),
     ]);
 };
 
