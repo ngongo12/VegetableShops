@@ -10,12 +10,12 @@ import {
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Title } from '../components/AppTexts';
-import userActions from '../actions/userActions';
+import { Title } from '../../components/AppTexts';
+import userActions from '../../actions/userActions';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import ProfileTextView from '../components/ProfileTextView';
-import { formatVNDate } from '../config/format';
-import NomalButton from '../components/NomalButton';
+import ProfileTextView from '../../components/ProfileTextView';
+import { formatVNDate } from '../../config/format';
+import NomalButton from '../../components/NomalButton';
 
 const { height } = Dimensions.get('window');
 

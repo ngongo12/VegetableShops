@@ -8,10 +8,10 @@ import {
     Dimensions
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { HeaderText } from '../components/AppTexts';
-import TextInputLayout from '../components/TextInputLayout';
-import GradientButton from '../components/GradientButton';
-import StrokeButton from '../components/StrokeButton';
+import { HeaderText } from '../../components/AppTexts';
+import TextInputLayout from '../../components/TextInputLayout';
+import GradientButton from '../../components/GradientButton';
+import StrokeButton from '../../components/StrokeButton';
 
 const { height } = Dimensions.get('window');
 
@@ -44,7 +44,7 @@ const Register = (props) => {
                 end={{x: 1, y: 1.0}}
                 colors={['#7BE495', '#529D9C']}
                 style={styles.container}>
-                <Image source={require('../assets/images/background_login.png')} style={styles.image} />
+                <Image source={require('../../assets/images/background_login.png')} style={styles.image} />
                 <Animated.View style={[styles.content, {transform: [{...{translateY}}]}]}>
                     <HeaderText>TẠO TÀI KHOẢN</HeaderText>
                     <TextInputLayout

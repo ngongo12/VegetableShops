@@ -14,13 +14,13 @@ import {
 import { useIsFocused } from '@react-navigation/native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import userActions from '../actions/userActions';
+import userActions from '../../actions/userActions';
 import LinearGradient from 'react-native-linear-gradient';
-import { DefautText, HeaderText } from '../components/AppTexts';
-import TextInputLayout from '../components/TextInputLayout';
-import GradientButton from '../components/GradientButton';
-import StrokeButton from '../components/StrokeButton';
-import { getData } from '../api/asyncStorage';
+import { DefautText, HeaderText } from '../../components/AppTexts';
+import TextInputLayout from '../../components/TextInputLayout';
+import GradientButton from '../../components/GradientButton';
+import StrokeButton from '../../components/StrokeButton';
+import { getData } from '../../api/asyncStorage';
 
 const { height } = Dimensions.get('window');
 
@@ -87,7 +87,7 @@ const LoginScreen = (props) => {
                 end={{ x: 1, y: 1.0 }}
                 colors={['#7BE495', '#529D9C']}
                 style={styles.container}>
-                <Image source={require('../assets/images/background_login.png')} style={styles.image} />
+                <Image source={require('../../assets/images/background_login.png')} style={styles.image} />
                 <Animated.View style={[styles.content, { transform: [{ ...{ translateY } }] }]}>
                     <HeaderText>ĐĂNG NHẬP</HeaderText>
                     <TextInputLayout

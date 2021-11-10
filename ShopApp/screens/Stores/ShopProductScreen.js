@@ -8,12 +8,12 @@ import {
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import userActions from '../actions/userActions';
-import { MainColor } from '../constants/colors';
+import userActions from '../../actions/userActions';
+import { MainColor } from '../../constants/colors';
 
 const ShopProductScreen = (props) => {
     const { navigation: { navigate } } = props;
-    console.log(navigate)
+    //console.log(navigate)
     return (
         <View style={styles.container}>
             <Pressable style={styles.btnAdd} onPress={()=>navigate('ShopAddProductScreen')}>

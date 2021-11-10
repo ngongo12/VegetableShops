@@ -13,12 +13,12 @@ import {
 } from 'react-native';
 import redux from './config/redux';
 import MainScreen from './screens/MainScreen';
-import LoginScreen from './screens/LoginScreen';
-import RegisterScreen from './screens/RegisterScreen';
+import LoginScreen from './screens/Auths/LoginScreen';
+import RegisterScreen from './screens/Auths/RegisterScreen';
 import AccountSettingScreen from './screens/AccountSettingScreen';
-import ProfileDetailScreen from './screens/ProfileDetailScreen';
-import ProfileEditScreen from './screens/ProfileEditScreen';
-import ShopAddProductScreen from './screens/ShopAddProductScreen';
+import ProfileDetailScreen from './screens/Profiles/ProfileDetailScreen';
+import ProfileEditScreen from './screens/Profiles/ProfileEditScreen';
+import ShopAddProductScreen from './screens/Stores/ShopAddProductScreen';
 
 const Stack = createNativeStackNavigator();
 

@@ -9,15 +9,15 @@ import {
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import ImageCropPicker from 'react-native-image-crop-picker';
-import { Title } from '../components/AppTexts';
-import userActions from '../actions/userActions';
+import { Title } from '../../components/AppTexts';
+import userActions from '../../actions/userActions';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import ProfileTextView from '../components/ProfileTextView';
-import { MainColor } from '../constants/colors';
-import { formatVNDate } from '../config/format';
-import ModalChooseCamera from '../components/ModalChooseCamera';
-import { uploadFile } from '../api/uploadFile';
-import requestCameraPermission from '../components/RequestCameraPermission';
+import ProfileTextView from '../../components/ProfileTextView';
+import { MainColor } from '../../constants/colors';
+import { formatVNDate } from '../../config/format';
+import ModalChooseCamera from '../../components/ModalChooseCamera';
+import { uploadFile } from '../../api/uploadFile';
+import requestCameraPermission from '../../components/RequestCameraPermission';
 
 const ProfileDetailScreen = (props) => {
     const { user: { user }, navigation: { navigate }, actions } = props;
@@ -75,7 +75,7 @@ const ProfileDetailScreen = (props) => {
             <Pressable style={styles.pressable} onPress={() => setIsVisibleModal(true)}>
                 <Image
                     source={selectedImage ? { uri: selectedImage } :
-                        (user.avatar ? { uri: user.avatar } : require('../assets/images/default_avatar.png'))
+                        (user.avatar ? { uri: user.avatar } : require('../../assets/images/default_avatar.png'))
                     }
                     style={styles.image} />
                 <Icon name='camera' size={20} color={MainColor} style={[styles.icon]} />

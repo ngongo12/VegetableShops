@@ -12,18 +12,18 @@ import {
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { uploadMultiFile } from '../api/uploadFile';
+import { uploadMultiFile } from '../../api/uploadFile';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import userActions from '../actions/userActions';
-import DefaultHeader from '../components/DefaultHeader';
-import ModalChooseCamera from '../components/ModalChooseCamera';
-import { MainColor } from '../constants/colors';
-import { Title, DefautText } from '../components/AppTexts';
-import TextInputForProduct from '../components/TextInputForProduct';
-import NomalButton from '../components/NomalButton';
-import CategoryPicker from '../components/CategoryPicker';
-import { getNew, updateProduct } from '../api/productAPI';
+import userActions from '../../actions/userActions';
+import DefaultHeader from '../../components/DefaultHeader';
+import ModalChooseCamera from '../../components/ModalChooseCamera';
+import { MainColor } from '../../constants/colors';
+import { Title, DefautText } from '../../components/AppTexts';
+import TextInputForProduct from '../../components/TextInputForProduct';
+import NomalButton from '../../components/NomalButton';
+import CategoryPicker from '../../components/CategoryPicker';
+import { getNew, updateProduct } from '../../api/productAPI';
 
 const { width, height } = Dimensions.get('window');
 const ShopAddProductScreen = (props) => {
@@ -169,7 +169,7 @@ const ShopAddProductScreen = (props) => {
         >
             <DefaultHeader title='Thêm sản phẩm' />
             <Pressable>
-                <Image source={choosenImage ? { uri: choosenImage } : require('../assets/images/item_not_found.png')} style={styles.cover} />
+                <Image source={choosenImage ? { uri: choosenImage } : require('../../assets/images/item_not_found.png')} style={styles.cover} />
             </Pressable>
             <FlatList
                 data={selectedImages}

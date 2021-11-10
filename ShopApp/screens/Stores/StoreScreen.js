@@ -1,19 +1,16 @@
 import React from 'react'
 import {
     View,
-    ScrollView,
-    Text,
     StyleSheet
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import userActions from '../actions/userActions';
-import { Title } from '../components/AppTexts';
-import DefaultHeader from '../components/DefaultHeader';
+import userActions from '../../actions/userActions';
+import DefaultHeader from '../../components/DefaultHeader';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import ShopOrderScreen from './ShopOrderScreen';
 import ShopProductScreen from './ShopProductScreen';
-import { MainColor } from '../constants/colors';
+import { MainColor } from '../../constants/colors';
 
 const Tab = createMaterialTopTabNavigator();
 const StoreScreen = (props) => {

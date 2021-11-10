@@ -4,8 +4,8 @@ import { MainColor } from '../constants/colors';
 import Icon from 'react-native-vector-icons/AntDesign';
 import HomeScreen from './HomeScreen';
 import NotificationScreen from './NotificationScreen';
-import StoreScreen from './StoreScreen';
-import ProfileScreen from './ProfileScreen';
+import StoreScreen from './Stores/StoreScreen';
+import ProfileScreen from './Profiles/ProfileScreen';
 
 const Tab = createBottomTabNavigator();
 

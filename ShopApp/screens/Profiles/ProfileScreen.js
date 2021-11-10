@@ -8,11 +8,11 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import userActions from '../actions/userActions';
-import { DefautText, Title } from '../components/AppTexts';
-import ProfileHeader from '../components/ProfileHeader';
-import ButtonSetting from '../components/ButtonSetting';
-import OrderStateIcon from '../components/OrderStateIcon';
+import userActions from '../../actions/userActions';
+import { DefautText, Title } from '../../components/AppTexts';
+import ProfileHeader from '../../components/ProfileHeader';
+import ButtonSetting from '../../components/ButtonSetting';
+import OrderStateIcon from '../../components/OrderStateIcon';
 
 const ProfileScreen = (props) => {
     const {user:{ user }, navigation: {navigate}} = props;

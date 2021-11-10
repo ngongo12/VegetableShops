@@ -7,8 +7,8 @@ import {
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import userActions from '../actions/userActions';
-import HomeHeader from '../components/HomeHeader';
+import userActions from '../../actions/userActions';
+import HomeHeader from '../../components/HomeHeader';
 
 const ShopOrderScreen = (props) => {
     
