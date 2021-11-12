@@ -20,7 +20,6 @@ import { Rating } from 'react-native-ratings';
 import Icon from 'react-native-vector-icons/AntDesign';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { DefautText, OriginPrice, SellPrice, Title } from '../../components/Text/AppTexts';
-import { useIsFocused } from '@react-navigation/native';
 import { productUrl } from '../../api/productAPI';
 import { MainColor, RED } from '../../constants/colors';
 import TextFieldForProduct from '../../components/Text/TextFieldForProduct';
@@ -85,6 +84,7 @@ const ProductDetailScreen = (props) => {
                             sliderBoxHeight={width * 3 / 4}
                             autoplay={true}
                             circleLoop={true}
+                            resizeMode = 'center'
                         />
                         <View style={styles.content}>
                             <Title>{product?.name}</Title>

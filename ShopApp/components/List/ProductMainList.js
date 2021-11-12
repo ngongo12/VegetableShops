@@ -6,6 +6,7 @@ import {
     ToastAndroid,
     Pressable
 } from 'react-native';
+import { SliderBox } from "react-native-image-slider-box";
 import { getAllCategories } from '../../api/categoryAPI';
 import { productUrl } from '../../api/productAPI';
 import { Title } from '../Text/AppTexts';
@@ -34,7 +35,7 @@ const ProductMainList = (props) => {
         <View style={styles.container}>
             <FlatList
                 data={products}
-                renderItem={({ item }) => <ProductItem {...{item, navigate}} />}
+                renderItem={({ item }) => <ProductItem {...{ item, navigate }} />}
                 numColumns={2}
                 keyExtractor={(item, index) => index}
                 nestedScrollEnabled={true}
@@ -58,6 +59,18 @@ const MainListHeader = (props) => {
 
     return (
         <View>
+            <SliderBox
+                images={[
+                    require('../../assets/images/bn1.png'),
+                    require('../../assets/images/bn2.png'),
+                    require('../../assets/images/bn3.png'),
+                    require('../../assets/images/bn4.png')
+                ]}
+                sliderBoxHeight={150}
+                autoplay={true}
+                circleLoop={true}
+                resizeMode = 'cover'
+            />
             <SaleProductList />
             {
                 categories && categories.map(e => {
@@ -79,7 +92,7 @@ const styles = StyleSheet.create({
     title: {
         margin: 11
     },
-    list:{
+    list: {
         padding: 3
     }
 })
