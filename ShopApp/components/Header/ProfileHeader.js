@@ -9,7 +9,8 @@ import {
 import {
     MainColor
 } from '../../constants/colors';
-import { CartIcon, LogoutIcon } from '../Icon/AppIcons';
+import {  LogoutIcon } from '../Icon/AppIcons';
+import CartIcon from '../Icon/CartIcon';
 import { Title } from '../Text/AppTexts';
 
 const ProfileHeader = ( props ) => {
@@ -24,7 +25,7 @@ const ProfileHeader = ( props ) => {
                     <Title style={styles.text}>{ user && user.fullname ? user.fullname : 'Chưa cập nhật'}</Title>
                 </View>
                 <View style={styles.iconView}>
-                    <CartIcon count={10} />
+                    <CartIcon />
                     <LogoutIcon onPress={onPressLogout} />
                 </View>
             </View>

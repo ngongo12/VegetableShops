@@ -2,7 +2,6 @@ import React from 'react';
 import {
     StyleSheet,
     TouchableOpacity,
-    View,
     Text
 } from 'react-native';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -16,17 +15,6 @@ export const ScanIcon = ( props ) => {
     return (
         <TouchableOpacity style={styles.constainer} onPress={onPress}>
             <MCIcon name='qrcode-scan' size={20} color={MainColor} />
-        </TouchableOpacity>
-    )
-}
-
-export const CartIcon = ( props ) => {
-    const { onPress, count } = props;
-
-    return (
-        <TouchableOpacity style={styles.icon} onPress={onPress}>
-            <MCIcon name='shopping-outline' size={24} color={'white'} />
-            {(count != 0) && <Text style={styles.badge}>{ count}</Text>}
         </TouchableOpacity>
     )
 }
@@ -53,7 +41,6 @@ export const LogoutIcon = ( props ) => {
 
 export default {
     ScanIcon,
-    CartIcon,
     ChatBubleIcon,
     LogoutIcon
 }
@@ -64,7 +51,7 @@ const styles = StyleSheet.create({
     },
     icon: {
         padding: 10,
-        backgroundColor: MainColor,
+        //backgroundColor: MainColor,
     },
     badge: {
         top: 5,

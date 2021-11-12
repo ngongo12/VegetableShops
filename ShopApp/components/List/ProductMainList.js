@@ -14,11 +14,10 @@ import CategoryProductList from './CategoryProductList';
 import SaleProductList from './SaleProductList';
 
 const ProductMainList = (props) => {
-    const { navigate } = props;
+    const { navigate, user } = props;
     const [products, setProducts] = useState([]);
-
     useEffect(() => {
-        fetch(productUrl + 'getWithLimit')
+        fetch(productUrl + `getWithLimit?uid=${user?._id}`)
             .then((respone) => respone.json())
             .then((data) => {
                 if (data.products) {

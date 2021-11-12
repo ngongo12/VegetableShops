@@ -10,7 +10,13 @@ export const removeFromCart = payload => ({
     payload
 })
 
+export const load = payload =>({
+    type: actions.LOAD_CART,
+    payload
+})
+
 export default {
     addToCart,
-    removeFromCart
+    removeFromCart,
+    load
 }

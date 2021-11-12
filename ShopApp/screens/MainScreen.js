@@ -1,15 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import userActions from '../actions/userActions';
+import cartActions from '../actions/cartActions';
+
 import { MainColor } from '../constants/colors';
 import Icon from 'react-native-vector-icons/AntDesign';
 import HomeScreen from './HomeScreen';
 import NotificationScreen from './NotificationScreen';
 import StoreScreen from './Stores/StoreScreen';
 import ProfileScreen from './Profiles/ProfileScreen';
+import { getData } from '../api/asyncStorage';
 
 const Tab = createBottomTabNavigator();
 
 const MainScreen = (props) => {
+    const { user: { user }, cActions, cart } = props;
+    useEffect(() => {
+        getData(user._id)
+        .then(res => cActions.load(res))
+        .catch(e => console.log(e));
+    }, [user])
+    console.log(cart)
     return(
         <Tab.Navigator
             screenOptions={({route}) => ({
@@ -59,4 +73,18 @@ const MainScreen = (props) => {
     )
 }
 
-export default MainScreen
+const mapStateToProps = (state) => {
+    return {
+        user: state.userReducer,
+        cart: state.cartReducer
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        actions: bindActionCreators(userActions, dispatch),
+        cActions: bindActionCreators(cartActions, dispatch)
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainScreen)

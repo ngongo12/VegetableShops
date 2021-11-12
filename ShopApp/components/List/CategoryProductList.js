@@ -6,14 +6,17 @@ import {
     Pressable,
     Image
 } from 'react-native';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import userActions from '../../actions/userActions';
+
 import FastImage from 'react-native-fast-image';
 import { productUrl } from '../../api/productAPI';
 import { PressableText, Title } from '../Text/AppTexts';
 
 const CategoryProductList = (props) => {
-    const { category } = props;
+    const { category, user: {user} } = props;
     const [products, setProducts] = useState(null);
-
     useEffect(() => {
         if (category?._id) {
             fetchData(category._id);
@@ -22,7 +25,7 @@ const CategoryProductList = (props) => {
 
 
     const fetchData = (id) => {
-        fetch(`${productUrl}getTopProductByCategory?id=${id}`)
+        fetch(`${productUrl}getTopProductByCategory?id=${id}&uid=${user?._id}`)
             .then(res => res.json())
             .then(res => {
                 if (res.products) {
@@ -87,4 +90,16 @@ const styles = StyleSheet.create({
     },
 })
 
-export default CategoryProductList
+const mapStateToProps = (state) => {
+    return {
+        user: state.userReducer,
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        actions: bindActionCreators(userActions, dispatch),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryProductList)

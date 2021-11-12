@@ -4,23 +4,28 @@ import {
     View,
     Dimensions,
     Pressable,
-    Image,
+    ImageBackground,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import { SellPrice, ProductName, OriginPrice} from '../Text/AppTexts';
+import { SellPrice, ProductName, OriginPrice, SalePercent } from '../Text/AppTexts';
 
 const { width, height } = Dimensions.get('window');
-const ProductItem = ( props ) => {
+const ProductItem = (props) => {
     const { item, navigate } = props;
 
     return (
-        <Pressable style={styles.constainer} onPress={()=>navigate('ProductDetailScreen', {productID : item._id})} >
-            <FastImage source={{uri: item.images[0]}} style={styles.image} resizeMode={FastImage.resizeMode.cover} />
+        <Pressable style={styles.constainer} onPress={() => navigate('ProductDetailScreen', { productID: item._id })} >
+            <FastImage source={{ uri: item.images[0] }} style={styles.image} resizeMode={FastImage.resizeMode.cover} />
             <View style={styles.content}>
                 <ProductName>{item.name}</ProductName>
                 {(item.sellPrice < item.originPrice) && <OriginPrice>{item.originPrice}</OriginPrice>}
                 <SellPrice>{item.sellPrice}</SellPrice>
             </View>
+            {(item.sellPrice < item.originPrice) && (
+                <ImageBackground style={styles.saleImage} source={require('../../assets/images/sale.png')}>
+                    <SalePercent>-{Math.round((item.originPrice - item.sellPrice) * 100 / item.originPrice)}%</SalePercent>
+                </ImageBackground>
+            )}
         </Pressable>
     )
 }
@@ -32,7 +37,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         borderRadius: 5,
         overflow: 'hidden',
-        maxWidth: width/2-7
+        maxWidth: width / 2 - 7
     },
     image: {
         width: '100%',
@@ -41,6 +46,16 @@ const styles = StyleSheet.create({
     },
     content: {
         padding: 10
+    },
+    saleImage: {
+        width: 55,
+        height: 23,
+        position: 'absolute',
+        top: 10,
+        left: -9,
+        resizeMode: 'center',
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })
 

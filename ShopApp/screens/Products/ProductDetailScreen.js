@@ -24,18 +24,22 @@ import { useIsFocused } from '@react-navigation/native';
 import { productUrl } from '../../api/productAPI';
 import { MainColor, RED } from '../../constants/colors';
 import TextFieldForProduct from '../../components/Text/TextFieldForProduct';
+import LoadingView from '../../components/LoadingView';
+import ProductDetailHeader from '../../components/Header/ProductDetailHeader';
 
 const { width, height } = Dimensions.get('screen');
 
 const ProductDetailScreen = (props) => {
     const { route: { params: { productID } } } = props;
-    const { cActions, cart } = props;
+    const { cActions, cart, user: {user} } = props;
     const [product, setProduct] = useState();
     const [rating, setRating] = useState(0);
-    const [favorite, setFavorite] = useState(false)
+    const [favorite, setFavorite] = useState(false);
+    const [visibleHeader, setVisibleHeader] = useState(false);
+    const [pressCount, setPressCount] = useState(0)
     useEffect(() => {
         fetchData()
-    }, [])
+    }, []);
 
     const fetchData = () => {
         fetch(`${productUrl}getById?id=${productID}`)
@@ -47,17 +51,33 @@ const ProductDetailScreen = (props) => {
             })
             .catch(e => console.log(e))
     }
-    console.log(cart)
+    
     const addToCart = () => {
-        cActions.addToCart(product?._id);
+        cActions.addToCart({
+            productID: product?._id,
+            uid: user._id
+        });
+        setPressCount(pressCount+1);
+    }
+
+    const getScroll = (event) => {
+        const {nativeEvent: { contentOffset: {y} }} = event;
+        if(y > 50 && !visibleHeader){
+            setVisibleHeader(true);
+        }
+        if(y < 50 && visibleHeader){
+            setVisibleHeader(false);
+        }
     }
 
     return (
         <>
             {product && (
                 <View style={styles.container}>
+                    <ProductDetailHeader title={product?.name} visible={visibleHeader} pressCount={pressCount}  />
                     <ScrollView style={styles.container}
                         showsVerticalScrollIndicator={false}
+                        onScroll={getScroll}
                     >
                         <StatusBar translucent={true} backgroundColor='transparent' />
                         <SliderBox
@@ -130,6 +150,7 @@ const ProductDetailScreen = (props) => {
                     </View>
                 </View>
             )}
+            {!product && <LoadingView />}
         </>
     )
 }

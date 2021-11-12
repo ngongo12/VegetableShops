@@ -1,4 +1,5 @@
 import { fork, all, takeLatest, take } from 'redux-saga/effects';
+import cartActionType from '../constants/cartActionType';
 import userActionType from '../constants/userActionType';
 import userSaga from './userSaga';
 

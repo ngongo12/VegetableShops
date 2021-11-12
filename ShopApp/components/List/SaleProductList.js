@@ -8,20 +8,25 @@ import {
     ImageBackground
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import userActions from '../../actions/userActions';
+
 import { productUrl } from '../../api/productAPI';
 import LinearGradient from 'react-native-linear-gradient';
 import { Title, PressableText, DefautText, SellPrice, OriginPrice, SalePercent } from '../Text/AppTexts';
 
 const SaleProductList = (props) => {
+    const { user:{user} } = props;
     const [products, setProducts] = useState(null);
-
+    console.log(user)
     useEffect(() => {
         fetchData();
         //console.log(products)
     }, []);
 
     const fetchData = () => {
-        fetch(`${productUrl}getTopProductByCategory?id=6184f4bc4afb65fb8ce84338`)
+        fetch(`${productUrl}getTopProductByCategory?id=6184f4bc4afb65fb8ce84338&uid=${user?._id}`)
             .then(res => res.json())
             .then(res => {
                 if (res.products) {
@@ -30,28 +35,31 @@ const SaleProductList = (props) => {
             })
             .catch(e => console.log(e));
     }
-    
+
     return (
-        <LinearGradient
-            locations={[0, 1.0]}
-            start={{ x: 1.0, y: 1.0 }}
-            end={{ x: 0, y: 1.0 }}
-            colors={['#EB484A', '#FFA940']}
-            style={styles.container}
-        >
-                <View style={styles.title}>
-                    <Title style={[{ flex: 1 }, styles.colorWhite]}>Siêu Sale</Title>
-                    <PressableText style={[{ padding: 8 }, styles.colorWhite]}>Xem tất cả</PressableText>
-                </View>
-                <FlatList
+        <>
+            {products?.length > 0 && (
+                <LinearGradient
+                    locations={[0, 1.0]}
+                    start={{ x: 1.0, y: 1.0 }}
+                    end={{ x: 0, y: 1.0 }}
+                    colors={['#EB484A', '#FFA940']}
+                    style={styles.container}
+                >
+                    <View style={styles.title}>
+                        <Title style={[{ flex: 1 }, styles.colorWhite]}>Siêu Sale</Title>
+                        <PressableText style={[{ padding: 8 }, styles.colorWhite]}>Xem tất cả</PressableText>
+                    </View>
+                    <FlatList
                         data={products}
                         renderItem={ItemView}
                         nestedScrollEnabled={true}
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}
                     />
-        </LinearGradient>
-
+                </LinearGradient>
+            )}
+        </>
     )
 }
 
@@ -62,12 +70,12 @@ const ItemView = (props) => {
         <Pressable style={styles.itemWrapper}>
             <FastImage source={{ uri: item.images[0] }} style={styles.image} />
             <View style={styles.itemContent}>
-                <DefautText>{ item?.name }Tên sản phẩm</DefautText>
+                <DefautText>{item?.name}Tên sản phẩm</DefautText>
                 <OriginPrice>50000</OriginPrice>
                 <SellPrice>15000</SellPrice>
             </View>
             <ImageBackground style={styles.saleImage} source={require('../../assets/images/sale.png')}>
-                <SalePercent>-{Math.round((50-15)*100/50)}%</SalePercent>
+                <SalePercent>-{Math.round((50 - 15) * 100 / 50)}%</SalePercent>
             </ImageBackground>
         </Pressable>
     )
@@ -93,7 +101,7 @@ const styles = StyleSheet.create({
     colorWhite: {
         color: '#fff'
     },
-    itemWrapper:{
+    itemWrapper: {
         flex: 1,
         borderRadius: 5,
         margin: 5,
@@ -116,4 +124,16 @@ const styles = StyleSheet.create({
     }
 })
 
-export default SaleProductList;
+const mapStateToProps = (state) => {
+    return {
+        user: state.userReducer,
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        actions: bindActionCreators(userActions, dispatch),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SaleProductList);

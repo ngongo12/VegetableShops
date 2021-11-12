@@ -8,7 +8,8 @@ import {
 import {
     MainColor
 } from '../../constants/colors';
-import { CartIcon, ChatBubleIcon } from '../Icon/AppIcons';
+import { ChatBubleIcon } from '../Icon/AppIcons';
+import CartIcon from '../Icon/CartIcon';
 import { Title } from '../Text/AppTexts';
 
 const DefaultHeader = ( props ) => {
@@ -18,7 +19,7 @@ const DefaultHeader = ( props ) => {
             <StatusBar backgroundColor={MainColor} translucent={false} />
             <View style={styles.constainer}>
                 <Title style={styles.text} >{title}</Title>
-                <CartIcon count={10} />
+                <CartIcon />
                 <ChatBubleIcon count={11} />
             </View>
         </View>
@@ -40,4 +41,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default DefaultHeader
+export default DefaultHeader;

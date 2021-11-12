@@ -24,15 +24,16 @@ router.post('/update', async (req, res, next) =>{
 });
 
 router.get('/getWithLimit', async (req, res, next) =>{
-    const products = await productController.getWithLimit(1, 4)
+    const { uid } = req.query;
+    const products = await productController.getWithLimit(uid, 1, 4)
     res.json({
         products
     })
 });
 
 router.get('/getTopProductByCategory', async (req, res, next) =>{
-    const { id } = req.query;
-    const products = await productController.getTopProductByCategory(id);
+    const { id, uid } = req.query;
+    const products = await productController.getTopProductByCategory(id, uid);
     res.json({
         products
     })

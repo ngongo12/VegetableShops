@@ -9,12 +9,22 @@ exports.getById = async (id) => {
     return await productModel.findOne({_id: id});
 }
 
-exports.getWithLimit = async (page, num) => {
+exports.getWithLimit = async (uid, page, num) => {
+    
+    if(uid)
+    {
+        console.log(uid);
+        const products = await productModel
+            .find({owner: { $ne : uid } }, '_id name images sellPrice originPrice owner')
+            .skip((page-1)*num)
+            .limit(num);
+        return products;
+    }
     const products = await productModel
         .find({}, '_id name images sellPrice originPrice')
         .skip((page-1)*num)
         .limit(num);
-    return products
+    return products;
 }
 
 
@@ -25,10 +35,13 @@ exports.update = async (product) => {
     )
 }
 
-exports.getTopProductByCategory = async (id) => {
-    console.log(id);
+exports.getTopProductByCategory = async (id, uid) => {
+    console.log(uid);
     const products = await productModel
-        .find({categoryId: id}, '_id images')
+        .find({
+            categoryId: id,
+            owner: { $ne: uid }
+        }, '_id images')
         .limit(10);
     return products
 }

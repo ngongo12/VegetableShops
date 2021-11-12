@@ -8,7 +8,8 @@ import {
 import {
     MainColor
 } from '../../constants/colors';
-import { CartIcon, ChatBubleIcon } from '../Icon/AppIcons';
+import { ChatBubleIcon } from '../Icon/AppIcons';
+import CartIcon from '../Icon/CartIcon';
 import SearchBar from './SearchBar';
 
 const HomeHeader = ( props ) => {
@@ -17,7 +18,7 @@ const HomeHeader = ( props ) => {
             <StatusBar backgroundColor={MainColor} translucent={false} />
             <View style={styles.constainer}>
                 <SearchBar />
-                <CartIcon count={10} />
+                <CartIcon  />
                 <ChatBubleIcon count={11} />
             </View>
         </View>

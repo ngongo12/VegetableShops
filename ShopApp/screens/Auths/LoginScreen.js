@@ -40,8 +40,6 @@ const LoginScreen = (props) => {
         }
 
     }
-    console.log(user);
-
     const validate = () => {
         if (phone.trim().length < 10) {
             ToastAndroid.show('Số điện thoại không hợp lệ', ToastAndroid.SHORT);
