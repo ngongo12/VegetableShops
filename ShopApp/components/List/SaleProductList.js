@@ -7,9 +7,10 @@ import {
     Pressable,
     ImageBackground
 } from 'react-native';
-import { productUrl } from '../api/productAPI';
+import FastImage from 'react-native-fast-image';
+import { productUrl } from '../../api/productAPI';
 import LinearGradient from 'react-native-linear-gradient';
-import { Title, PressableText, DefautText, SellPrice, OriginPrice, SalePercent } from '../components/AppTexts';
+import { Title, PressableText, DefautText, SellPrice, OriginPrice, SalePercent } from '../Text/AppTexts';
 
 const SaleProductList = (props) => {
     const [products, setProducts] = useState(null);
@@ -59,13 +60,13 @@ const ItemView = (props) => {
     //console.log(item)
     return (
         <Pressable style={styles.itemWrapper}>
-            <Image source={{ uri: item.images[0] }} style={styles.image} />
+            <FastImage source={{ uri: item.images[0] }} style={styles.image} />
             <View style={styles.itemContent}>
                 <DefautText>{ item?.name }Tên sản phẩm</DefautText>
                 <OriginPrice>50000</OriginPrice>
                 <SellPrice>15000</SellPrice>
             </View>
-            <ImageBackground style={styles.saleImage} source={require('../assets/images/sale.png')}>
+            <ImageBackground style={styles.saleImage} source={require('../../assets/images/sale.png')}>
                 <SalePercent>-{Math.round((50-15)*100/50)}%</SalePercent>
             </ImageBackground>
         </Pressable>

@@ -35,8 +35,7 @@ export const postEditProfile = function* (user) {
     try {
         console.log('User Saga - editProfile');
         let response = yield call(userAPI.editProfiles, user); //gọi api edit profiles
-        //gọi lưu mật khẩu
-        yield call(saveUserToStore, { phone: user.phone, password: user.password, result: response.result ? response.result : false });
+        
         //console.log('>>>>>>>>user saga ', response);
         yield put({ type: userActionType.USER_SUCCESS, payload: response }) //gọi action edit success
     } catch (e) {
@@ -48,7 +47,9 @@ export const postRegiser = function* (user) {
     try {
         console.log('User Saga - Register');
         let response = yield call(userAPI.register, user); //gọi api register
-        console.log('>>>>>>>>user saga ', response);
+        //gọi lưu mật khẩu
+        yield call(saveUserToStore, { phone: user.phone, password: user.password, result: response.result ? response.result : false });
+        //console.log('>>>>>>>>user saga ', response);
         if (response) {
             yield put({ type: userActionType.USER_SUCCESS, payload: response }); //gọi action register success
         }

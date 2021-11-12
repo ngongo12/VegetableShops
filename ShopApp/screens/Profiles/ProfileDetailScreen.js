@@ -9,10 +9,10 @@ import {
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import ImageCropPicker from 'react-native-image-crop-picker';
-import { Title } from '../../components/AppTexts';
+import { Title } from '../../components/Text/AppTexts';
 import userActions from '../../actions/userActions';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import ProfileTextView from '../../components/ProfileTextView';
+import ProfileTextView from '../../components/Text/ProfileTextView';
 import { MainColor } from '../../constants/colors';
 import { formatVNDate } from '../../config/format';
 import ModalChooseCamera from '../../components/ModalChooseCamera';

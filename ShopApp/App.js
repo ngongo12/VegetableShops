@@ -19,6 +19,7 @@ import AccountSettingScreen from './screens/AccountSettingScreen';
 import ProfileDetailScreen from './screens/Profiles/ProfileDetailScreen';
 import ProfileEditScreen from './screens/Profiles/ProfileEditScreen';
 import ShopAddProductScreen from './screens/Stores/ShopAddProductScreen';
+import ProductDetailScreen from './screens/Products/ProductDetailScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -59,6 +60,10 @@ const App = () => {
           <Stack.Screen
             name="ShopAddProductScreen"
             component={ShopAddProductScreen}
+          />
+          <Stack.Screen
+            name="ProductDetailScreen"
+            component={ProductDetailScreen}
           />
         </Stack.Navigator>
       </NavigationContainer>

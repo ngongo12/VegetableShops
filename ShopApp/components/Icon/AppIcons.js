@@ -9,7 +9,7 @@ import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {
     MainColor
-} from '../constants/colors';
+} from '../../constants/colors';
 
 export const ScanIcon = ( props ) => {
     const { onPress } = props;

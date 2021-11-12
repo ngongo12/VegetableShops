@@ -6,8 +6,7 @@ import {
     Pressable,
     Text
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import { DARK_GREEN } from '../constants/colors';
+import { DARK_GREEN } from '../../constants/colors';
 
 const StrokeButton = (props) => {
     const { children, style } = props;

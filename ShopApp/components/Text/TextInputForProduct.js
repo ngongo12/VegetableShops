@@ -5,17 +5,14 @@ import {
     Text,
     TextInput
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import { DARK_GREEN } from '../constants/colors';
-import { DefautText } from '../components/AppTexts';
+import { DefautText } from './AppTexts';
 
 const TextInputForProduct = ( props ) => {
-    const {secureTextEntry, name} = props;
-    const [isShowPassword, setIsShowPassword] = useState(false)
+    const { name } = props;
     return (
         <View style={styles.container}>
             <DefautText style={styles.text}>{name}</DefautText>
-            <TextInput {...props} style={styles.input} secureTextEntry={secureTextEntry && !isShowPassword} />
+            <TextInput {...props} style={styles.input} />
         </View>
     )
 }

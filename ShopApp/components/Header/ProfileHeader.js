@@ -8,9 +8,9 @@ import {
 
 import {
     MainColor
-} from '../constants/colors';
-import { CartIcon, LogoutIcon } from './AppIcons';
-import { Title } from './AppTexts';
+} from '../../constants/colors';
+import { CartIcon, LogoutIcon } from '../Icon/AppIcons';
+import { Title } from '../Text/AppTexts';
 
 const ProfileHeader = ( props ) => {
     const { user, onPressLogout} = props;
@@ -20,7 +20,7 @@ const ProfileHeader = ( props ) => {
             <StatusBar backgroundColor={MainColor} translucent={false} />
             <View style={styles.constainer}>
                 <View style={styles.content}>
-                    <Image source={user.avatar ? {uri: user.avatar} : require('../assets/images/default_avatar.png')} style={styles.image} />
+                    <Image source={user.avatar ? {uri: user.avatar} : require('../../assets/images/default_avatar.png')} style={styles.image} />
                     <Title style={styles.text}>{ user && user.fullname ? user.fullname : 'Chưa cập nhật'}</Title>
                 </View>
                 <View style={styles.iconView}>

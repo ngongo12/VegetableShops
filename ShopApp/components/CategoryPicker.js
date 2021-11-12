@@ -4,7 +4,7 @@ import {
     StyleSheet,
 } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
-import { DefautText } from './AppTexts';
+import { DefautText } from './Text/AppTexts';
 import { getAllCategories } from '../api/categoryAPI';
 const CategoryPicker = (props) => {
     const { category, setCategory } = props;

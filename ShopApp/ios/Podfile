@@ -16,6 +16,8 @@ target 'ShopApp' do
 
   pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
 
+  pod 'RNFastImage', :path => '../node_modules/react-native-fast-image'
+
   target 'ShopAppTests' do
     inherit! :complete
     # Pods for testing

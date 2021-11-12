@@ -7,8 +7,8 @@ import {
 
 import {
     MainColor
-} from '../constants/colors';
-import { CartIcon, ChatBubleIcon } from './AppIcons';
+} from '../../constants/colors';
+import { CartIcon, ChatBubleIcon } from '../Icon/AppIcons';
 import SearchBar from './SearchBar';
 
 const HomeHeader = ( props ) => {

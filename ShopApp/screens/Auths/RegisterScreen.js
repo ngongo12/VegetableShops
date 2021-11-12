@@ -12,9 +12,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import userActions from '../../actions/userActions';
 import LinearGradient from 'react-native-linear-gradient';
-import { HeaderText } from '../../components/AppTexts';
-import TextInputLayout from '../../components/TextInputLayout';
-import GradientButton from '../../components/GradientButton';
+import { HeaderText } from '../../components/Text/AppTexts';
+import TextInputLayout from '../../components/Text/TextInputLayout';
+import GradientButton from '../../components/Button/GradientButton';
 import { useIsFocused } from '@react-navigation/native';
 
 const { height } = Dimensions.get('window');

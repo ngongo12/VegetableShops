@@ -10,11 +10,11 @@ import {
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import userActions from '../../actions/userActions';
-import { DefautText, HeaderText, Title } from '../../components/AppTexts';
-import ProfileHeader from '../../components/ProfileHeader';
-import ButtonSetting from '../../components/ButtonSetting';
-import OrderStateIcon from '../../components/OrderStateIcon';
-import NomalButton from '../../components/NomalButton';
+import { DefautText, HeaderText, Title } from '../../components/Text/AppTexts';
+import ProfileHeader from '../../components/Header/ProfileHeader';
+import ButtonSetting from '../../components/Button/ButtonSetting';
+import OrderStateIcon from '../../components/Icon/OrderStateIcon';
+import NomalButton from '../../components/Button/NomalButton';
 import { RED } from '../../constants/colors';
 
 const ProfileScreen = (props) => {

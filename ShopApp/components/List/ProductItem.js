@@ -6,15 +6,16 @@ import {
     Pressable,
     Image,
 } from 'react-native';
-import { SellPrice, ProductName, OriginPrice} from './AppTexts';
+import FastImage from 'react-native-fast-image';
+import { SellPrice, ProductName, OriginPrice} from '../Text/AppTexts';
 
 const { width, height } = Dimensions.get('window');
 const ProductItem = ( props ) => {
-    const { item } = props;
+    const { item, navigate } = props;
 
     return (
-        <Pressable style={styles.constainer} >
-            <Image source={{uri: item.images[0]}} style={styles.image} />
+        <Pressable style={styles.constainer} onPress={()=>navigate('ProductDetailScreen', {productID : item._id})} >
+            <FastImage source={{uri: item.images[0]}} style={styles.image} resizeMode={FastImage.resizeMode.cover} />
             <View style={styles.content}>
                 <ProductName>{item.name}</ProductName>
                 {(item.sellPrice < item.originPrice) && <OriginPrice>{item.originPrice}</OriginPrice>}

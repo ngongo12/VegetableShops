@@ -6,8 +6,9 @@ import {
     Pressable,
     Image
 } from 'react-native';
-import { productUrl } from '../api/productAPI';
-import { PressableText, Title } from './AppTexts';
+import FastImage from 'react-native-fast-image';
+import { productUrl } from '../../api/productAPI';
+import { PressableText, Title } from '../Text/AppTexts';
 
 const CategoryProductList = (props) => {
     const { category } = props;
@@ -57,7 +58,7 @@ const ItemView = (props) => {
     //console.log(item)
     return (
         <Pressable>
-            <Image source={{ uri: item.images[0] }} style={styles.image} />
+            <FastImage source={{ uri: item.images[0] }} style={styles.image} />
         </Pressable>
     )
 }

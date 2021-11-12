@@ -7,9 +7,9 @@ import {
 
 import {
     MainColor
-} from '../constants/colors';
-import { CartIcon, ChatBubleIcon } from './AppIcons';
-import { Title } from './AppTexts';
+} from '../../constants/colors';
+import { CartIcon, ChatBubleIcon } from '../Icon/AppIcons';
+import { Title } from '../Text/AppTexts';
 
 const DefaultHeader = ( props ) => {
     const { title } = props

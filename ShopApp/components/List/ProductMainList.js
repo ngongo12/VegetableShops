@@ -6,14 +6,15 @@ import {
     ToastAndroid,
     Pressable
 } from 'react-native';
-import { getAllCategories } from '../api/categoryAPI';
-import { productUrl } from '../api/productAPI';
-import { Title } from './AppTexts';
+import { getAllCategories } from '../../api/categoryAPI';
+import { productUrl } from '../../api/productAPI';
+import { Title } from '../Text/AppTexts';
 import ProductItem from './ProductItem';
 import CategoryProductList from './CategoryProductList';
 import SaleProductList from './SaleProductList';
 
 const ProductMainList = (props) => {
+    const { navigate } = props;
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
@@ -34,7 +35,7 @@ const ProductMainList = (props) => {
         <View style={styles.container}>
             <FlatList
                 data={products}
-                renderItem={({ item }) => <ProductItem item={item} />}
+                renderItem={({ item }) => <ProductItem {...{item, navigate}} />}
                 numColumns={2}
                 keyExtractor={(item, index) => index}
                 nestedScrollEnabled={true}

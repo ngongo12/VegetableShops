@@ -5,7 +5,7 @@ import {
     Pressable,
     Text
 } from 'react-native';
-import { MainColor } from '../constants/colors';
+import { MainColor } from '../../constants/colors';
 
 const NomalButton = ( props ) => {
     const  { children, style, color } = props;

@@ -4,8 +4,8 @@ import {
     Pressable
 } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
-import { MainColor } from '../constants/colors';
-import { DefautText } from './AppTexts';
+import { MainColor } from '../../constants/colors';
+import { DefautText } from '../Text/AppTexts';
 
 const ButtonSetting = ( props ) =>{
     const {iconName, name, style, onPress} = props;

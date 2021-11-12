@@ -6,7 +6,7 @@ import {
     TextInput
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { MainColor } from '../constants/colors';
+import { MainColor } from '../../constants/colors';
 import { LargeText } from './AppTexts';
 
 const ProfileTextView = (props) => {

@@ -1,19 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import {
     View,
-    ScrollView,
-    Text,
     StyleSheet
 } from 'react-native'
-import { getAllCategories } from '../api/categoryAPI'
-import CategoryProductList from '../components/CategoryProductList'
-import HomeHeader from '../components/HomeHeader'
-import ProductMainList from '../components/ProductMainList'
-import { MAIN_BACKGROUND } from '../constants/colors'
+import { getAllCategories } from '../api/categoryAPI';
+import HomeHeader from '../components/Header/HomeHeader';
+import ProductMainList from '../components/List/ProductMainList';
+import { MAIN_BACKGROUND } from '../constants/colors';
 
 const HomeScreen = (props) => {
+    const { navigation: { navigate } } = props;
     const [categories, setCategories] = useState();
-
     useEffect(() => {
         fetchCategories();
     }, [])
@@ -26,7 +23,7 @@ const HomeScreen = (props) => {
     return (
         <View style={styles.container}>
             <HomeHeader />
-            <ProductMainList />
+            <ProductMainList { ...{ navigate }} />
 
         </View>
     )

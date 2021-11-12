@@ -12,16 +12,17 @@ import {
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import FastImage from 'react-native-fast-image';
 import { uploadMultiFile } from '../../api/uploadFile';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import userActions from '../../actions/userActions';
-import DefaultHeader from '../../components/DefaultHeader';
+import DefaultHeader from '../../components/Header/DefaultHeader';
 import ModalChooseCamera from '../../components/ModalChooseCamera';
 import { MainColor } from '../../constants/colors';
-import { Title, DefautText } from '../../components/AppTexts';
-import TextInputForProduct from '../../components/TextInputForProduct';
-import NomalButton from '../../components/NomalButton';
+import { Title, DefautText } from '../../components/Text/AppTexts';
+import TextInputForProduct from '../../components/Text/TextInputForProduct';
+import NomalButton from '../../components/Button/NomalButton';
 import CategoryPicker from '../../components/CategoryPicker';
 import { getNew, updateProduct } from '../../api/productAPI';
 
@@ -43,7 +44,7 @@ const ShopAddProductScreen = (props) => {
     const [pUnit, setPUnit] = useState('');
     const [originPrice, setOriginPrice] = useState('');
     const [sellPrice, setSellPrice] = useState('');
-    const [discription, setDiscription] = useState('');
+    const [description, setDescription] = useState('');
     let pId;
     const openGallery = () => {
         //console.log('openGallery');
@@ -111,7 +112,7 @@ const ShopAddProductScreen = (props) => {
                 images,
                 origin: pOrigin,
                 unit: pUnit,
-                discription,
+                description,
                 amount: pAmount,
                 sellPrice,
                 originPrice,
@@ -169,7 +170,7 @@ const ShopAddProductScreen = (props) => {
         >
             <DefaultHeader title='Thêm sản phẩm' />
             <Pressable>
-                <Image source={choosenImage ? { uri: choosenImage } : require('../../assets/images/item_not_found.png')} style={styles.cover} />
+                <FastImage source={choosenImage ? { uri: choosenImage } : require('../../assets/images/item_not_found.png')} style={styles.cover} />
             </Pressable>
             <FlatList
                 data={selectedImages}
@@ -235,8 +236,8 @@ const ShopAddProductScreen = (props) => {
                 />
                 <Title>Mô tả sản phẩm</Title>
                 <TextInput
-                    value={discription}
-                    onChangeText={setDiscription}
+                    value={description}
+                    onChangeText={setDescription}
                     placeholder='Đâu là điểm nổi bật của sản phẩm này?'
                     multiline={true}
                     style={styles.input}
@@ -258,7 +259,7 @@ const SmallImage = (props) => {
     const { item, onPress, deleteItem } = props;
     return (
         <Pressable onPress={onPress}>
-            <Image source={{ uri: item }} style={styles.smallImage} />
+            <FastImage source={{ uri: item }} style={styles.smallImage} />
             <Icon name='delete-outline' size={22} color={MainColor} style={styles.icon} onPress={deleteItem} />
         </Pressable>
     )

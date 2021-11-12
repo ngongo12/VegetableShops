@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { DARK_GREEN } from '../constants/colors';
+import { DARK_GREEN } from '../../constants/colors';
 
 const TextInputLayout = ( props ) => {
     const {secureTextEntry, name} = props;

@@ -7,9 +7,9 @@ import {
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
     MainColor
-} from '../constants/colors';
-import { DefautText } from './AppTexts';
-import { ScanIcon } from '../components/AppIcons';
+} from '../../constants/colors';
+import { DefautText } from '../Text/AppTexts';
+import { ScanIcon } from '../Icon/AppIcons';
 
 const SearchBar = (props) => {
     const { onPress } = props

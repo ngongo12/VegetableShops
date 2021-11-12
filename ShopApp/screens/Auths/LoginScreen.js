@@ -16,10 +16,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import userActions from '../../actions/userActions';
 import LinearGradient from 'react-native-linear-gradient';
-import { DefautText, HeaderText } from '../../components/AppTexts';
-import TextInputLayout from '../../components/TextInputLayout';
-import GradientButton from '../../components/GradientButton';
-import StrokeButton from '../../components/StrokeButton';
+import { DefautText, HeaderText } from '../../components/Text/AppTexts';
+import TextInputLayout from '../../components/Text/TextInputLayout';
+import GradientButton from '../../components/Button/GradientButton';
+import StrokeButton from '../../components/Button/StrokeButton';
 import { getData } from '../../api/asyncStorage';
 
 const { height } = Dimensions.get('window');
@@ -67,7 +67,7 @@ const LoginScreen = (props) => {
                     setPassword(password)
                 }
             });
-    }, [])
+    }, [isFocused])
 
     useEffect(() => {
         //Nếu không phải đang ở screen này thì không thực hiện task ở phía dưới

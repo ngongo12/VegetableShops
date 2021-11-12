@@ -3,8 +3,8 @@ import {
     View,
     StyleSheet,
 } from 'react-native';
-import { Title } from '../components/AppTexts';
-import ButtonSetting from '../components/ButtonSetting';
+import { Title } from '../components/Text/AppTexts';
+import ButtonSetting from '../components/Button/ButtonSetting';
 
 const AccountSettingScreen = (props) => {
     const { navigation: { navigate } } = props;

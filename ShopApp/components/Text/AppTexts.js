@@ -3,7 +3,7 @@ import {
     Text,
     StyleSheet
 } from "react-native";
-import { DARK_GREEN, MainColor, RED } from "../constants/colors";
+import { DARK_GREEN, MainColor, RED } from "../../constants/colors";
 
 const fmNumber = (num) => {
     return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');

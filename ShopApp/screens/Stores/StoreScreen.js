@@ -6,7 +6,7 @@ import {
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import userActions from '../../actions/userActions';
-import DefaultHeader from '../../components/DefaultHeader';
+import DefaultHeader from '../../components/Header/DefaultHeader';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import ShopOrderScreen from './ShopOrderScreen';
 import ShopProductScreen from './ShopProductScreen';

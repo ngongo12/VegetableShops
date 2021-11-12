@@ -6,7 +6,7 @@ import {
     Modal,
     Text,
 } from 'react-native';
-import ButtonSetting from './ButtonSetting';
+import ButtonSetting from './Button/ButtonSetting';
 
 const ModalChooseCamera = (props) => {
     const { dimissModal, onItemPress } = props;
