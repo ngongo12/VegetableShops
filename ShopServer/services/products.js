@@ -27,6 +27,24 @@ exports.getWithLimit = async (uid, page, num) => {
     return products;
 }
 
+exports.getMyProductsWithLimit = async (uid, page, num) => {
+    
+    if(uid)
+    {
+        console.log(uid);
+        const products = await productModel
+            .find({owner: uid } , '_id name images sellPrice originPrice owner')
+            .skip((page-1)*num)
+            .limit(num);
+        return products;
+    }
+    const products = await productModel
+        .find({}, '_id name images sellPrice originPrice')
+        .skip((page-1)*num)
+        .limit(num);
+    return products;
+}
+
 
 exports.update = async (product) => {
     return await productModel.updateOne(

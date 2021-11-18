@@ -25,7 +25,15 @@ router.post('/update', async (req, res, next) =>{
 
 router.get('/getWithLimit', async (req, res, next) =>{
     const { uid } = req.query;
-    const products = await productController.getWithLimit(uid, 1, 4)
+    const products = await productController.getWithLimit(uid, 1, 4);
+    res.json({
+        products
+    })
+});
+
+router.get('/getMyProductsWithLimit', async (req, res, next) =>{
+    const { uid } = req.query;
+    const products = await productController.getMyProductsWithLimit(uid, 1, 4);
     res.json({
         products
     })

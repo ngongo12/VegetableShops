@@ -2,15 +2,6 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider } from 'react-redux';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
 import redux from './config/redux';
 import MainScreen from './screens/MainScreen';
 import LoginScreen from './screens/Auths/LoginScreen';
@@ -20,6 +11,7 @@ import ProfileDetailScreen from './screens/Profiles/ProfileDetailScreen';
 import ProfileEditScreen from './screens/Profiles/ProfileEditScreen';
 import ShopAddProductScreen from './screens/Stores/ShopAddProductScreen';
 import ProductDetailScreen from './screens/Products/ProductDetailScreen';
+import ShopEditProductScreen from './screens/Stores/ShopEditProductScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -64,6 +56,10 @@ const App = () => {
           <Stack.Screen
             name="ProductDetailScreen"
             component={ProductDetailScreen}
+          />
+          <Stack.Screen
+            name="ShopEditProductScreen"
+            component={ShopEditProductScreen}
           />
         </Stack.Navigator>
       </NavigationContainer>

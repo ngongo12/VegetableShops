@@ -31,6 +31,21 @@ export const editProfiles = ( user ) =>{
     .catch(e => console.log(e));
 }
 
+export const addFavorite = ( productId, user) => {
+    let favorites;
+    if(user?.favorites){
+        favorites.push(productId);
+    }
+    else{
+        favorites = [productId];
+    }
+
+    return editProfiles({
+        _id: user._id,
+        favorites
+    })
+}
+
 export const register = ( user ) => {
     const registerUrl = `${apiURL}users/register`;
     return fetch(registerUrl, {

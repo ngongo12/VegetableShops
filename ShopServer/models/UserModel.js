@@ -15,7 +15,9 @@ const userSchema = new Schema({
     dob: { type: Date },
     lastUpdate: { type: Date },
     gender: { type: String },
-    email: { type: String }
+    email: { type: String },
+    favorites: { type: Array },
+    seenProducts: { type: Array }
 })
 
 module.exports = mongoose.model('user', userSchema);

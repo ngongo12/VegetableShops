@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import {
     View,
-    ScrollView,
+    FlatList,
     StyleSheet,
     Pressable
 } from 'react-native';
@@ -10,13 +10,41 @@ import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import userActions from '../../actions/userActions';
 import { MainColor } from '../../constants/colors';
+import { productUrl } from '../../api/productAPI';
+import ProductItem from '../../components/List/MyProductItem';
 
 const ShopProductScreen = (props) => {
-    const { navigation: { navigate } } = props;
-    //console.log(navigate)
+    const {
+        navigation: { navigate },
+        user: { user }
+    } = props;
+
+    const [products, setProducts] = useState();
+
+    useEffect(() => {
+        fetchMyProduct();
+    }, [])
+
+    const fetchMyProduct = () => {
+        fetch(`${productUrl}getMyProductsWithLimit?uid=${user._id}`)
+            .then(res => res.json())
+            .then(res => setProducts(res?.products))
+            .catch(e => console.log(e));
+    }
+    //console.log(products);
     return (
         <View style={styles.container}>
-            <Pressable style={styles.btnAdd} onPress={()=>navigate('ShopAddProductScreen')}>
+            {products && (
+                <FlatList
+                    data={products}
+                    renderItem={({ item }) => <ProductItem {...{ item, navigate }} />}
+                    numColumns={2}
+                    keyExtractor={(item, index) => index}
+                    nestedScrollEnabled={true}
+                    showsVerticalScrollIndicator={false}
+                />
+            )}
+            <Pressable style={styles.btnAdd} onPress={() => navigate('ShopAddProductScreen')}>
                 <Icon name='add-business' size={32} color='#fff' />
             </Pressable>
         </View>

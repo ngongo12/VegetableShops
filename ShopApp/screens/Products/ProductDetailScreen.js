@@ -30,15 +30,30 @@ const { width, height } = Dimensions.get('screen');
 
 const ProductDetailScreen = (props) => {
     const { route: { params: { productID } } } = props;
-    const { cActions, cart, user: {user} } = props;
+    const { actions, cActions, cart, user: { user } } = props;
+    const { favorites, seenProducts } = user;
     const [product, setProduct] = useState();
     const [rating, setRating] = useState(0);
     const [favorite, setFavorite] = useState(false);
     const [visibleHeader, setVisibleHeader] = useState(false);
-    const [pressCount, setPressCount] = useState(0)
+    const [pressCount, setPressCount] = useState(0);
+    const [enableFavorite, setEnableFavorite] = useState(true);
     useEffect(() => {
-        fetchData()
+        fetchData();
+        changeSeenProducts();
     }, []);
+
+    useEffect(() => {
+        if (product?._id) {
+            if (favorites?.indexOf(product._id) >= 0) {
+                setFavorite(true);
+            }
+            else{
+                setFavorite(false);
+            }
+            setEnableFavorite(true);
+        }
+    }, [user, product])
 
     const fetchData = () => {
         fetch(`${productUrl}getById?id=${productID}`)
@@ -46,25 +61,78 @@ const ProductDetailScreen = (props) => {
             .then(res => {
                 if (res.product) {
                     setProduct(res.product);
+                    if (favorites?.indexOf(res.product._id) >= 0) {
+                        setFavorite(true);
+                    }
                 }
             })
             .catch(e => console.log(e))
     }
-    
+
+    //console.log('Product Details', actions)
+    const addFavorite = () => {
+        let temp = favorites;
+        temp.push(product._id);
+        actions.actionEditProfile({
+            user: {
+                _id: user._id,
+                favorites: temp
+            }
+        })
+    }
+
+    const removeFavorite = () => {
+        let temp = favorites;
+        temp = temp.filter(e => e !== product._id);
+        actions.actionEditProfile({
+            user: {
+                _id: user._id,
+                favorites: temp
+            }
+        })
+    }
+
+    const changeFavoriteState = () => {
+        setEnableFavorite(false);
+        if (favorite) {
+            //Đang thích
+            removeFavorite();
+        } else {
+            addFavorite();
+        }
+    }
+
+    const changeSeenProducts = () => {
+        if(seenProducts.indexOf(productID) === 0) return; // Không có thay đổi dữ liệu gì nên out
+
+        let temp = seenProducts;
+        //Xóa productId trong list seen cũ nếu có
+        temp = temp.filter(e => e !== productID);
+        //Thêm mới productId vào đầu seen list mới
+        temp = [productID, ...temp];
+        //Lưu vào database
+        actions.actionEditProfile({
+            user: {
+                _id: user._id,
+                seenProducts: temp
+            }
+        })
+    }
+
     const addToCart = () => {
         cActions.addToCart({
             productID: product?._id,
             uid: user._id
         });
-        setPressCount(pressCount+1);
+        setPressCount(pressCount + 1);
     }
 
     const getScroll = (event) => {
-        const {nativeEvent: { contentOffset: {y} }} = event;
-        if(y > 50 && !visibleHeader){
+        const { nativeEvent: { contentOffset: { y } } } = event;
+        if (y > 50 && !visibleHeader) {
             setVisibleHeader(true);
         }
-        if(y < 50 && visibleHeader){
+        if (y < 50 && visibleHeader) {
             setVisibleHeader(false);
         }
     }
@@ -73,7 +141,7 @@ const ProductDetailScreen = (props) => {
         <>
             {product && (
                 <View style={styles.container}>
-                    <ProductDetailHeader title={product?.name} visible={visibleHeader} pressCount={pressCount}  />
+                    <ProductDetailHeader title={product?.name} visible={visibleHeader} pressCount={pressCount} />
                     <ScrollView style={styles.container}
                         showsVerticalScrollIndicator={false}
                         onScroll={getScroll}
@@ -84,7 +152,7 @@ const ProductDetailScreen = (props) => {
                             sliderBoxHeight={width * 3 / 4}
                             autoplay={true}
                             circleLoop={true}
-                            resizeMode = 'center'
+                            resizeMode='center'
                         />
                         <View style={styles.content}>
                             <Title>{product?.name}</Title>
@@ -106,7 +174,8 @@ const ProductDetailScreen = (props) => {
                                     name={favorite ? 'heart' : 'hearto'}
                                     color={favorite ? RED : 'silver'}
                                     size={24} style={styles.icon}
-                                    onPress={() => setFavorite(!favorite)} />
+                                    disabled={!enableFavorite}
+                                    onPress={changeFavoriteState} />
                                 <Icon name='sharealt' color='#333' size={24} style={styles.icon} />
                             </View>
                             <SellPrice>{product?.sellPrice}</SellPrice>
@@ -131,9 +200,9 @@ const ProductDetailScreen = (props) => {
                     <View style={styles.buttonView}>
                         <Pressable style={[styles.button, styles.buttonVerticle]}>
                             <MCIcon name='chat-processing-outline' color={MainColor} size={26} />
-                            <DefautText style={{fontSize: 12}}>Hỏi giá</DefautText>
+                            <DefautText style={{ fontSize: 12 }}>Hỏi giá</DefautText>
                         </Pressable>
-                        <View 
+                        <View
                             style={{
                                 backgroundColor: MainColor,
                                 height: '100%',
@@ -142,10 +211,10 @@ const ProductDetailScreen = (props) => {
                         />
                         <Pressable onPress={addToCart} style={[styles.button, styles.buttonVerticle]}>
                             <MCIcon name='cart-arrow-down' color={MainColor} size={26} />
-                            <DefautText style={{fontSize: 12}}>Giỏ hàng</DefautText>
+                            <DefautText style={{ fontSize: 12 }}>Giỏ hàng</DefautText>
                         </Pressable>
                         <Pressable style={[styles.button, styles.buttonBuy]}>
-                            <DefautText style={{fontSize: 13, color: '#fff'}} >Mua ngay</DefautText>
+                            <DefautText style={{ fontSize: 13, color: '#fff' }} >Mua ngay</DefautText>
                         </Pressable>
                     </View>
                 </View>
@@ -202,7 +271,7 @@ const styles = StyleSheet.create({
     textfield: {
         marginTop: 10
     },
-    buttonView:{
+    buttonView: {
         flexDirection: 'row',
         backgroundColor: '#fff'
     },

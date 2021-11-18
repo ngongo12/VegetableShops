@@ -17,7 +17,7 @@ export const postLoginAction = function* (phone, password) {
         //     `User Saga - postLoginAction: phone: ${phone} - password: ${password}`,
         // );
         let response = yield call(userAPI.login, phone, password); //gọi Api login
-        yield call(saveUserToStore, { phone, password, result: response.result ? response.result : false });
+        yield call(saveUserToStore, { phone, password, result: response?.result ? response?.result : false });
         //console.log('>>>>>>>>>>>>>>>User saga response login: ', response);
         if (response) {
             yield put({ type: userActionType.USER_SUCCESS, payload: response }); //gọi action login success

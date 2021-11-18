@@ -34,6 +34,10 @@ exports.getWithLimit = async (uid, page, num) => {
     return await productService.getWithLimit(uid, page, num);
 }
 
+exports.getMyProductsWithLimit = async (uid, page, num) => {
+    return await productService.getMyProductsWithLimit(uid, page, num);
+}
+
 exports.getTopProductByCategory = async (id, uid) => {
     return await productService.getTopProductByCategory(id, uid);
 }

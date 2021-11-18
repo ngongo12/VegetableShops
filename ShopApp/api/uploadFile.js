@@ -1,5 +1,5 @@
 import { storage } from '../config/firebase';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 
 export const uploadFile = async (filePath, folder, fileName) => {
     const arr = filePath.split('/');
@@ -47,7 +47,32 @@ export const uploadMultiFile = async (filePaths, folder) =>{
     return urls;
 }
 
+export const deleteMultiFile = async (urls) => {
+    let deleteFails = [];
+    for(const url of urls){
+        const result = await deleteFile(url);
+        //Xóa thành công thì result = false thất bại trả về url
+        if(result){
+            deleteFails.push(result);
+        }
+    }
+
+    return deleteFails;
+}
+
+export const deleteFile = async ( url ) => {
+    const fileRef = ref(storage, url);
+    let success = true;
+    deleteObject(fileRef)
+        .then(res => res)
+        .catch(e => {
+            success = false;
+        })
+    return success ? false : url; //không thành công trả lại url
+}
+
 export default {
     uploadFile,
-    uploadMultiFile
+    uploadMultiFile,
+    deleteFile
 }

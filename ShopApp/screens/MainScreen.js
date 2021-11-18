@@ -23,7 +23,7 @@ const MainScreen = (props) => {
         .then(res => cActions.load(res))
         .catch(e => console.log(e));
     }, [user])
-    console.log(cart)
+    //console.log(cart)
     return(
         <Tab.Navigator
             screenOptions={({route}) => ({
