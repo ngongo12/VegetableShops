@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider } from 'react-redux';
 import redux from './config/redux';
+import { navigationRef } from './config/rootNavigation';
 import MainScreen from './screens/MainScreen';
 import LoginScreen from './screens/Auths/LoginScreen';
 import RegisterScreen from './screens/Auths/RegisterScreen';
@@ -19,7 +20,7 @@ const App = () => {
 
   return (
     <Provider store={ redux.store }>
-      <NavigationContainer>
+      <NavigationContainer ref={navigationRef}>
         <Stack.Navigator
           screenOptions={{ headerShown: false }}
           backBehavior='none'

@@ -16,6 +16,7 @@ import { HeaderText } from '../../components/Text/AppTexts';
 import TextInputLayout from '../../components/Text/TextInputLayout';
 import GradientButton from '../../components/Button/GradientButton';
 import { useIsFocused } from '@react-navigation/native';
+import LoadingModal from '../../components/LoadingModal';
 
 const { height } = Dimensions.get('window');
 
@@ -120,6 +121,14 @@ const Register = (props) => {
                     />
                     <GradientButton onPress={onRegister} >Tạo Tài Khoản</GradientButton>
                 </Animated.View>
+                <LoadingModal
+                    visible={user.isLoading}
+                    style={styles.modal}
+                    animationType='fade'
+                    transparent={true}
+                    statusBarTranslucent={true}
+                    message= 'Đăng đăng nhập. Xin chờ'
+                />
             </LinearGradient>
 
         </>

@@ -6,9 +6,6 @@ import {
     Text,
     Dimensions,
     Animated,
-    ActivityIndicator,
-    Modal,
-    View,
     ToastAndroid
 } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
@@ -16,11 +13,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import userActions from '../../actions/userActions';
 import LinearGradient from 'react-native-linear-gradient';
-import { DefautText, HeaderText } from '../../components/Text/AppTexts';
+import { HeaderText } from '../../components/Text/AppTexts';
 import TextInputLayout from '../../components/Text/TextInputLayout';
 import GradientButton from '../../components/Button/GradientButton';
 import StrokeButton from '../../components/Button/StrokeButton';
 import { getData } from '../../api/asyncStorage';
+import LoadingModal from '../../components/LoadingModal';
 
 const { height } = Dimensions.get('window');
 
@@ -127,18 +125,14 @@ const LoginScreen = (props) => {
                     <StrokeButton onPress={() => navigate('RegisterScreen')} disabled={user.isLoading} >Đăng Ký</StrokeButton>
 
                 </Animated.View>
-                <Modal
+                <LoadingModal
                     visible={user.isLoading}
                     style={styles.modal}
                     animationType='fade'
                     transparent={true}
                     statusBarTranslucent={true}
-                >
-                    <View style={styles.modalView}>
-                        <ActivityIndicator size='large' color='#fff' style={styles.activity_indicator} />
-                        <HeaderText style={{ color: '#fff', margin: 10 }}>Đang đăng nhập xin chờ</HeaderText>
-                    </View>
-                </Modal>
+                    message= 'Đăng đăng nhập. Xin chờ'
+                />
             </LinearGradient>
 
         </>
@@ -184,15 +178,7 @@ const styles = StyleSheet.create({
         textAlign: 'right',
         paddingRight: 16
     },
-    modal: {
-        flex: 1,
-    },
-    modalView: {
-        flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.7)',
-        justifyContent: 'center',
-        alignItems: 'center'
-    }
+    
 })
 
 //export default LoginScreen

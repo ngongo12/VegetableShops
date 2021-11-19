@@ -9,12 +9,25 @@ const cartReducer = (state = [], {type, payload}) => {
     switch(type){
         case actions.ADD_CART:{
             const { uid, productID } = payload;
-            if(state.length == 0) {
-                storeData(uid, [productID]);
-                return [productID]
+            if(!state || state.length == 0) {
+                //Trường hợp cart chưa có sản phẩm nào
+                storeData(uid, [{ productID, amount: 1 }]);
+                return [{ productID, amount: 1 }]
             };
-            if(temp.indexOf(productID) < 0){
-                temp.push(productID)
+            let notExits = true;
+            temp = temp.map(e => {
+                if(e.productID === productID){
+                    notExits = false;
+                    return {
+                        productID,
+                        amount: e.amount + 1
+                    }
+                }
+            })
+            //console.log('notExist', notExits);
+            if(notExits){
+                //Nếu chưa có trong cart thêm
+                temp.push({ productID, amount: 1 });
             }
             storeData(uid, temp);
             return temp;

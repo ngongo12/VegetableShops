@@ -15,15 +15,6 @@ import { MAIN_BACKGROUND } from '../constants/colors';
 
 const HomeScreen = (props) => {
     const { navigation: { navigate }, user: { user } } = props;
-    const [categories, setCategories] = useState();
-    useEffect(() => {
-        fetchCategories();
-    }, [])
-
-    const fetchCategories = async () => {
-        const temp = await getAllCategories();
-        setCategories(temp);
-    }
 
     return (
         <View style={styles.container}>

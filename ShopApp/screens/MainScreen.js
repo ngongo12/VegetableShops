@@ -12,13 +12,14 @@ import HomeScreen from './HomeScreen';
 import NotificationScreen from './NotificationScreen';
 import StoreScreen from './Stores/StoreScreen';
 import ProfileScreen from './Profiles/ProfileScreen';
-import { getData } from '../api/asyncStorage';
+import { getData, clearAllData } from '../api/asyncStorage';
 
 const Tab = createBottomTabNavigator();
 
 const MainScreen = (props) => {
     const { user: { user }, cActions, cart } = props;
     useEffect(() => {
+        //clearAllData();
         getData(user._id)
         .then(res => cActions.load(res))
         .catch(e => console.log(e));

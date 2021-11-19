@@ -13,6 +13,7 @@ import userActions from '../../actions/userActions';
 import FastImage from 'react-native-fast-image';
 import { productUrl } from '../../api/productAPI';
 import { PressableText, Title } from '../Text/AppTexts';
+import { navigate } from '../../config/rootNavigation';
 
 const CategoryProductList = (props) => {
     const { category, user: {user} } = props;
@@ -60,7 +61,7 @@ const ItemView = (props) => {
     const { item } = props;
     //console.log(item)
     return (
-        <Pressable>
+        <Pressable onPress={() => navigate('ProductDetailScreen', { productID: item._id })}>
             <FastImage source={{ uri: item.images[0] }} style={styles.image} />
         </Pressable>
     )

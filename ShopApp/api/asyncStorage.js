@@ -26,6 +26,10 @@ export const getData = async (key) => {
     }
 }
 
+export const clearAllData = () => {
+    AsyncStorage.clear();
+}
+
 export default {
     storeData,
     getData

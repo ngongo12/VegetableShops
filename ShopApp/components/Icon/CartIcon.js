@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     StyleSheet,
     TouchableOpacity,
@@ -17,13 +17,21 @@ import {
 const CartIcon = ( props ) => {
     const { onPress, cart, pressCount } = props;
     const isFocused = useIsFocused();
+    const [numOfProducts, setNumOfProducts] = useState(0);
     useEffect(() => {
-
+        console.log('cart icon ', cart);
+        let temp = 0;
+        if(cart){
+            cart?.forEach(element => {
+                temp += element?.amount;
+            });
+            setNumOfProducts(temp);
+        }
     }, [isFocused, pressCount, cart])
     return (
         <TouchableOpacity style={styles.icon} onPress={onPress}>
             <MCIcon name='shopping-outline' size={24} color={'white'} />
-            {(cart && cart?.length > 0) && <Text style={styles.badge}>{ cart?.length }</Text>}
+            {(numOfProducts > 0) && <Text style={styles.badge}>{ numOfProducts }</Text>}
         </TouchableOpacity>
     )
 }
