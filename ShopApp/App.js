@@ -13,6 +13,8 @@ import ProfileEditScreen from './screens/Profiles/ProfileEditScreen';
 import ShopAddProductScreen from './screens/Stores/ShopAddProductScreen';
 import ProductDetailScreen from './screens/Products/ProductDetailScreen';
 import ShopEditProductScreen from './screens/Stores/ShopEditProductScreen';
+import CartScreen from './screens/CartScreen';
+import { MainColor } from './constants/colors';
 
 const Stack = createNativeStackNavigator();
 
@@ -61,6 +63,23 @@ const App = () => {
           <Stack.Screen
             name="ShopEditProductScreen"
             component={ShopEditProductScreen}
+          />
+          <Stack.Screen
+            name="CartScreen"
+            component={CartScreen}
+            options={
+              {
+                headerShown:true,
+                headerStyle: {
+                  backgroundColor: MainColor,
+                },
+                headerTitleStyle: {
+                  color: '#fff'
+                },
+                title: 'Giỏ hàng',
+                headerTintColor: '#fff'
+              }
+            }
           />
         </Stack.Navigator>
       </NavigationContainer>

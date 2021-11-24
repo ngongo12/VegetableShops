@@ -7,3 +7,7 @@ export const getAllCategories = async () => {
     .then(res => res)
     .catch(e => null);
 }
+
+export default {
+    getAllCategories
+}

@@ -9,13 +9,15 @@ import { bindActionCreators } from 'redux';
 import userActions from '../../actions/userActions';
 import cartActions from '../../actions/cartActions';
 import { useIsFocused } from '@react-navigation/native';
+import { navigate } from '../../config/rootNavigation';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
     MainColor
 } from '../../constants/colors';
 
+
 const CartIcon = ( props ) => {
-    const { onPress, cart, pressCount } = props;
+    const { cart, pressCount } = props;
     const isFocused = useIsFocused();
     const [numOfProducts, setNumOfProducts] = useState(0);
     useEffect(() => {
@@ -29,7 +31,7 @@ const CartIcon = ( props ) => {
         }
     }, [isFocused, pressCount, cart])
     return (
-        <TouchableOpacity style={styles.icon} onPress={onPress}>
+        <TouchableOpacity style={styles.icon} onPress={()=>navigate('CartScreen')}>
             <MCIcon name='shopping-outline' size={24} color={'white'} />
             {(numOfProducts > 0) && <Text style={styles.badge}>{ numOfProducts }</Text>}
         </TouchableOpacity>

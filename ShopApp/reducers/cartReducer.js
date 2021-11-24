@@ -23,11 +23,15 @@ const cartReducer = (state = [], {type, payload}) => {
                         amount: e.amount + 1
                     }
                 }
+                else{
+                    return e;
+                }
             })
             //console.log('notExist', notExits);
             if(notExits){
                 //Nếu chưa có trong cart thêm
-                temp.push({ productID, amount: 1 });
+                //console.log('Not exits');
+                temp.push({productID, amount: 1});
             }
             storeData(uid, temp);
             return temp;

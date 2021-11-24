@@ -6,13 +6,12 @@ import {
     ToastAndroid,
     Pressable
 } from 'react-native';
-import { SliderBox } from "react-native-image-slider-box";
-import { getAllCategories } from '../../api/categoryAPI';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import categoryActions from '../../actions/categoryActions';
 import { productUrl } from '../../api/productAPI';
-import { Title } from '../Text/AppTexts';
 import ProductItem from './ProductItem';
-import CategoryProductList from './CategoryProductList';
-import SaleProductList from './SaleProductList';
+import MainListHeader from '../Header/MainListHeader';
 
 const ProductMainList = (props) => {
     const { navigate, user } = props;
@@ -46,45 +45,6 @@ const ProductMainList = (props) => {
     )
 }
 
-const MainListHeader = (props) => {
-    const [categories, setCategories] = useState();
-    useEffect(() => {
-        fetchCategories();
-    }, [])
-
-    const fetchCategories = async () => {
-        const temp = await getAllCategories();
-        setCategories(temp);
-    }
-
-    return (
-        <View>
-            <SliderBox
-                images={[
-                    require('../../assets/images/bn1.png'),
-                    require('../../assets/images/bn2.png'),
-                    require('../../assets/images/bn3.png'),
-                    require('../../assets/images/bn4.png')
-                ]}
-                sliderBoxHeight={150}
-                autoplay={true}
-                circleLoop={true}
-                resizeMode = 'cover'
-            />
-            <SaleProductList />
-            {
-                categories && categories.map(e => {
-                    return (
-                        <CategoryProductList category={e} key={e._id} />
-                    )
-                })
-            }
-            <Title style={styles.title}>GỢI Ý HÔM NAY</Title>
-        </View>
-    )
-}
-
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -97,4 +57,16 @@ const styles = StyleSheet.create({
     }
 })
 
-export default ProductMainList
+const mapStateToProps = (state) => {
+    return {
+        categories: state.categoryReducer
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        categoryActions: bindActionCreators(categoryActions, dispatch),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductMainList);

@@ -13,7 +13,7 @@ exports.getWithLimit = async (uid, page, num) => {
     
     if(uid)
     {
-        console.log(uid);
+        //console.log(uid);
         const products = await productModel
             .find({owner: { $ne : uid } }, '_id name images sellPrice originPrice owner')
             .skip((page-1)*num)
@@ -31,7 +31,7 @@ exports.getMyProductsWithLimit = async (uid, page, num) => {
     
     if(uid)
     {
-        console.log(uid);
+        //console.log(uid);
         const products = await productModel
             .find({owner: uid } , '_id name images sellPrice originPrice owner')
             .skip((page-1)*num)
@@ -54,7 +54,7 @@ exports.update = async (product) => {
 }
 
 exports.getTopProductByCategory = async (id, uid) => {
-    console.log(uid);
+    //console.log(uid);
     const products = await productModel
         .find({
             categoryId: id,
@@ -62,4 +62,14 @@ exports.getTopProductByCategory = async (id, uid) => {
         }, '_id images')
         .limit(10);
     return products
+}
+
+exports.getCartProducts = async (cart) => {
+    const products = await productModel
+        .find({
+            _id: { $in: cart }
+        },
+            '_id name images sellPrice originPrice owner'
+        )
+    return products;
 }

@@ -3,19 +3,21 @@ import {
     View,
     StyleSheet,
 } from 'react-native';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import categoryActions from '../actions/categoryActions';
 import {Picker} from '@react-native-picker/picker';
 import { DefautText } from './Text/AppTexts';
-import { getAllCategories } from '../api/categoryAPI';
+
 const CategoryPicker = (props) => {
-    const { category, setCategory } = props;
-    const [categories, setCategories] = useState();
-    useEffect(() => {
-        async function fetchAPI(){
-            const temp = await getAllCategories();
-            setCategories(temp);
-        }
-        fetchAPI();
-    }, [])
+    const { category, setCategory, categories } = props;
+    // useEffect(() => {
+    //     async function fetchAPI(){
+    //         const temp = await getAllCategories();
+    //         setCategories(temp);
+    //     }
+    //     fetchAPI();
+    // }, [])
     //console.log('categories ', categories);
     return (
         <View style={styles.container}>
@@ -58,4 +60,16 @@ const styles = StyleSheet.create({
     }
 })
 
-export default CategoryPicker;
+const mapStateToProps = (state) => {
+    return {
+        categories: state.categoryReducer
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        categoryActions: bindActionCreators(categoryActions, dispatch),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryPicker);

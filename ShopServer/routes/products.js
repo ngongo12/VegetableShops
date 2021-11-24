@@ -25,7 +25,7 @@ router.post('/update', async (req, res, next) =>{
 
 router.get('/getWithLimit', async (req, res, next) =>{
     const { uid } = req.query;
-    const products = await productController.getWithLimit(uid, 1, 4);
+    const products = await productController.getWithLimit(uid, 1, 10);
     res.json({
         products
     })
@@ -33,7 +33,7 @@ router.get('/getWithLimit', async (req, res, next) =>{
 
 router.get('/getMyProductsWithLimit', async (req, res, next) =>{
     const { uid } = req.query;
-    const products = await productController.getMyProductsWithLimit(uid, 1, 4);
+    const products = await productController.getMyProductsWithLimit(uid, 1, 10);
     res.json({
         products
     })
@@ -42,6 +42,14 @@ router.get('/getMyProductsWithLimit', async (req, res, next) =>{
 router.get('/getTopProductByCategory', async (req, res, next) =>{
     const { id, uid } = req.query;
     const products = await productController.getTopProductByCategory(id, uid);
+    res.json({
+        products
+    })
+});
+
+router.post('/getCartProducts', async (req, res, next) =>{
+    const { cart } = req.body;
+    const products = await productController.getCartProducts(cart);
     res.json({
         products
     })

@@ -20,6 +20,7 @@ const MainScreen = (props) => {
     const { user: { user }, cActions, cart } = props;
     useEffect(() => {
         //clearAllData();
+        
         getData(user._id)
         .then(res => cActions.load(res))
         .catch(e => console.log(e));

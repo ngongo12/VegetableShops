@@ -41,3 +41,7 @@ exports.getMyProductsWithLimit = async (uid, page, num) => {
 exports.getTopProductByCategory = async (id, uid) => {
     return await productService.getTopProductByCategory(id, uid);
 }
+
+exports.getCartProducts = async (cart) => {
+    return await productService.getCartProducts(cart);
+}

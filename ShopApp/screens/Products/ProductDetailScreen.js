@@ -30,7 +30,7 @@ const { width, height } = Dimensions.get('screen');
 
 const ProductDetailScreen = (props) => {
     const { route: { params: { productID } } } = props;
-    const { actions, cActions, cart, user: { user } } = props;
+    const { actions, cActions, user: { user }, categories } = props;
     const { favorites, seenProducts } = user;
     const [product, setProduct] = useState();
     const [rating, setRating] = useState(0);
@@ -38,17 +38,27 @@ const ProductDetailScreen = (props) => {
     const [visibleHeader, setVisibleHeader] = useState(false);
     const [pressCount, setPressCount] = useState(0);
     const [enableFavorite, setEnableFavorite] = useState(true);
+    const [category, setCategory] = useState();
     useEffect(() => {
         fetchData();
         changeSeenProducts();
     }, []);
 
     useEffect(() => {
+        if (categories) {
+            const temp = categories.filter(e => e._id == product?.categoryId);
+            if (temp?.length > 0) {
+                setCategory(temp[0]);
+            }
+        }
+    }, [product])
+
+    useEffect(() => {
         if (product?._id) {
             if (favorites?.indexOf(product._id) >= 0) {
                 setFavorite(true);
             }
-            else{
+            else {
                 setFavorite(false);
             }
             setEnableFavorite(true);
@@ -103,7 +113,7 @@ const ProductDetailScreen = (props) => {
     }
 
     const changeSeenProducts = () => {
-        if(seenProducts.indexOf(productID) === 0) return; // Không có thay đổi dữ liệu gì nên out
+        if (seenProducts.indexOf(productID) === 0) return; // Không có thay đổi dữ liệu gì nên out
 
         let temp = seenProducts;
         //Xóa productId trong list seen cũ nếu có
@@ -186,10 +196,10 @@ const ProductDetailScreen = (props) => {
                         </View>
                         <View style={[styles.content, { marginTop: 10 }]}>
                             <Title>Thông tin sản phẩm</Title>
-                            <TextFieldForProduct style={styles.textfield} name='Danh mục'>{product.categoryId}</TextFieldForProduct>
+                            <TextFieldForProduct style={styles.textfield} name='Danh mục'>{category?.name}</TextFieldForProduct>
                             <TextFieldForProduct style={styles.textfield} name='Thương hiệu'>{product.brand}</TextFieldForProduct>
                             <TextFieldForProduct style={styles.textfield} name='Xuất xứ'>{product.origin}</TextFieldForProduct>
-                            <TextFieldForProduct style={styles.textfield} name='Trạng thái'>{product.amount}</TextFieldForProduct>
+                            <TextFieldForProduct style={styles.textfield} name='Trạng thái'>{(product?.amount && product.amount > 0) ? 'Còn hàng' : 'Hết hàng'}</TextFieldForProduct>
                             <TextFieldForProduct style={styles.textfield} name='Đơn vị tính'>{product.unit}</TextFieldForProduct>
                         </View>
                         <View style={[styles.content, { marginTop: 10 }]}>
@@ -199,7 +209,7 @@ const ProductDetailScreen = (props) => {
                     </ScrollView>
                     <View style={styles.buttonView}>
                         <Pressable style={[styles.button, styles.buttonVerticle]}>
-                            <MCIcon name='chat-processing-outline' color={MainColor} size={26} />
+                            <MCIcon name='chat-processing-outline' color={MainColor} size={23} />
                             <DefautText style={{ fontSize: 12 }}>Hỏi giá</DefautText>
                         </Pressable>
                         <View
@@ -210,7 +220,7 @@ const ProductDetailScreen = (props) => {
                             }}
                         />
                         <Pressable onPress={addToCart} style={[styles.button, styles.buttonVerticle]}>
-                            <MCIcon name='cart-arrow-down' color={MainColor} size={26} />
+                            <MCIcon name='cart-arrow-down' color={MainColor} size={23} />
                             <DefautText style={{ fontSize: 12 }}>Giỏ hàng</DefautText>
                         </Pressable>
                         <Pressable style={[styles.button, styles.buttonBuy]}>
@@ -227,7 +237,8 @@ const ProductDetailScreen = (props) => {
 const mapStateToProps = (state) => {
     return {
         user: state.userReducer,
-        cart: state.cartReducer
+        cart: state.cartReducer,
+        categories: state.categoryReducer,
     }
 }
 
@@ -282,7 +293,7 @@ const styles = StyleSheet.create({
     },
     buttonVerticle: {
         flex: 1,
-        backgroundColor: '#fff'
+        backgroundColor: '#D7ECFF'
     },
     buttonBuy: {
         backgroundColor: MainColor,
