@@ -64,10 +64,10 @@ exports.getTopProductByCategory = async (id, uid) => {
     return products
 }
 
-exports.getCartProducts = async (cart) => {
+exports.getProductsInArray = async (arr) => {
     const products = await productModel
         .find({
-            _id: { $in: cart }
+            _id: { $in: arr }
         },
             '_id name images sellPrice originPrice owner'
         )

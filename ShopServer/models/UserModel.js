@@ -17,7 +17,8 @@ const userSchema = new Schema({
     gender: { type: String },
     email: { type: String },
     favorites: { type: Array },
-    seenProducts: { type: Array }
+    seenProducts: { type: Array },
+    shopName: { type: String }
 })
 
 module.exports = mongoose.model('user', userSchema);

@@ -47,9 +47,9 @@ router.get('/getTopProductByCategory', async (req, res, next) =>{
     })
 });
 
-router.post('/getCartProducts', async (req, res, next) =>{
-    const { cart } = req.body;
-    const products = await productController.getCartProducts(cart);
+router.post('/getProductsInArray', async (req, res, next) =>{
+    const { arr } = req.body;
+    const products = await productController.getProductsInArray(arr);
     res.json({
         products
     })

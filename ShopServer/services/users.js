@@ -25,3 +25,7 @@ exports.editProfile = async ( user ) => {
         console.log(e)
     }
 };
+
+exports.getShopName = async ( id ) => {
+    return await userModel.findOne({ _id: id }, 'fullname shopName');
+}

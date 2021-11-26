@@ -42,6 +42,7 @@ const MainListHeader = (props) => {
                 autoplay={true}
                 circleLoop={true}
                 resizeMode = 'cover'
+                
             />
             <SaleProductList />
             {
@@ -61,7 +62,9 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     title: {
-        margin: 11
+        backgroundColor: '#fff',
+        padding: 11,
+        marginTop: 10
     },
     list: {
         padding: 3

@@ -46,6 +46,18 @@ export const addFavorite = ( productId, user) => {
     })
 }
 
+export const getShopName = id => {
+    return fetch(`${apiURL}users/getShopName?id=${id}`)
+        .then(res => res.json())
+        .then(res => {
+            if(res?.shopName){
+                return res?.shopName;
+            }
+            return res?.fullname;
+        })
+        .catch(e => 'undefine');
+}
+
 export const register = ( user ) => {
     const registerUrl = `${apiURL}users/register`;
     return fetch(registerUrl, {
@@ -63,5 +75,7 @@ export const register = ( user ) => {
 export default {
     login,
     editProfiles,
-    register
+    register,
+    getShopName,
+    addFavorite
 };

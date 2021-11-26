@@ -42,6 +42,6 @@ exports.getTopProductByCategory = async (id, uid) => {
     return await productService.getTopProductByCategory(id, uid);
 }
 
-exports.getCartProducts = async (cart) => {
-    return await productService.getCartProducts(cart);
+exports.getProductsInArray = async (arr) => {
+    return await productService.getProductsInArray(arr);
 }

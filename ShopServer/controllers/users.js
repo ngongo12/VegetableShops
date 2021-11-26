@@ -2,7 +2,7 @@ const userService = require('../services/users');
 const bcrypt = require('bcrypt');
 
 exports.editProfile = async (user) => {
-    console.log(user);
+    //console.log(user);
     const result = await userService.editProfile(user);
     if (result.matchedCount > 0) {
         return {
@@ -107,4 +107,8 @@ exports.changePassword = async (user) => {
             }
         }
     }
+}
+
+exports.getShopName = async ( id ) => {
+    return await userService.getShopName(id);
 }
