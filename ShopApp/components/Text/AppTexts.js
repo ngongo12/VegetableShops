@@ -27,9 +27,9 @@ export const LargeText = ( props ) => {
 }
 
 export const Title = ( props ) => {
-    const { children, style } = props;
+    const { children, style, onPress } = props;
     return (
-        <Text style={[styles.font, styles.title, style]}>
+        <Text style={[styles.font, styles.title, style]} onPress={onPress} >
             { children }
         </Text>
     )

@@ -36,9 +36,42 @@ const cartReducer = (state = [], {type, payload}) => {
             storeData(uid, temp);
             return temp;
         }
+        case actions.DESCREASE:{
+            const { uid, productID } = payload;
+            temp = temp.map(e => {
+                if(e.productID === productID){
+                    return {
+                        productID,
+                        amount: e.amount - 1
+                    }
+                }
+                else{
+                    return e;
+                }
+            })
+            storeData(uid, temp);
+            return temp;
+        }
+        case actions.CHOOSE_PRODUCT:{
+            const { uid, productID } = payload;
+            temp = temp.map(e => {
+                if(e.productID === productID){
+                    return {
+                        ... e,
+                        chosen: e?.chosen ? false : true
+                    }
+                }
+                else{
+                    return e;
+                }
+            })
+            storeData(uid, temp);
+            return temp;
+        }
         case actions.DELETE_CART:{
             const { uid, productID } = payload;
-            temp.filter(e => e != productID);
+            temp = temp.filter(e => e.productID !== productID);
+            console.log('cart after delete ',temp)
             storeData(uid, temp);
             return temp;
         }

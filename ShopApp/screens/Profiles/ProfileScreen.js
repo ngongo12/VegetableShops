@@ -20,7 +20,7 @@ import { RED } from '../../constants/colors';
 const ProfileScreen = (props) => {
     const { user: { user }, navigation: { navigate }, actions } = props;
     const [visibleModal, setVisibleModal] = useState(false);
-    console.log(user)
+    //console.log(user)
     const onPressLogout = () => {
         setVisibleModal(true);
     }

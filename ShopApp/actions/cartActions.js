@@ -15,8 +15,20 @@ export const load = payload =>({
     payload
 })
 
+export const descreaseAmount = payload => ({
+    type: actions.DESCREASE,
+    payload
+})
+
+export const changeChosen = payload => ({
+    type: actions.CHOOSE_PRODUCT,
+    payload
+})
+
 export default {
     addToCart,
     removeFromCart,
-    load
+    load,
+    descreaseAmount,
+    changeChosen
 }

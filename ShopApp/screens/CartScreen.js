@@ -9,6 +9,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import userActions from '../actions/userActions';
 import { getCartProduct } from '../api/cartAPI';
+import Icon from 'react-native-vector-icons/AntDesign';
 import CartItem from '../components/List/CartItem';
 import CheckBox from '@react-native-community/checkbox';
 import { DefautText, LargeText, Title } from '../components/Text/AppTexts';
@@ -64,10 +65,10 @@ const SectionHeader = props => {
     const [toggleCheckBox, setToggleCheckBox] = useState(false);
     return (
         <View style={styles.headerContent}>
-            <CheckBox
-                value={toggleCheckBox}
-                onValueChange={(newValue) => { setToggleCheckBox(newValue) }}
-                style={styles.chkBox}
+            <Icon
+                name='isv'
+                size={20}
+                style={styles.icon}
             />
             <Title style={styles.title}>{shopName}</Title>
             <DefautText style={styles.delete}>Xóa</DefautText>
@@ -87,7 +88,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         marginTop: 15
     },
-    chkBox: {
+    icon: {
         marginRight: 10
     },
     title: {

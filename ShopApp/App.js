@@ -4,24 +4,25 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider } from 'react-redux';
 import redux from './config/redux';
 import { navigationRef } from './config/rootNavigation';
+import { MainColor } from './constants/colors';
 import MainScreen from './screens/MainScreen';
 import LoginScreen from './screens/Auths/LoginScreen';
 import RegisterScreen from './screens/Auths/RegisterScreen';
-import AccountSettingScreen from './screens/AccountSettingScreen';
+import AccountSettingScreen from './screens/Profiles/AccountSettingScreen';
 import ProfileDetailScreen from './screens/Profiles/ProfileDetailScreen';
 import ProfileEditScreen from './screens/Profiles/ProfileEditScreen';
 import ShopAddProductScreen from './screens/Stores/ShopAddProductScreen';
 import ProductDetailScreen from './screens/Products/ProductDetailScreen';
 import ShopEditProductScreen from './screens/Stores/ShopEditProductScreen';
 import CartScreen from './screens/CartScreen';
-import { MainColor } from './constants/colors';
+import NewAddressScreen from './screens/Profiles/address/NewAddressScreen';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
 
   return (
-    <Provider store={ redux.store }>
+    <Provider store={redux.store}>
       <NavigationContainer ref={navigationRef}>
         <Stack.Navigator
           screenOptions={{ headerShown: false }}
@@ -69,15 +70,18 @@ const App = () => {
             component={CartScreen}
             options={
               {
-                headerShown:true,
-                headerStyle: {
-                  backgroundColor: MainColor,
-                },
-                headerTitleStyle: {
-                  color: '#fff'
-                },
-                title: 'Giỏ hàng',
-                headerTintColor: '#fff'
+                ...options,
+                title: 'Giỏ hàng'
+              }
+            }
+          />
+          <Stack.Screen
+            name="NewAddressScreen"
+            component={NewAddressScreen}
+            options={
+              {
+                ...options,
+                title: 'Địa chỉ mới'
               }
             }
           />
@@ -86,5 +90,17 @@ const App = () => {
     </Provider>
   );
 };
+
+const options = {
+  headerShown: true,
+  headerStyle: {
+    backgroundColor: MainColor,
+  },
+  headerTitleStyle: {
+    color: '#fff'
+  },
+  title: 'Giỏ hàng',
+  headerTintColor: '#fff'
+}
 
 export default App;
