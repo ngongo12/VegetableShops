@@ -26,18 +26,21 @@ const userReducer = (state = initData, { type, payload }) => {
             return {
                 ...state,
                 isLoading: false,
+                success: true,
                 ...payload,
             }
         case actions.USER_FAILURE:
             return {
                 ...state,
                 message: payload,
+                success: false,
                 isLoading: false,
             }
         case actions.EDIT_PROFILES:
             return {
                 ...state,
-                isLoading: false,
+                isLoading: true,
+                success: false,
                 message: null
             }
         case actions.UPDATE_LOGIN_STATE:

@@ -4,14 +4,22 @@ import {
     StyleSheet,
     Pressable,
     FlatList,
-    TextInput
+    TextInput,
+    ToastAndroid
 } from 'react-native';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import userActions from '../../../actions/userActions';
 import { DefautText, Title } from '../../../components/Text/AppTexts';
 import { RED } from '../../../constants/colors';
 import * as addressAPI from '../../../api/addressAPI';
 import NomalButton from '../../../components/Button/NomalButton';
+import LoadingModal from '../../../components/LoadingModal';
 
-const NewAddressScreen = () => {
+const NewAddressScreen = props => {
+    const { user: { user, isLoading, success }, actions, navigation: { goBack } } = props;
+    const [flag, setFlag] = useState(false);
+    const [count, setCount] = useState(0);
     const [index, setIndex] = useState(0);
     const [provinces, setProvinces] = useState([]);
     const [districts, setDistricts] = useState([]);
@@ -33,8 +41,15 @@ const NewAddressScreen = () => {
             index: 2,
             level: 'Xã/ Phường',
             focused: false
-        }
+        },
     ]);
+
+    useEffect(() => {
+        if(flag && success){
+            ToastAndroid.show('Thêm địa chỉ thành công', ToastAndroid.SHORT);
+            goBack();
+        }
+    }, [isLoading])
 
     useEffect(() => {
         fetchProvinces();
@@ -55,14 +70,13 @@ const NewAddressScreen = () => {
         addressAPI.getAllDistricts(code).then(res => setDistricts(res));
     }
 
-    const fetchWards = (code) => {        
+    const fetchWards = (code) => {
         addressAPI.getAllWards(code).then(res => setWards(res));
     }
 
     const setChooseProvince = item => {
         let temp = address;
         if (item.code !== address[0].value?.code) {
-            console.log('Đúng')
             setDistricts();
             setWards();
             temp[1].value = undefined;
@@ -70,8 +84,8 @@ const NewAddressScreen = () => {
         }
         temp[0].value = item;
         temp[1].focused = true;
-        
-        
+
+
 
         setAddress(temp);
         setIndex(1);
@@ -90,7 +104,7 @@ const NewAddressScreen = () => {
         }
         temp[1].value = item;
         temp[2].focused = true;
-        
+
         setAddress(temp);
         setIndex(2);
         setFocused(2);
@@ -107,62 +121,102 @@ const NewAddressScreen = () => {
         }
         temp[2].value = item;
         setAddress(temp);
+        setCount(count+1);
+        console.log(address)
     }
 
     useEffect(() => {
 
     }, [address])
 
+    const onAddAdress = () => {
+        if (details.length <= 6) {
+            ToastAndroid.show('Địa chỉ cụ thể quá ngắn', ToastAndroid.SHORT);
+            return;
+        }
+        setFlag(true);
+        const newAddress = {
+            province: {
+                name: address[0].value?.name,
+                code: address[0].value?.code
+            },
+            district: {
+                name: address[1].value?.name,
+                code: address[1].value?.code
+            },
+            ward: {
+                name: address[2].value?.name,
+                code: address[2].value?.code
+            },
+            details
+        }
+        let temp = user.address;
+        temp.push(newAddress);
+        actions.actionEditProfile({
+            user: {
+                _id: user._id,
+                address: temp
+            }
+        });
+    }
+
     //console.log('wards: ', wards);
 
     return (
-        <View style={styles.container}>
-            <View style={{ backgroundColor: '#fff', paddingBottom: 10 }}>
-                <DefautText style={styles.label}>Khu vực được chọn</DefautText>
-                <AddressItem
-                    name={address[0].value ? address[0].value?.name : `Chọn ${address[0].level}`}
-                    focused={address[0]?.focused}
-                    bottom={true && address[0].value}
-                    onPress={() => setFocused(0)}
-                />
-                {address[0].value && <AddressItem
-                    name={address[1].value ? address[1].value?.name : `Chọn ${address[1].level}`}
-                    focused={address[1]?.focused}
-                    top={true}
-                    bottom={true && address[1].value}
-                    onPress={() => setFocused(1)}
-                />}
-                {address[1].value && <AddressItem
-                    name={address[2].value ? address[2].value?.name : `Chọn ${address[2].level}`}
-                    focused={address[2]?.focused}
-                    top={true}
-                    onPress={() => setFocused(2)}
-                />}
-                {showInputText && <TextInput
-                    value={details}
-                    onChangeText={setDetails}
-                    placeholder='Số nhà và tên đường'
-                    style={styles.input}
-                />}
-                {showInputText && <NomalButton style={{marginHorizontal: 30}}>Thêm mới</NomalButton>}
+        <>
+            <View style={styles.container}>
+                <View style={{ backgroundColor: '#fff', paddingBottom: 10 }}>
+                    <DefautText style={styles.label}>Khu vực được chọn</DefautText>
+                    <AddressItem
+                        name={address[0].value ? address[0].value?.name : `Chọn ${address[0].level}`}
+                        focused={address[0]?.focused}
+                        bottom={true && address[0].value}
+                        onPress={() => setFocused(0)}
+                    />
+                    {address[0].value && <AddressItem
+                        name={address[1].value ? address[1].value?.name : `Chọn ${address[1].level}`}
+                        focused={address[1]?.focused}
+                        top={true}
+                        bottom={true && address[1].value}
+                        onPress={() => setFocused(1)}
+                    />}
+                    {address[1].value && <AddressItem
+                        name={address[2].value ? address[2].value?.name : `Chọn ${address[2].level}`}
+                        focused={address[2]?.focused}
+                        top={true}
+                        onPress={() => setFocused(2)}
+                    />}
+                    {showInputText && <TextInput
+                        value={details}
+                        onChangeText={setDetails}
+                        placeholder='Số nhà và tên đường'
+                        autoCapitalize='words'
+                        style={styles.input}
+                    />}
+                    {showInputText && <NomalButton onPress={onAddAdress} style={{ marginHorizontal: 30 }}>Thêm mới</NomalButton>}
+                </View>
+                <DefautText style={styles.label}>{`Chọn ${address[index].level}`}</DefautText>
+                {(index == 0) && (<FlatList
+                    data={provinces}
+                    renderItem={({ item }) => <ItemOfList item={item} onPress={() => setChooseProvince(item)} />}
+                    style={styles.flatlist}
+                />)}
+                {(index == 1) && (<FlatList
+                    data={districts}
+                    renderItem={({ item }) => <ItemOfList item={item} onPress={() => setChooseDistrict(item)} />}
+                    style={styles.flatlist}
+                />)}
+                {(index == 2) && (<FlatList
+                    data={wards}
+                    renderItem={({ item }) => <ItemOfList item={item} onPress={() => setChooseWard(item)} />}
+                    style={styles.flatlist}
+                />)}
             </View>
-            <DefautText style={styles.label}>{`Chọn ${address[index].level}`}</DefautText>
-            {(index == 0) && (<FlatList
-                data={provinces}
-                renderItem={({ item }) => <ItemOfList item={item} onPress={() => setChooseProvince(item)} />}
-                style={styles.flatlist}
-            />)}
-            {(index == 1) && (<FlatList
-                data={districts}
-                renderItem={({ item }) => <ItemOfList item={item} onPress={() => setChooseDistrict(item)} />}
-                style={styles.flatlist}
-            />)}
-            {(index == 2) && (<FlatList
-                data={wards}
-                renderItem={({ item }) => <ItemOfList item={item} onPress={() => setChooseWard(item)} />}
-                style={styles.flatlist}
-            />)}
-        </View>
+            <LoadingModal
+                message='Đang thêm địa chỉ'
+                visible={isLoading}
+            />
+        </>
     )
 }
 
@@ -171,7 +225,7 @@ const ItemOfList = props => {
     return (
         <Pressable style={styles.item} onPress={onPress}>
             <DefautText style={styles.itemLargeText}>{item?.first}</DefautText>
-            <DefautText style={styles.itemText}>{item?.name}</DefautText>
+            <DefautText style={styles.itemText}>{item?.shortname ? item?.shortname : item?.name}</DefautText>
         </Pressable>
 
     )
@@ -277,4 +331,17 @@ const styles = StyleSheet.create({
     }
 })
 
-export default NewAddressScreen
+const mapStateToProps = (state) => {
+    return {
+        user: state.userReducer
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        actions: bindActionCreators(userActions, dispatch)
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewAddressScreen)

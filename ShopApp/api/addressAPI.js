@@ -11,15 +11,15 @@ export const getAllProvinces = () => {
         return -1;
     }))
     .then(res => res.map(e => {
-        const sortname = e.name.replace('Tỉnh ', '').replace('Thành phố ', '');
+        const shortname = e.name.replace('Tỉnh ', '').replace('Thành phố ', '');
         let first='';
-        if(lastChar !== sortname[0]){
-            first = sortname[0];
-            lastChar = sortname[0];
+        if(lastChar !== shortname[0]){
+            first = shortname[0];
+            lastChar = shortname[0];
         }
         return {
             ...e,
-            sortname,
+            shortname,
             first
         }
     }))

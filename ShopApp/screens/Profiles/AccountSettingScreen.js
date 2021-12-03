@@ -22,7 +22,7 @@ const AccountSettingScreen = (props) => {
                     iconName='pushpino'
                     name='Địa chỉ'
                     style={styles.button}
-                    onPress={() => navigate('NewAddressScreen')}
+                    onPress={() => navigate('AddressScreen')}
                 />
                 <ButtonSetting
                     iconName='key'
