@@ -9,9 +9,9 @@ const fmNumber = (num) => {
     return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
 }
 export const DefautText = ( props ) => {
-    const { children, style } = props;
+    const { children, style, onPress } = props;
     return (
-        <Text style={[styles.font, styles.defaultText, style]}>
+        <Text style={[styles.font, styles.defaultText, style]} onPress={onPress}>
             { children }
         </Text>
     )

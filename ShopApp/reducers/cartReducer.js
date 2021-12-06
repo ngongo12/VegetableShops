@@ -19,7 +19,7 @@ const cartReducer = (state = [], {type, payload}) => {
                 if(e.productID === productID){
                     notExits = false;
                     return {
-                        productID,
+                        ...e,
                         amount: e.amount + 1
                     }
                 }
@@ -41,7 +41,7 @@ const cartReducer = (state = [], {type, payload}) => {
             temp = temp.map(e => {
                 if(e.productID === productID){
                     return {
-                        productID,
+                        ...e,
                         amount: e.amount - 1
                     }
                 }
@@ -77,6 +77,17 @@ const cartReducer = (state = [], {type, payload}) => {
         }
         case actions.LOAD_CART:{
             return payload;
+        }
+        case actions.CLEAR_CHOSEN:{
+            const { uid } = payload
+            temp = temp.map(e => {
+                return {
+                    ...e,
+                    chosen: false
+                }
+            });
+            storeData(uid, temp);
+            return temp;
         }
         default: return temp;
     }

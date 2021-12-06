@@ -21,7 +21,6 @@ const CartIcon = ( props ) => {
     const isFocused = useIsFocused();
     const [numOfProducts, setNumOfProducts] = useState(0);
     useEffect(() => {
-        console.log('cart icon ', cart);
         let temp = 0;
         if(cart){
             cart?.forEach(element => {

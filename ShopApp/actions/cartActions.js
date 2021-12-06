@@ -25,10 +25,16 @@ export const changeChosen = payload => ({
     payload
 })
 
+export const clearChosen = payload => ({
+    type: actions.CLEAR_CHOSEN,
+    payload
+})
+
 export default {
     addToCart,
     removeFromCart,
     load,
     descreaseAmount,
-    changeChosen
+    changeChosen,
+    clearChosen
 }

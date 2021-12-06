@@ -13,7 +13,6 @@ import NotificationScreen from './NotificationScreen';
 import StoreScreen from './Stores/StoreScreen';
 import ProfileScreen from './Profiles/ProfileScreen';
 import { getData, clearAllData } from '../api/asyncStorage';
-
 const Tab = createBottomTabNavigator();
 
 const MainScreen = (props) => {

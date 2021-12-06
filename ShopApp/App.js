@@ -17,6 +17,7 @@ import ShopEditProductScreen from './screens/Stores/ShopEditProductScreen';
 import CartScreen from './screens/CartScreen';
 import NewAddressScreen from './screens/Profiles/address/NewAddressScreen';
 import AddressScreen from './screens/Profiles/address/AddressScreen';
+import PaymentScreen from './screens/PaymentScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -93,6 +94,16 @@ const App = () => {
               {
                 ...options,
                 title: 'Danh sách địa chỉ'
+              }
+            }
+          />
+          <Stack.Screen
+            name="PaymentScreen"
+            component={PaymentScreen}
+            options={
+              {
+                ...options,
+                title: 'Thanh toán'
               }
             }
           />

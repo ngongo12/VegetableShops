@@ -11,11 +11,11 @@ import cartActions from '../actions/cartActions';
 import { getAllCategories } from '../api/categoryAPI';
 import HomeHeader from '../components/Header/HomeHeader';
 import ProductMainList from '../components/List/ProductMainList';
-import { MAIN_BACKGROUND } from '../constants/colors';
+import { MAIN_BACKGROUND } from '../constants/colors'; 
 
 const HomeScreen = (props) => {
     const { navigation: { navigate }, user: { user } } = props;
-
+    
     return (
         <View style={styles.container}>
             <HomeHeader />

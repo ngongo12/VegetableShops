@@ -11,10 +11,11 @@ import { connect } from 'react-redux';
 import userActions from '../../actions/userActions';
 import cartActions from '../../actions/cartActions';
 
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FastImage from 'react-native-fast-image';
 import CheckBox from '@react-native-community/checkbox';
 import { DefautText, OriginPrice, SellPrice, Title, HeaderText } from '../Text/AppTexts';
-import NomalButton from '../Button/NomalButton';
+import AlerModal from '../AlertModal';
 import { RED } from '../../constants/colors';
 
 
@@ -38,13 +39,13 @@ const CartItem = (props) => {
     }
 
     const descreaseAmount = () => {
-        if(product?.amount > 1){
+        if (product?.amount > 1) {
             cActions.descreaseAmount({
                 productID: product?.productID,
                 uid: user._id
             })
         }
-        else{
+        else {
             setVisibleModal(true)
         }
     }
@@ -65,45 +66,40 @@ const CartItem = (props) => {
     //console.log('temp ',product?.amount)
     return (
         <>
-        <View style={styles.container}>
-            <CheckBox
-                value={product?.chosen}
-                onValueChange={changeChosen}
-                style={styles.chkBox}
-            />
-            <FastImage
-                source={{ uri: item?.images[0] }}
-                style={styles.image}
-                resizeMode={FastImage.resizeMode.cover}
-            />
-            <View style={styles.content}>
-                <DefautText style={styles.text}>{item?.name}</DefautText>
-                {(item?.sellPrice < item?.originPrice) && <OriginPrice>{item?.originPrice}</OriginPrice>}
-                <SellPrice>{item?.sellPrice}</SellPrice>
-                <View style={styles.amountView}>
-                    <Title style={styles.btn} onPress={descreaseAmount}>-</Title>
-                    <TextInput
-                        value={`${product?.amount}`}
-                        style={styles.textInput}
-                    />
-                    <Title style={styles.btn} onPress={increaseAmount} >+</Title>
+            <View style={styles.container}>
+                <CheckBox
+                    value={product?.chosen}
+                    onValueChange={changeChosen}
+                    style={styles.chkBox}
+                />
+                <FastImage
+                    source={{ uri: item?.images[0] }}
+                    style={styles.image}
+                    resizeMode={FastImage.resizeMode.cover}
+                />
+                <View style={styles.content}>
+                    <DefautText style={styles.text}>{item?.name}</DefautText>
+                    {(item?.sellPrice < item?.originPrice) && <OriginPrice>{item?.originPrice}</OriginPrice>}
+                    <SellPrice>{item?.sellPrice}</SellPrice>
+                    <View style={styles.amountView}>
+                        <Title style={styles.btn} onPress={descreaseAmount}>-</Title>
+                        <TextInput
+                            value={`${product?.amount}`}
+                            style={styles.textInput}
+                        />
+                        <Title style={styles.btn} onPress={increaseAmount} >+</Title>
+                    </View>
                 </View>
+                <Icon name='trash-can-outline' color={RED} size={25} onPress={()=>setVisibleModal(true)} />
             </View>
-        </View>
-        <Modal
-                visible={visibleModal}
-                dimissModal={() => setVisibleModal(false)}
-                transparent={true}
-                animationType='slide'
-            >
-                <Pressable style={{flex: 1}} onPress={()=> setVisibleModal(false)} />
-                <View style={styles.modalContent}>
-                    <HeaderText>Xóa sản phẩm khỏi giỏ hàng</HeaderText>
-                    <DefautText style={{margin: 10}}>Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng không?</DefautText>
-                    <NomalButton onPress={onDelete} style={{width: '100%'}} color= {RED}>Xóa</NomalButton>
-                </View>
-                
-            </Modal>
+            <AlerModal
+                title = 'Xóa sản phẩm'
+                question = 'Xóa sản phẩm khỏi giỏ hàng?'
+                confirmText = 'Xác nhận'
+                onConfirm={onDelete}
+                setVisibleModal = {setVisibleModal}
+                visibleModal = {visibleModal} 
+            />
         </>
     )
 }
@@ -180,7 +176,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators(userActions, dispatch),
-        cActions : bindActionCreators(cartActions, dispatch)
+        cActions: bindActionCreators(cartActions, dispatch)
     }
 }
 

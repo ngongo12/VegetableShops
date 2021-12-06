@@ -1,21 +1,16 @@
 import React, { useState } from 'react';
 import {
     View,
-    ScrollView,
-    Text,
     StyleSheet,
-    Pressable,
-    Modal
 } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import userActions from '../../actions/userActions';
-import { DefautText, HeaderText, Title } from '../../components/Text/AppTexts';
+import { Title } from '../../components/Text/AppTexts';
 import ProfileHeader from '../../components/Header/ProfileHeader';
 import ButtonSetting from '../../components/Button/ButtonSetting';
 import OrderStateIcon from '../../components/Icon/OrderStateIcon';
-import NomalButton from '../../components/Button/NomalButton';
-import { RED } from '../../constants/colors';
+import AlerModal from '../../components/AlertModal';
 
 const ProfileScreen = (props) => {
     const { user: { user }, navigation: { navigate }, actions } = props;
@@ -46,20 +41,14 @@ const ProfileScreen = (props) => {
                 <ButtonSetting iconName='filetext1' name='Quy chế - Chính sách' />
                 <ButtonSetting iconName='questioncircleo' name='Trung tâm hỗ trợ' />
             </View>
-            <Modal
-                visible={visibleModal}
-                dimissModal={() => setVisibleModal(false)}
-                transparent={true}
-                animationType='slide'
-            >
-                <Pressable style={{flex: 1}} onPress={()=> setVisibleModal(false)} />
-                <View style={styles.modalContent}>
-                    <HeaderText>Đăng xuất</HeaderText>
-                    <DefautText style={{margin: 10}}>Bạn có chắc chắn muốn thoát?</DefautText>
-                    <NomalButton onPress={onLogout} style={{width: '100%'}} color= {RED}>Đăng xuất</NomalButton>
-                </View>
-                
-            </Modal>
+            <AlerModal 
+                title = 'Đăng xuất'
+                question = 'Bạn muốn đăng xuất khỏi ứng dụng?'
+                confirmText = 'Đăng xuất'
+                onConfirm={onLogout}
+                setVisibleModal = {setVisibleModal}
+                visibleModal = {visibleModal} 
+            />
         </View>
     )
 }
@@ -99,14 +88,6 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0.5,
         borderBottomColor: 'silver'
     },
-    modalContent: {
-        backgroundColor: '#fff',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 40,
-        borderTopLeftRadius: 40,
-        borderTopRightRadius: 40
-    }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen)

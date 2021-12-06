@@ -125,14 +125,14 @@ const LoginScreen = (props) => {
                     <StrokeButton onPress={() => navigate('RegisterScreen')} disabled={user.isLoading} >Đăng Ký</StrokeButton>
 
                 </Animated.View>
-                <LoadingModal
+                {isFocused && (<LoadingModal
                     visible={user.isLoading}
                     style={styles.modal}
                     animationType='fade'
                     transparent={true}
                     statusBarTranslucent={true}
                     message= 'Đăng đăng nhập. Xin chờ'
-                />
+                />)}
             </LinearGradient>
 
         </>
