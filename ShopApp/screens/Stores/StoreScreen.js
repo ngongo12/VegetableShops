@@ -11,14 +11,18 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import ShopOrderScreen from './ShopOrderScreen';
 import ShopProductScreen from './ShopProductScreen';
 import { MainColor } from '../../constants/colors';
+import NomalButton from '../../components/Button/NomalButton';
+import { navigate } from '../../config/rootNavigation';
 
 const Tab = createMaterialTopTabNavigator();
 const StoreScreen = (props) => {
-    
+    const { user: { user } } = props;
+    const { shopAddress, shopName } = user;
+
     return (
         <View style={styles.container}>
             <DefaultHeader title='Cửa hàng của tôi' />
-            <Tab.Navigator
+            {(shopAddress && shopName) && (<Tab.Navigator
                 screenOptions={{
                     tabBarActiveTintColor: MainColor,
                 }}
@@ -33,7 +37,12 @@ const StoreScreen = (props) => {
                     component={ShopOrderScreen}
                     options={{title: 'Đơn hàng'}}
                 />
-            </Tab.Navigator>
+            </Tab.Navigator>)}
+            {!(shopAddress && shopName) && (
+                <View style={[styles.container, {alignItems: 'center', justifyContent: 'center'}]}>
+                    <NomalButton style={styles.button} onPress={() => navigate('CreateStore')}>Bắt đầu kinh doanh</NomalButton>
+                </View>
+            )}
         </View>
     )
 }
@@ -53,6 +62,9 @@ const mapDispatchToProps = (dispatch) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1
+    },
+    button: {
+        width: '60%'
     }
 })
 

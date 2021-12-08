@@ -18,6 +18,7 @@ import CartScreen from './screens/CartScreen';
 import NewAddressScreen from './screens/Profiles/address/NewAddressScreen';
 import AddressScreen from './screens/Profiles/address/AddressScreen';
 import PaymentScreen from './screens/PaymentScreen';
+import CreateStore from './screens/Stores/CreateStore';
 
 const Stack = createNativeStackNavigator();
 
@@ -104,6 +105,16 @@ const App = () => {
               {
                 ...options,
                 title: 'Thanh toán'
+              }
+            }
+          />
+          <Stack.Screen
+            name="CreateStore"
+            component={CreateStore}
+            options={
+              {
+                ...options,
+                title: 'Khởi tạo cửa hàng'
               }
             }
           />

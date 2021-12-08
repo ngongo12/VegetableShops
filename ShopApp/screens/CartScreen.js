@@ -32,6 +32,10 @@ const CartScreen = (props) => {
         if (productList) {
             onCheckOut();
         }
+        
+    }, [cart]);
+
+    useEffect(() => {
         //Kiểm tra xem có sp nào được chọn ko để hiển thị nút mua
         let checked = false;
         cart.forEach(e => {
@@ -41,7 +45,7 @@ const CartScreen = (props) => {
             }
         })
         setIsChoose(checked);
-    }, [cart, productList]);
+    }, [productList])
 
     const fetchCartProducts = async () => {
         const myCartIds = cart?.map(e => e.productID);
