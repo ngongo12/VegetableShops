@@ -26,7 +26,7 @@ const SaleProductList = (props) => {
     }, []);
 
     const fetchData = () => {
-        fetch(`${productUrl}getTopProductByCategory?id=6184f4bc4afb65fb8ce84338&uid=${user?._id}`)
+        fetch(`${productUrl}getSalesProducts?uid=${user?._id}`)
             .then(res => res.json())
             .then(res => {
                 if (res.products) {
@@ -70,12 +70,12 @@ const ItemView = (props) => {
         <Pressable style={styles.itemWrapper}>
             <FastImage source={{ uri: item.images[0] }} style={styles.image} />
             <View style={styles.itemContent}>
-                <DefautText>{item?.name}Tên sản phẩm</DefautText>
-                <OriginPrice>50000</OriginPrice>
-                <SellPrice>15000</SellPrice>
+                <DefautText>{item?.name}</DefautText>
+                <OriginPrice>{item?.originPrice}</OriginPrice>
+                <SellPrice>{item?.sellPrice}</SellPrice>
             </View>
             <ImageBackground style={styles.saleImage} source={require('../../assets/images/sale.png')}>
-                <SalePercent>-{Math.round((50 - 15) * 100 / 50)}%</SalePercent>
+                <SalePercent>-{Math.round((item?.originPrice - item?.sellPrice) * 100 / item?.originPrice)}%</SalePercent>
             </ImageBackground>
         </Pressable>
     )

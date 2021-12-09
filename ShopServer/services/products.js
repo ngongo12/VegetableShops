@@ -69,6 +69,17 @@ exports.getProductsInArray = async (arr) => {
         .find({
             _id: { $in: arr }
         },
+            '_id name images sellPrice originPrice owner amount'
+        )
+    return products;
+}
+
+exports.getSalesProducts = async (uid) => {
+    const products = await productModel
+        .find({
+            $where: 'this.sellPrice < this.originPrice',
+            owner: { $ne: uid }
+        },
             '_id name images sellPrice originPrice owner'
         )
     return products;

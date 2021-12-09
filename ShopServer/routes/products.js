@@ -55,4 +55,12 @@ router.post('/getProductsInArray', async (req, res, next) =>{
     })
 });
 
+router.get('/getSalesProducts', async (req, res, next) =>{
+    const { uid } = req.query;
+    const products = await productController.getSalesProducts(uid);
+    res.json({
+        products
+    })
+});
+
 module.exports = router;

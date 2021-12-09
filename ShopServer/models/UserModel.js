@@ -18,7 +18,8 @@ const userSchema = new Schema({
     email: { type: String },
     favorites: { type: Array },
     seenProducts: { type: Array },
-    shopName: { type: String }
+    shopName: { type: String },
+    shopAddress: { type: Object }
 })
 
 module.exports = mongoose.model('user', userSchema);

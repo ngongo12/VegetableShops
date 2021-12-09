@@ -17,7 +17,7 @@ import { MainColor } from '../../constants/colors';
 import { formatVNDate } from '../../config/format';
 import ModalChooseCamera from '../../components/ModalChooseCamera';
 import { uploadFile } from '../../api/uploadFile';
-import requestCameraPermission from '../../components/RequestCameraPermission';
+import { requestCameraPermission } from '../../components/RequestPermission';
 
 const ProfileDetailScreen = (props) => {
     const { user: { user }, navigation: { navigate }, actions } = props;

@@ -10,13 +10,16 @@ import {
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import userActions from '../../actions/userActions';
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
+import Geolocation from 'react-native-geolocation-service';
 import Icon from 'react-native-vector-icons/Foundation'
 import { DefautText, Title } from '../../components/Text/AppTexts';
 import { MainColor, RED } from '../../constants/colors';
 import * as addressAPI from '../../api/addressAPI';
 import NomalButton from '../../components/Button/NomalButton';
 import LoadingModal from '../../components/LoadingModal';
+import { requestLocationPermission } from '../../components/RequestPermission';
+import { searchAddress } from '../../api/mapAPI';
 
 const CreateStore = props => {
     const { user: { user, isLoading, success }, actions, navigation: { goBack } } = props;
@@ -30,6 +33,10 @@ const CreateStore = props => {
     const [showInputText, setShowInputText] = useState(false);
     const [details, setDetails] = useState('');
     const [isShowMap, setIsShowMap] = useState(false);
+    const [hasLocationPermission, setHasLocationPermission] = useState(false);
+    const [myLocation, setMyLocation] = useState();
+    const [newLocationName, setNewLocationName] = useState('');
+    const [shopLocation, setShopLocation] = useState();
     const [address, setAddress] = useState([
         {
             index: 0,
@@ -58,6 +65,26 @@ const CreateStore = props => {
     useEffect(() => {
         fetchProvinces();
     }, [])
+
+    useEffect(() => {
+        Geolocation.getCurrentPosition(
+            (position) => {
+                //console.log('possition', position);
+                setMyLocation(position?.coords);
+            },
+            (error) => {
+                console.log(error.code, error.message);
+
+                //Nếu lỗi permission thì gọi permission
+                if (error.message?.includes('permission')) {
+                    requestLocationPermission()
+                        .then(res => setHasLocationPermission(res))
+                        .catch(e => console.log(e));
+                }
+            },
+            { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+        );
+    }, [hasLocationPermission])
 
     const setFocused = (index) => {
         setIndex(index);
@@ -164,6 +191,13 @@ const CreateStore = props => {
         });
     }
 
+    const onGetShopAddress = () => {
+        //Lấy tên đầy đủ của địa chỉ mới
+        let newAddress = `${details}, ${address[2].value?.name}, ${address[1].value?.name}, ${address[0].value?.name}`;
+        setNewLocationName(newAddress);
+        searchAddress(newAddress).then(res => console.log(res[0]));
+    }
+
     //console.log('wards: ', wards);
 
     return (
@@ -206,9 +240,11 @@ const CreateStore = props => {
                         onChangeText={setDetails}
                         placeholder='Số nhà và tên đường'
                         autoCapitalize='words'
+                        onEndEditing={onGetShopAddress}
                         style={styles.input}
                     />}
-                    {showInputText && <NomalButton onPress={onAddAdress} style={{ marginHorizontal: 30 }}>Thêm mới</NomalButton>}
+                    {(newLocationName.length > 0 && shopName.length > 0) && (
+                        <NomalButton onPress={onAddAdress} style={{ marginHorizontal: 30 }}>Khởi tạo cửa hàng</NomalButton>)}
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     <DefautText style={styles.label}>{`Chọn ${address[index].level}`}</DefautText>
@@ -239,13 +275,19 @@ const CreateStore = props => {
                 </View>)}
                 {isShowMap && (<MapView
                     initialRegion={{
-                        latitude: 37.78825,
-                        longitude: -122.4324,
+                        latitude: myLocation?.latitude,
+                        longitude: myLocation?.longitude,
                         latitudeDelta: 0.0922,
                         longitudeDelta: 0.0421,
                     }}
                     style={[styles.flatlist, { flex: 1 }]}
-                />)}
+                >
+                    {myLocation && (<Marker
+                        coordinate={myLocation}
+                        title='Vị trí của tôi'
+                        image={require('../../assets/images/my_location.png')}
+                    />)}
+                </MapView>)}
             </View>
             <LoadingModal
                 message='Đang thêm địa chỉ'
