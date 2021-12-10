@@ -58,6 +58,13 @@ export const getShopName = id => {
         .catch(e => 'undefine');
 }
 
+export const getShopByID = id => {
+    return fetch(`${apiURL}users/getShopByID?id=${id}`)
+        .then(res => res.json())
+        .then(res => res)
+        .catch(e => 'undefine');
+}
+
 export const register = ( user ) => {
     const registerUrl = `${apiURL}users/register`;
     return fetch(registerUrl, {

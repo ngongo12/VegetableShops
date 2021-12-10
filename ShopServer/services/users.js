@@ -29,3 +29,7 @@ exports.editProfile = async ( user ) => {
 exports.getShopName = async ( id ) => {
     return await userModel.findOne({ _id: id }, 'fullname shopName');
 }
+
+exports.getShopByID = async ( id ) => {
+    return await userModel.findOne({ _id: id }, 'fullname shopName shopAddress');
+}

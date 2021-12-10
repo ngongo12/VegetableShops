@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 import userActions from '../../actions/userActions';
 import MapView, { Marker } from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
-import Icon from 'react-native-vector-icons/Foundation'
+import Icon from 'react-native-vector-icons/Foundation';
 import { DefautText, Title } from '../../components/Text/AppTexts';
 import { MainColor, RED } from '../../constants/colors';
 import * as addressAPI from '../../api/addressAPI';
@@ -37,6 +37,7 @@ const CreateStore = props => {
     const [myLocation, setMyLocation] = useState();
     const [newLocationName, setNewLocationName] = useState('');
     const [shopLocation, setShopLocation] = useState();
+    const [focusedLocation, setFocusedLocation] = useState();
     const [address, setAddress] = useState([
         {
             index: 0,
@@ -57,7 +58,7 @@ const CreateStore = props => {
 
     useEffect(() => {
         if (flag && success) {
-            ToastAndroid.show('Thêm địa chỉ thành công', ToastAndroid.SHORT);
+            ToastAndroid.show('Tạo cửa hàng thành công', ToastAndroid.SHORT);
             goBack();
         }
     }, [isLoading])
@@ -71,6 +72,7 @@ const CreateStore = props => {
             (position) => {
                 //console.log('possition', position);
                 setMyLocation(position?.coords);
+                setFocusedLocation(position?.coords)
             },
             (error) => {
                 console.log(error.code, error.message);
@@ -165,6 +167,10 @@ const CreateStore = props => {
             ToastAndroid.show('Địa chỉ cụ thể quá ngắn', ToastAndroid.SHORT);
             return;
         }
+        if(shopName.length <= 6){
+            ToastAndroid.show('Tên cửa hàng quá ngắn', ToastAndroid.SHORT);
+            return;
+        }
         setFlag(true);
         const newAddress = {
             province: {
@@ -179,26 +185,39 @@ const CreateStore = props => {
                 name: address[2].value?.name,
                 code: address[2].value?.code
             },
-            details
+            details,
+            coordinate: shopLocation
         }
-        let temp = user.address;
-        temp.push(newAddress);
         actions.actionEditProfile({
             user: {
                 _id: user._id,
-                address: temp
+                shopAddress: newAddress,
+                shopName
             }
         });
     }
+
+    //console.log(shopLocation)
 
     const onGetShopAddress = () => {
         //Lấy tên đầy đủ của địa chỉ mới
         let newAddress = `${details}, ${address[2].value?.name}, ${address[1].value?.name}, ${address[0].value?.name}`;
         setNewLocationName(newAddress);
-        searchAddress(newAddress).then(res => console.log(res[0]));
+        searchAddress(newAddress).then(res => {
+            const {x, y} = res[0]?.location;
+            setShopLocation({
+                longitude: x,
+                latitude: y
+            });
+            setFocusedLocation({
+                longitude: x,
+                latitude: y
+            })
+            setIsShowMap(true);
+        });
     }
 
-    //console.log('wards: ', wards);
+    //console.log('location: ', shopLocation);
 
     return (
         <>
@@ -253,7 +272,7 @@ const CreateStore = props => {
                         <DefautText>  {isShowMap ? 'Ẩn' : 'Xem'} bản đồ</DefautText>
                     </DefautText>
                 </View>
-                {!isShowMap && (<View>
+                {!isShowMap && (<View style={{flex: 1}}>
                     {(index == 0) && (<FlatList
                         data={provinces}
                         renderItem={({ item }) => <ItemOfList item={item} onPress={() => setChooseProvince(item)} />}
@@ -275,8 +294,8 @@ const CreateStore = props => {
                 </View>)}
                 {isShowMap && (<MapView
                     initialRegion={{
-                        latitude: myLocation?.latitude,
-                        longitude: myLocation?.longitude,
+                        latitude: focusedLocation?.latitude,
+                        longitude: focusedLocation?.longitude,
                         latitudeDelta: 0.0922,
                         longitudeDelta: 0.0421,
                     }}
@@ -287,10 +306,18 @@ const CreateStore = props => {
                         title='Vị trí của tôi'
                         image={require('../../assets/images/my_location.png')}
                     />)}
+                    {shopLocation && (
+                        <Marker draggable
+                            coordinate={shopLocation}
+                            onDragEnd={e => { setShopLocation(e.nativeEvent.coordinate)}}
+                            title={shopName.length > 0 ? shopName : 'Cửa hàng của tôi'}
+                            image={require('../../assets/images/shop_location.png')}
+                        />
+                    )}
                 </MapView>)}
             </View>
             <LoadingModal
-                message='Đang thêm địa chỉ'
+                message='Đang tạo cửa hàng'
                 visible={isLoading}
             />
         </>

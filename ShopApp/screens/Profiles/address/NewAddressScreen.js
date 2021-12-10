@@ -10,11 +10,16 @@ import {
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import userActions from '../../../actions/userActions';
+import MapView, { Marker } from 'react-native-maps';
+import Geolocation from 'react-native-geolocation-service';
+import Icon from 'react-native-vector-icons/Foundation';
 import { DefautText, Title } from '../../../components/Text/AppTexts';
-import { RED } from '../../../constants/colors';
+import { MainColor, RED } from '../../../constants/colors';
 import * as addressAPI from '../../../api/addressAPI';
 import NomalButton from '../../../components/Button/NomalButton';
 import LoadingModal from '../../../components/LoadingModal';
+import { requestLocationPermission } from '../../../components/RequestPermission';
+import { searchAddress } from '../../../api/mapAPI';
 
 const NewAddressScreen = props => {
     const { user: { user, isLoading, success }, actions, navigation: { goBack } } = props;
@@ -26,6 +31,12 @@ const NewAddressScreen = props => {
     const [wards, setWards] = useState([]);
     const [showInputText, setShowInputText] = useState(false);
     const [details, setDetails] = useState('');
+    const [isShowMap, setIsShowMap] = useState(false);
+    const [hasLocationPermission, setHasLocationPermission] = useState(false);
+    const [myLocation, setMyLocation] = useState();
+    const [shopLocation, setShopLocation] = useState();
+    const [newLocationName, setNewLocationName] = useState('');
+    const [focusedLocation, setFocusedLocation] = useState();
     const [address, setAddress] = useState([
         {
             index: 0,
@@ -45,7 +56,7 @@ const NewAddressScreen = props => {
     ]);
 
     useEffect(() => {
-        if(flag && success){
+        if (flag && success) {
             ToastAndroid.show('Thêm địa chỉ thành công', ToastAndroid.SHORT);
             goBack();
         }
@@ -61,6 +72,27 @@ const NewAddressScreen = props => {
         temp = temp.map(e => e.index !== index ? { ...e, focused: false } : { ...e, focused: true })
         setAddress(temp)
     }
+
+    useEffect(() => {
+        Geolocation.getCurrentPosition(
+            (position) => {
+                //console.log('possition', position);
+                setMyLocation(position?.coords);
+                setFocusedLocation(position?.coords)
+            },
+            (error) => {
+                console.log(error.code, error.message);
+
+                //Nếu lỗi permission thì gọi permission
+                if (error.message?.includes('permission')) {
+                    requestLocationPermission()
+                        .then(res => setHasLocationPermission(res))
+                        .catch(e => console.log(e));
+                }
+            },
+            { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+        );
+    }, [hasLocationPermission])
 
     const fetchProvinces = () => {
         addressAPI.getAllProvinces().then(res => setProvinces(res));
@@ -121,7 +153,7 @@ const NewAddressScreen = props => {
         }
         temp[2].value = item;
         setAddress(temp);
-        setCount(count+1);
+        setCount(count + 1);
         console.log(address)
     }
 
@@ -148,7 +180,8 @@ const NewAddressScreen = props => {
                 name: address[2].value?.name,
                 code: address[2].value?.code
             },
-            details
+            details,
+            coordinate: shopLocation
         }
         let temp = user.address;
         temp.push(newAddress);
@@ -157,6 +190,24 @@ const NewAddressScreen = props => {
                 _id: user._id,
                 address: temp
             }
+        });
+    }
+
+    const onGetShopAddress = () => {
+        //Lấy tên đầy đủ của địa chỉ mới
+        let newAddress = `${details}, ${address[2].value?.name}, ${address[1].value?.name}, ${address[0].value?.name}`;
+        setNewLocationName(newAddress);
+        searchAddress(newAddress).then(res => {
+            const { x, y } = res[0]?.location;
+            setShopLocation({
+                longitude: x,
+                latitude: y
+            });
+            setFocusedLocation({
+                longitude: x,
+                latitude: y
+            })
+            setIsShowMap(true);
         });
     }
 
@@ -191,26 +242,58 @@ const NewAddressScreen = props => {
                         onChangeText={setDetails}
                         placeholder='Số nhà và tên đường'
                         autoCapitalize='words'
+                        onEndEditing={onGetShopAddress}
                         style={styles.input}
                     />}
-                    {showInputText && <NomalButton onPress={onAddAdress} style={{ marginHorizontal: 30 }}>Thêm mới</NomalButton>}
+                    {(newLocationName.length > 0) && <NomalButton onPress={onAddAdress} style={{ marginHorizontal: 30 }}>Thêm mới</NomalButton>}
                 </View>
-                <DefautText style={styles.label}>{`Chọn ${address[index].level}`}</DefautText>
-                {(index == 0) && (<FlatList
-                    data={provinces}
-                    renderItem={({ item }) => <ItemOfList item={item} onPress={() => setChooseProvince(item)} />}
-                    style={styles.flatlist}
-                />)}
-                {(index == 1) && (<FlatList
-                    data={districts}
-                    renderItem={({ item }) => <ItemOfList item={item} onPress={() => setChooseDistrict(item)} />}
-                    style={styles.flatlist}
-                />)}
-                {(index == 2) && (<FlatList
-                    data={wards}
-                    renderItem={({ item }) => <ItemOfList item={item} onPress={() => setChooseWard(item)} />}
-                    style={styles.flatlist}
-                />)}
+                <View style={{ flexDirection: 'row' }}>
+                    <DefautText style={styles.label}>{`Chọn ${address[index].level}`}</DefautText>
+                    <DefautText style={[styles.label, styles.showMap]} onPress={() => setIsShowMap(!isShowMap)}>
+                        <Icon name='map' color={MainColor} size={15} />
+                        <DefautText>  {isShowMap ? 'Ẩn' : 'Xem'} bản đồ</DefautText>
+                    </DefautText>
+                </View>
+                {!isShowMap && (<View style={{ flex: 1 }}>
+                    {(index == 0) && (<FlatList
+                        data={provinces}
+                        renderItem={({ item }) => <ItemOfList item={item} onPress={() => setChooseProvince(item)} />}
+                        style={styles.flatlist}
+                    />)}
+                    {(index == 1) && (<FlatList
+                        data={districts}
+                        renderItem={({ item }) => <ItemOfList item={item} onPress={() => setChooseDistrict(item)} />}
+                        style={styles.flatlist}
+                    />)}
+                    {(index == 2) && (<FlatList
+                        data={wards}
+                        renderItem={({ item }) => <ItemOfList item={item} onPress={() => setChooseWard(item)} />}
+                        style={styles.flatlist}
+                    />)}
+                </View>)}
+                {isShowMap && (<MapView
+                    initialRegion={{
+                        latitude: focusedLocation?.latitude,
+                        longitude: focusedLocation?.longitude,
+                        latitudeDelta: 0.0922,
+                        longitudeDelta: 0.0421,
+                    }}
+                    style={[styles.flatlist, { flex: 1 }]}
+                >
+                    {myLocation && (<Marker
+                        coordinate={myLocation}
+                        title='Vị trí của tôi'
+                        image={require('../../../assets/images/my_location.png')}
+                    />)}
+                    {shopLocation && (
+                        <Marker draggable
+                            coordinate={shopLocation}
+                            onDragEnd={e => { setShopLocation(e.nativeEvent.coordinate)}}
+                            title='Địa chỉ mới'
+                            image={require('../../../assets/images/location_marker.png')}
+                        />
+                    )}
+                </MapView>)}
             </View>
             <LoadingModal
                 message='Đang thêm địa chỉ'
@@ -328,6 +411,12 @@ const styles = StyleSheet.create({
     input: {
         //margin: 10,
         paddingHorizontal: 30
+    },
+    showMap: {
+        flex: 1,
+        paddingHorizontal: 10,
+        textAlign: 'right',
+        color: MainColor
     }
 })
 

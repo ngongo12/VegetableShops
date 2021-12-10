@@ -13,18 +13,20 @@ import { getCartProduct } from '../api/cartAPI';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { DefautText, LargeText, SellPrice, Title } from '../../components/Text/AppTexts';
-import { getShopName } from '../../api/userAPI';
+import { getShopByID } from '../../api/userAPI';
 import { DARK_GREEN, MainColor, MAIN_BACKGROUND, RED } from '../../constants/colors';
 import { navigate } from '../../config/rootNavigation';
 import FastImage from 'react-native-fast-image';
+import { getDisctanceB2P } from '../../api/mapAPI';
 
 const PaymentItem = props => {
-    const { item, productList, cart } = props;
+    const { item, productList, cart, chosenAddress } = props;
     const { data } = item;
     const [buyList, setBuyList] = useState([]);
     let totalAmount = 0;
     let totalPrice = 0;
     const [message, setMessage] = useState('');
+    const [shop, setShop] = useState();
     const [chosenMethodIndex, setChosenMethodIndex] = useState(0);
     const [distance, setDistance] = useState(10);
     const [deliveryFee, setDeliveryFee] = useState(0);
@@ -33,25 +35,25 @@ const PaymentItem = props => {
             name: 'Nhanh',
             time: [2, 3],
             originPrice: 12000,
-            pricePerKm: 1000
+            pricePerKm: 500
         },
         {
             name: 'Chậm',
             time: [4, 6],
             originPrice: 10000,
-            pricePerKm: 500
+            pricePerKm: 300
         },
         {
             name: 'Siêu tốc',
             time: [0, 1],
             originPrice: 20000,
-            pricePerKm: 1500
+            pricePerKm: 900
         },
     ]
 
     useEffect(() => {
         setDeliveryFee(deliveryMethod[chosenMethodIndex].originPrice + deliveryMethod[chosenMethodIndex].pricePerKm * distance);
-    }, [setChosenMethodIndex])
+    }, [setChosenMethodIndex, distance])
 
     useEffect(() => {
         let temp = data.map(e => {
@@ -71,18 +73,31 @@ const PaymentItem = props => {
         totalPrice += e.amount * e.sellPrice;
     })
 
+    useEffect(() => {
+        //Lấy thông tin shop
+        if (item)
+            getShopByID(item.key).then(res => setShop(res)).catch(e => console.log(e));
+    }, [item]);
+    useEffect(() => {
+        if (shop) {
+            const tempDistance = getDisctanceB2P(shop?.shopAddress?.coordinate, chosenAddress?.coordinate);
+            setDistance(tempDistance)
+        }
+    }, [shop])
+    console.log(shop)
+
     return (
         <>
             {(buyList?.length > 0) && (
-                <View style={[styles.container, {marginTop: 10}]}>
-                    <ItemHeader id={item?.key} />
+                <View style={[styles.container, { marginTop: 10 }]}>
+                    <ItemHeader shop={shop} />
                     {buyList.map((e, index) => {
                         return (
                             <Item item={e} key={index} />
                         )
                     })}
-                    <DeliveryMethod method={deliveryMethod[chosenMethodIndex]} deliveryFee={deliveryFee} />
-                    <View style={[styles.row, {paddingHorizontal: 10}]}>
+                    <DeliveryMethod method={deliveryMethod[chosenMethodIndex]} deliveryFee={deliveryFee} distance={distance} />
+                    <View style={[styles.row, { paddingHorizontal: 10 }]}>
                         <DefautText>Tin nhắn:</DefautText>
                         <TextInput
                             value={message}
@@ -91,9 +106,9 @@ const PaymentItem = props => {
                             style={styles.input}
                         />
                     </View>
-                    <View style={[styles.row, styles.border, {paddingHorizontal: 10, paddingVertical: 10}]}>
+                    <View style={[styles.row, styles.border, { paddingHorizontal: 10, paddingVertical: 10 }]}>
                         <DefautText>Tổng số tiền ({totalAmount} sản phẩm): </DefautText>
-                        <SellPrice style={{flex: 1, textAlign: 'right'}}>{totalPrice + deliveryFee}</SellPrice>
+                        <SellPrice style={{ flex: 1, textAlign: 'right' }}>{totalPrice + deliveryFee}</SellPrice>
                     </View>
                 </View>
             )}
@@ -105,11 +120,11 @@ const Item = props => {
     const { item } = props;
     return (
         <View style={[styles.itemContain, styles.border]}>
-            <FastImage source={{uri: item?.images[0]}} style={styles.image} />
-            <View style={{marginLeft: 10, flex: 1, alignItems: 'stretch'}}>
-                <DefautText style={{flex: 1}}>{item?.name}</DefautText>
+            <FastImage source={{ uri: item?.images[0] }} style={styles.image} />
+            <View style={{ marginLeft: 10, flex: 1, alignItems: 'stretch' }}>
+                <DefautText style={{ flex: 1 }}>{item?.name}</DefautText>
                 <View style={[styles.row]}>
-                    <SellPrice style={{fontSize: 13, flex: 1}}>{item?.sellPrice}</SellPrice>
+                    <SellPrice style={{ fontSize: 13, flex: 1 }}>{item?.sellPrice}</SellPrice>
                     <DefautText>x{item?.amount}</DefautText>
                 </View>
             </View>
@@ -118,26 +133,21 @@ const Item = props => {
 }
 
 const DeliveryMethod = props => {
-    const { method, deliveryFee } = props;
+    const { method, deliveryFee, distance } = props;
     return (
         <View style={styles.deliveryContain}>
             <DefautText style={styles.deliveryHeader}>Phương thức vận chuyển (Nhấn để chọn)</DefautText>
-            <View style={[styles.row, styles.border, {paddingTop: 10}]}>
-                <DefautText style={{ color: '#000', fontWeight: '100' }}>{method?.name}</DefautText>
-                <SellPrice style={{fontSize: 13, flex: 1, textAlign: 'right', color: '#000', fontWeight: '100'}}>{deliveryFee}</SellPrice>
+            <View style={[styles.row, styles.border, { paddingTop: 10 }]}>
+                <DefautText style={{ color: '#000', fontWeight: '100' }}>{method?.name} ({distance}km)</DefautText>
+                <SellPrice style={{ fontSize: 13, flex: 1, textAlign: 'right', color: '#000', fontWeight: '100' }}>{deliveryFee}</SellPrice>
             </View>
-            <DefautText style={{paddingBottom: 10}}>Nhận hàng vào</DefautText>
+            <DefautText style={{ paddingBottom: 10 }}>Nhận hàng vào</DefautText>
         </View>
     )
 }
 
 const ItemHeader = props => {
-    const { id } = props;
-    const [shopName, setShopName] = useState('');
-    useEffect(() => {
-        getShopName(id).then(res => setShopName(res)).catch(e => console.log(e))
-    }, [])
-
+    const { shop } = props;
     return (
         <View style={styles.headerContent}>
             <Icon
@@ -145,7 +155,7 @@ const ItemHeader = props => {
                 size={20}
                 style={styles.icon}
             />
-            <Title style={styles.title}>{shopName}</Title>
+            <Title style={styles.title}>{shop?.shopName}</Title>
         </View>
     )
 }
@@ -159,7 +169,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center'
     },
-    border:{
+    border: {
         borderTopWidth: 1,
         borderTopColor: MAIN_BACKGROUND
     },

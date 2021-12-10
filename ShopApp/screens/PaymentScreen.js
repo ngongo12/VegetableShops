@@ -37,7 +37,7 @@ const PaymentScreen = (props) => {
 
             <FlatList
                 data={cartProducts}
-                renderItem={({ item }) => <PaymentItem item={item} productList={productList} />}
+                renderItem={({ item }) => <PaymentItem item={item} productList={productList} chosenAddress={chosenAddress} />}
                 ListHeaderComponent={() => (
                     <Pressable style={{ backgroundColor: '#fff', paddingBottom: 10, flexDirection: 'row', alignItems: 'center' }}>
                         <View style={{ flex: 1 }}>

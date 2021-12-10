@@ -112,3 +112,7 @@ exports.changePassword = async (user) => {
 exports.getShopName = async ( id ) => {
     return await userService.getShopName(id);
 }
+
+exports.getShopByID = async ( id ) => {
+    return await userService.getShopByID(id);
+}
