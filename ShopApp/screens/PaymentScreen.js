@@ -5,7 +5,8 @@ import {
     ScrollView,
     Alert,
     Pressable,
-    FlatList
+    FlatList,
+    Modal
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -23,8 +24,9 @@ import PaymentItem from '../components/List/PaymentItem';
 const PaymentScreen = (props) => {
     const { cart, cAction, user: { user }, navigation: { goBack } } = props;
     const { route: { params } } = props;
-    const { cartProducts, productList, totalPrice } = params;
+    const { cartProducts, productList } = params;
     const { address } = user;
+    const [visibleModal, setVisibleModal] = useState(false);
     const [chosenAddress, setChosenAddress] = useState();
     useEffect(() => {
         if (address.length > 0 && !chosenAddress) {
@@ -32,14 +34,18 @@ const PaymentScreen = (props) => {
         }
     }, [address])
 
+    const onChooseAddress = (item) => {
+        setChosenAddress(item);
+        setVisibleModal(false);
+    }
+
     return (
         <View style={styles.container}>
-
             <FlatList
                 data={cartProducts}
                 renderItem={({ item }) => <PaymentItem item={item} productList={productList} chosenAddress={chosenAddress} />}
                 ListHeaderComponent={() => (
-                    <Pressable style={{ backgroundColor: '#fff', paddingBottom: 10, flexDirection: 'row', alignItems: 'center' }}>
+                    <Pressable onPress={() => setVisibleModal(true)} style={{ backgroundColor: '#fff', paddingBottom: 10, flexDirection: 'row', alignItems: 'center' }}>
                         <View style={{ flex: 1 }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <Ionicons name='location-outline' color={RED} size={22} style={{ paddingHorizontal: 15, paddingVertical: 5 }} />
@@ -56,16 +62,45 @@ const PaymentScreen = (props) => {
                 )}
             />
             <View style={styles.buyView}>
-                <DefautText style={styles.totalPrice}>Thành tiền: <SellPrice>{totalPrice}</SellPrice></DefautText>
+                <DefautText style={styles.totalPrice}></DefautText>
                 <DefautText
                     style={styles.buyButton}
-                    onPress={() => navigate('PaymentScreen', { ...{ productList, cartProducts } })}
                 > Mua hàng</DefautText>
             </View>
+            <Modal
+                visible={visibleModal}
+            >
+                <Title style={[styles.headerContent, {backgroundColor: MainColor, marginTop: 0, color: '#fff'}]}><Icon name='left' size={15}/>{`       `}Hãy chọn địa chỉ giao hàng</Title>
+                <FlatList
+                    data={address}
+                    renderItem={({ item, index }) => <ItemAddress
+                        item={item}
+                        key={index}
+                        chosenAddress={chosenAddress}
+                        onPress={()=> onChooseAddress(item)}
+                    />}
+                />
+            </Modal>
         </View>
     )
 }
 
+const ItemAddress = props => {
+    const { item, chosenAddress, onPress } = props;
+    return (
+        <>
+            <Pressable style={styles.item} onPress={onPress}>
+                <View style={styles.itemContent}>
+                    <DefautText style={styles.itemText}>{`${item?.details}, ${item?.ward?.name}`}</DefautText>
+                    <DefautText style={styles.itemText}>{item?.district?.name}</DefautText>
+                    <DefautText style={styles.itemLargeText}>{item?.province?.name}</DefautText>
+                </View>
+                {(chosenAddress === item) && (<DefautText style={styles.delete} onPress={() => setVisibleModal(true)}>Đã chọn</DefautText>)}
+            </Pressable>
+        </>
+
+    )
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -100,6 +135,42 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         flex: 1,
     },
+    item: {
+        backgroundColor: '#fff',
+        flexDirection: 'row',
+        marginBottom: 1,
+        borderBottomWidth: 0.5,
+        borderBottomColor: 'silver'
+    },
+    delete: {
+        color: RED,
+        paddingTop: 10,
+        paddingHorizontal: 15
+    },
+    itemContent: {
+        flex: 1
+    },
+    itemText: {
+        paddingHorizontal: 15,
+        marginTop: 10
+    },
+    itemLargeText: {
+        paddingHorizontal: 15,
+        marginVertical: 10,
+        fontWeight: 'bold'
+    },
+    defautValue: {
+        marginHorizontal: 15,
+        fontSize: 12,
+        color: RED,
+        width: 100,
+        textAlign: 'center',
+        paddingVertical: 3,
+        borderWidth: 0.5,
+        borderRadius: 3,
+        borderColor: RED,
+        marginBottom: 10
+    }
 })
 
 const mapStateToProps = (state) => {

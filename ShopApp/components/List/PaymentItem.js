@@ -2,46 +2,48 @@ import React, { useState, useEffect } from 'react';
 import {
     View,
     StyleSheet,
-    TextInput
+    TextInput,
+    Modal,
+    FlatList,
+    Pressable
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import userActions from '../../actions/userActions';
 import cartActions from '../../actions/cartActions';
 
-import { getCartProduct } from '../api/cartAPI';
 import Icon from 'react-native-vector-icons/AntDesign';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { DefautText, LargeText, SellPrice, Title } from '../../components/Text/AppTexts';
+import { DateFm, DefautText, LargeText, SellPrice, Title } from '../../components/Text/AppTexts';
 import { getShopByID } from '../../api/userAPI';
 import { DARK_GREEN, MainColor, MAIN_BACKGROUND, RED } from '../../constants/colors';
-import { navigate } from '../../config/rootNavigation';
 import FastImage from 'react-native-fast-image';
 import { getDisctanceB2P } from '../../api/mapAPI';
 
 const PaymentItem = props => {
-    const { item, productList, cart, chosenAddress } = props;
+    const { item, cart, chosenAddress } = props;
     const { data } = item;
     const [buyList, setBuyList] = useState([]);
     let totalAmount = 0;
     let totalPrice = 0;
     const [message, setMessage] = useState('');
+    const [visibleModal, setVisibleModal] = useState(false);
     const [shop, setShop] = useState();
     const [chosenMethodIndex, setChosenMethodIndex] = useState(0);
     const [distance, setDistance] = useState(10);
     const [deliveryFee, setDeliveryFee] = useState(0);
+    const [payMethod, setPayMethod] = useState('COD');
     const deliveryMethod = [
         {
             name: 'Nhanh',
             time: [2, 3],
             originPrice: 12000,
-            pricePerKm: 500
+            pricePerKm: 650
         },
         {
             name: 'Chậm',
             time: [4, 6],
             originPrice: 10000,
-            pricePerKm: 300
+            pricePerKm: 500
         },
         {
             name: 'Siêu tốc',
@@ -53,7 +55,7 @@ const PaymentItem = props => {
 
     useEffect(() => {
         setDeliveryFee(deliveryMethod[chosenMethodIndex].originPrice + deliveryMethod[chosenMethodIndex].pricePerKm * distance);
-    }, [setChosenMethodIndex, distance])
+    }, [chosenMethodIndex, distance])
 
     useEffect(() => {
         let temp = data.map(e => {
@@ -84,7 +86,12 @@ const PaymentItem = props => {
             setDistance(tempDistance)
         }
     }, [shop])
-    console.log(shop)
+
+    const onChooseDeliveryMethod = (index) => {
+        setVisibleModal(false);
+        setChosenMethodIndex(index);
+    }
+    console.log(buyList)
 
     return (
         <>
@@ -96,8 +103,15 @@ const PaymentItem = props => {
                             <Item item={e} key={index} />
                         )
                     })}
-                    <DeliveryMethod method={deliveryMethod[chosenMethodIndex]} deliveryFee={deliveryFee} distance={distance} />
-                    <View style={[styles.row, { paddingHorizontal: 10 }]}>
+                    <DeliveryMethod method={deliveryMethod[chosenMethodIndex]}
+                        onPress={() => setVisibleModal(true)}
+                        deliveryFee={deliveryFee}
+                        distance={distance} />
+
+                    <View style={[styles.row, { paddingHorizontal: 10, paddingVertical: 10 }]}>
+                        <DefautText>Phương thức thanh toán: {payMethod}</DefautText>
+                    </View>
+                    <View style={[styles.row, styles.border, { paddingHorizontal: 10 }]}>
                         <DefautText>Tin nhắn:</DefautText>
                         <TextInput
                             value={message}
@@ -112,6 +126,17 @@ const PaymentItem = props => {
                     </View>
                 </View>
             )}
+            <Modal
+                visible={visibleModal}
+            >
+                <FlatList
+                    data={deliveryMethod}
+                    renderItem={({ item, index }) => <DeliveryMethod
+                    method={item}
+                    distance={distance}
+                    onPress={() => onChooseDeliveryMethod(index)} />}
+                />
+            </Modal>
         </>
     )
 }
@@ -133,16 +158,21 @@ const Item = props => {
 }
 
 const DeliveryMethod = props => {
-    const { method, deliveryFee, distance } = props;
+    const { method, distance, onPress } = props;
     return (
-        <View style={styles.deliveryContain}>
+        <Pressable onPress={onPress} style={styles.deliveryContain}>
             <DefautText style={styles.deliveryHeader}>Phương thức vận chuyển (Nhấn để chọn)</DefautText>
             <View style={[styles.row, styles.border, { paddingTop: 10 }]}>
                 <DefautText style={{ color: '#000', fontWeight: '100' }}>{method?.name} ({distance}km)</DefautText>
-                <SellPrice style={{ fontSize: 13, flex: 1, textAlign: 'right', color: '#000', fontWeight: '100' }}>{deliveryFee}</SellPrice>
+                <SellPrice style={{ fontSize: 13, flex: 1, textAlign: 'right', color: '#000', fontWeight: '100' }}>{method?.pricePerKm * distance}</SellPrice>
             </View>
-            <DefautText style={{ paddingBottom: 10 }}>Nhận hàng vào</DefautText>
-        </View>
+            <DefautText style={{ paddingBottom: 10 }}>
+                Nhận hàng vào{' '}
+                <DateFm>{method.time[0]}</DateFm>
+                {' - '}
+                <DateFm>{method.time[1]}</DateFm>
+            </DefautText>
+        </Pressable>
     )
 }
 

@@ -71,6 +71,19 @@ export const OriginPrice = ( props ) => {
     )
 }
 
+export const DateFm = ( props ) => {
+    const { children, style, onPress } = props;
+    let date = new Date();
+    date.setDate(date.getDate()+children);
+    
+    let sDate = `${date.getDate()}th${date.getMonth()+1}`;
+    return (
+        <Text onPress={onPress} style={[styles.font, style]}>
+            {sDate}
+        </Text>
+    )
+}
+
 export const PressableText = ( props ) => {
     const { children, style, onPress } = props;
     return (
