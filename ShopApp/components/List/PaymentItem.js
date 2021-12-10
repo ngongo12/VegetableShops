@@ -20,7 +20,7 @@ import FastImage from 'react-native-fast-image';
 import { getDisctanceB2P } from '../../api/mapAPI';
 
 const PaymentItem = props => {
-    const { item, cart, chosenAddress } = props;
+    const { item, cart, chosenAddress, orders, setOrders } = props;
     const { data } = item;
     const [buyList, setBuyList] = useState([]);
     let totalAmount = 0;
@@ -68,12 +68,27 @@ const PaymentItem = props => {
         })
         temp = temp.filter(e => e.chosen === true)
         setBuyList(temp);
+        //
+        
     }, []);
 
     buyList.forEach(e => {
         totalAmount += e.amount;
         totalPrice += e.amount * e.sellPrice;
     })
+
+    useEffect(() => {
+        let temp = orders;
+        temp.set(item?.key, {
+            products: buyList,
+            deliveryMethod: deliveryMethod[chosenMethodIndex],
+            payMethod,
+            message,
+            distance,
+            deliveryFee,
+            totalPrice: totalPrice+deliveryFee
+        })
+    }, [buyList, chosenMethodIndex, message, distance])
 
     useEffect(() => {
         //Lấy thông tin shop
@@ -91,7 +106,6 @@ const PaymentItem = props => {
         setVisibleModal(false);
         setChosenMethodIndex(index);
     }
-    console.log(buyList)
 
     return (
         <>

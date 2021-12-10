@@ -28,6 +28,7 @@ const PaymentScreen = (props) => {
     const { address } = user;
     const [visibleModal, setVisibleModal] = useState(false);
     const [chosenAddress, setChosenAddress] = useState();
+    const [orders, setOrders] = useState(new Map());
     useEffect(() => {
         if (address.length > 0 && !chosenAddress) {
             setChosenAddress(address[0]);
@@ -38,12 +39,27 @@ const PaymentScreen = (props) => {
         setChosenAddress(item);
         setVisibleModal(false);
     }
+    
+    const onOrder = () => {
+        orders.forEach(e => {
+            e.products = e?.products.map(e => {
+                return {
+                    _id: e._id,
+                    amount: e.amount,
+                    images: [e.images[0]],
+                    name: e.name,
+                    sellPrice: e.sellPrice
+                }
+            });
+            console.log(e);
+        })
+    }
 
     return (
         <View style={styles.container}>
             <FlatList
                 data={cartProducts}
-                renderItem={({ item }) => <PaymentItem item={item} productList={productList} chosenAddress={chosenAddress} />}
+                renderItem={({ item }) => <PaymentItem  {...{ item, productList, chosenAddress, orders, setOrders }} />}
                 ListHeaderComponent={() => (
                     <Pressable onPress={() => setVisibleModal(true)} style={{ backgroundColor: '#fff', paddingBottom: 10, flexDirection: 'row', alignItems: 'center' }}>
                         <View style={{ flex: 1 }}>
@@ -65,6 +81,7 @@ const PaymentScreen = (props) => {
                 <DefautText style={styles.totalPrice}></DefautText>
                 <DefautText
                     style={styles.buyButton}
+                    onPress={onOrder}
                 > Mua hàng</DefautText>
             </View>
             <Modal
