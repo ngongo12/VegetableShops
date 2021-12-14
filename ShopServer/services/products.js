@@ -84,3 +84,15 @@ exports.getSalesProducts = async (uid) => {
         )
     return products;
 }
+
+exports.increaseSold = async (pid, num) => {
+    await productModel.updateOne(
+        { _id: pid },
+        {
+            $inc: { 
+                sold: num,
+                amount: -num //Tăng số lượng đã bán và giảm số lượng sản phẩm
+            }
+        }
+    )
+}
