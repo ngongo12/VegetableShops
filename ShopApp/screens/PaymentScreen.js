@@ -6,7 +6,8 @@ import {
     Alert,
     Pressable,
     FlatList,
-    Modal
+    Modal,
+    ToastAndroid
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -20,6 +21,8 @@ import { getShopName } from '../api/userAPI';
 import { DARK_GREEN, MainColor, RED } from '../constants/colors';
 import { navigate } from '../config/rootNavigation';
 import PaymentItem from '../components/List/PaymentItem';
+import orderAPI from '../api/orderAPI';
+import LoadingModal from '../components/LoadingModal';
 
 const PaymentScreen = (props) => {
     const { cart, cAction, user: { user }, navigation: { goBack } } = props;
@@ -29,6 +32,8 @@ const PaymentScreen = (props) => {
     const [visibleModal, setVisibleModal] = useState(false);
     const [chosenAddress, setChosenAddress] = useState();
     const [orders, setOrders] = useState(new Map());
+    const [isOrdering, setIsOrdering] = useState(false);
+    const [mesage, setMesage] = useState('Đang tạo đơn hàng')
     useEffect(() => {
         if (address.length > 0 && !chosenAddress) {
             setChosenAddress(address[0]);
@@ -41,17 +46,36 @@ const PaymentScreen = (props) => {
     }
     
     const onOrder = () => {
-        orders.forEach(e => {
-            e.products = e?.products.map(e => {
+        //Hiển thị modal
+        setIsOrdering(true);
+        let count = 0;
+        orders.forEach((e ,key) => {
+            e.products = e?.products.map(elm => {
                 return {
-                    _id: e._id,
-                    amount: e.amount,
-                    images: [e.images[0]],
-                    name: e.name,
-                    sellPrice: e.sellPrice
+                    _id: elm._id,
+                    amount: elm.amount,
+                    images: [elm.images[0]],
+                    name: elm.name,
+                    sellPrice: elm.sellPrice
                 }
             });
-            console.log(e);
+            if(e.products.length > 0){
+                const order = {
+                    ...e,
+                    shopID: key,
+                    owner: user._id
+                }
+                orderAPI.createNewOrder({ order })
+                    .then(res => {
+                        setMesage(`Đã tạo xong ${count}. Hãy chờ`);
+                    })
+                    .catch(e => console.error(e))
+            }
+            //xóa product đã chọn
+            cAction.deleteChosenProduct({uid: user._id});
+            ToastAndroid.show('Đã tạo xong tất cả đơn hàng', ToastAndroid.SHORT);
+            setIsOrdering(false);
+            goBack();
         })
     }
 
@@ -98,6 +122,10 @@ const PaymentScreen = (props) => {
                     />}
                 />
             </Modal>
+            <LoadingModal
+                message={mesage}
+                visible={isOrdering}
+            />
         </View>
     )
 }

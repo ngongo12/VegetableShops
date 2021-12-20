@@ -130,3 +130,11 @@ exports.doneOrder = async (uid, orderID) => {
         succes: false
     };
 }
+
+exports.getShopOrderByState = async (uid, state) => {
+    return await orderService.getShopOrderByState(uid, state);
+}
+
+exports.getMyOrderByState = async (uid, state) => {
+    return await orderService.getMyOrderByState(uid, state);
+}

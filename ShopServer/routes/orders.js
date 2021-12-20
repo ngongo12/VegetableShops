@@ -50,4 +50,20 @@ router.post('/doneOrder', async (req, res, next) =>{
     })
 });
 
+router.get('/getShopOrderByState', async (req, res, next) =>{
+    const { uid, state } = req.query;
+    const result = await orderController.getShopOrderByState(uid, state);
+    res.json({
+        result
+    })
+});
+
+router.get('/getMyOrderByState', async (req, res, next) =>{
+    const { uid, state } = req.query;
+    const result = await orderController.getMyOrderByState(uid, state);
+    res.json({
+        result
+    })
+});
+
 module.exports = router;

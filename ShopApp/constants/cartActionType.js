@@ -4,6 +4,7 @@ export const LOAD_CART = 'LOAD_CART';
 export const DESCREASE = 'DESCREATE';
 export const CHOOSE_PRODUCT = 'CHOOSE_PRODUCT';
 export const CLEAR_CHOSEN = 'CLEAR_CHOSEN';
+export const DELETE_BUY_PRODUCTS = 'DELETE_BUY_PRODUCTS';
 
 export default {
     ADD_CART,
@@ -11,5 +12,6 @@ export default {
     LOAD_CART,
     DESCREASE,
     CHOOSE_PRODUCT,
-    CLEAR_CHOSEN
+    CLEAR_CHOSEN,
+    DELETE_BUY_PRODUCTS
 }

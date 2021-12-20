@@ -29,10 +29,10 @@ const ProfileScreen = (props) => {
             <View style={styles.orderStatusContainer}>
                 <Title style={styles.title}>Tra cứu đơn hàng</Title>
                 <View style={styles.orderStatusGroupView}>
-                    <OrderStateIcon name='customerservice' title='Chờ duyệt' />
-                    <OrderStateIcon name='dropbox' title='Chờ lấy hàng' />
-                    <OrderStateIcon name='dingding-o' title='Đang giao' />
-                    <OrderStateIcon name='star' title='Đánh giá' />
+                    <OrderStateIcon name='customerservice' title='Chờ duyệt' onPress={()=> navigate('MyOrderScreen', {screenName: 'NewOrderScreen'})} />
+                    <OrderStateIcon name='dropbox' title='Chờ lấy hàng' onPress={()=> navigate('MyOrderScreen', {screenName: 'ConfirmedOrderScreen'})} />
+                    <OrderStateIcon name='dingding-o' title='Đang giao' onPress={()=> navigate('MyOrderScreen', {screenName: 'DeliveryOrderScreen'})} />
+                    <OrderStateIcon name='star' title='Đánh giá' onPress={()=> navigate('MyOrderScreen', {screenName: 'DoneOrderScreen'})} />
                 </View>
             </View>
             <View style={{ alignContent: 'flex-end' }}>

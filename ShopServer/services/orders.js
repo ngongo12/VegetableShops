@@ -6,8 +6,6 @@ exports.createOrder = async (order) => {
         createdAt: new Date(),
         state: 'created',
     });
-    console.log(order);
-    console.log(item);
 
     return await item.save();
 }
@@ -20,5 +18,23 @@ exports.updateOrder = async (id, updateValue) => {
     return await orderModel.updateOne(
         {_id: id},
         { ...updateValue}
+    )
+}
+
+exports.getShopOrderByState = async (uid, state) => {
+    return await orderModel.find(
+        { 
+            shopID: uid,
+            state: state
+        },
+    )
+}
+
+exports.getMyOrderByState = async (uid, state) => {
+    return await orderModel.find(
+        { 
+            owner: uid,
+            state: state
+        }
     )
 }

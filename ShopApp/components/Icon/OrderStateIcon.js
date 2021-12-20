@@ -13,7 +13,7 @@ import { DefautText } from '../Text/AppTexts';
 const OrderStateIcon = (props) => {
     const { name, title, onPress } = props;
     return (
-        <Pressable style={styles.container}>
+        <Pressable style={styles.container} onPress={onPress} >
             <Icon name={name} size={32} color={ MainColor } />
             <DefautText style={styles.text}>{title}</DefautText>
         </Pressable>

@@ -89,6 +89,13 @@ const cartReducer = (state = [], {type, payload}) => {
             storeData(uid, temp);
             return temp;
         }
+        case actions.DELETE_BUY_PRODUCTS:{
+            const { uid } = payload
+            temp = temp.filter(e => e.chosen === false);
+            console.log('cart after deleted',temp)
+            storeData(uid, temp);
+            return temp;
+        }
         default: return temp;
     }
 }

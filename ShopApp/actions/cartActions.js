@@ -30,11 +30,17 @@ export const clearChosen = payload => ({
     payload
 })
 
+export const deleteChosenProduct = payload => ({
+    type: actions.DELETE_BUY_PRODUCTS,
+    payload
+})
+
 export default {
     addToCart,
     removeFromCart,
     load,
     descreaseAmount,
     changeChosen,
-    clearChosen
+    clearChosen,
+    deleteChosenProduct
 }
