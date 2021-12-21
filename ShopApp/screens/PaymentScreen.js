@@ -56,14 +56,15 @@ const PaymentScreen = (props) => {
                     amount: elm.amount,
                     images: [elm.images[0]],
                     name: elm.name,
-                    sellPrice: elm.sellPrice
+                    sellPrice: elm.sellPrice,
                 }
             });
             if(e.products.length > 0){
                 const order = {
                     ...e,
                     shopID: key,
-                    owner: user._id
+                    owner: user._id,
+                    address: chosenAddress
                 }
                 orderAPI.createNewOrder({ order })
                     .then(res => {

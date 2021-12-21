@@ -15,6 +15,7 @@ import userActions from '../../actions/userActions';
 import { productUrl } from '../../api/productAPI';
 import LinearGradient from 'react-native-linear-gradient';
 import { Title, PressableText, DefautText, SellPrice, OriginPrice, SalePercent } from '../Text/AppTexts';
+import { navigate } from '../../config/rootNavigation';
 
 const SaleProductList = (props) => {
     const { user:{user} } = props;
@@ -67,7 +68,7 @@ const ItemView = (props) => {
     const { item } = props;
     //console.log(item)
     return (
-        <Pressable style={styles.itemWrapper}>
+        <Pressable style={styles.itemWrapper} onPress={()=>navigate('ProductDetailScreen', { productID: item._id })}>
             <FastImage source={{ uri: item.images[0] }} style={styles.image} />
             <View style={styles.itemContent}>
                 <DefautText>{item?.name}</DefautText>

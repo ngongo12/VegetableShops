@@ -22,6 +22,7 @@ const orderSchema = new Schema({
     cancelReason: { type: String },
     shopID: { type: ObjectId },
     owner: { type: ObjectId },
+    address: { type: Object }
 })
 
 module.exports = mongoose.model('order', orderSchema);

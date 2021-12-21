@@ -8,7 +8,7 @@ import userActions from '../../actions/userActions';
 import orderAPI from '../../api/orderAPI';
 import OrderItem from '../../components/List/OrderItem';
 
-const ContainScreen = (props) => {
+const OrderDetailsScreen = (props) => {
     const { user: { user } } = props;
     const [orders, setOrders] = useState();
     const isFocused = useIsFocused();
@@ -19,7 +19,7 @@ const ContainScreen = (props) => {
     }, [isFocused])
 
     const fetchOrder = () => {
-        orderAPI.getMyOrderByState(user._id, 'done')
+        orderAPI.getMyOrderByState(user._id, 'created')
             .then(res => {
                 if (res?.result) {
                     setOrders(res.result);
@@ -34,8 +34,7 @@ const ContainScreen = (props) => {
             renderItem={({ item }) => (
                 <OrderItem
                     item={item}
-                    isDone={true}
-                    deliveryState='Giao hàng thành công'
+                    deliveryState='Đang chờ phê duyệt'
                 />
             )}
         />
@@ -57,4 +56,4 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(ContainScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(OrderDetailsScreen)
