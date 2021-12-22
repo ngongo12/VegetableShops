@@ -33,3 +33,7 @@ exports.getShopName = async ( id ) => {
 exports.getShopByID = async ( id ) => {
     return await userModel.findOne({ _id: id }, 'fullname shopName shopAddress');
 }
+
+exports.getUserByID = async ( id ) => {
+    return await userModel.findOne({ _id: id }, 'fullname address phone');
+}

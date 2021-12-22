@@ -65,6 +65,13 @@ export const getShopByID = id => {
         .catch(e => 'undefine');
 }
 
+export const getUserByID = id => {
+    return fetch(`${apiURL}users/getUserByID?id=${id}`)
+        .then(res => res.json())
+        .then(res => res)
+        .catch(e => 'undefine');
+}
+
 export const register = ( user ) => {
     const registerUrl = `${apiURL}users/register`;
     return fetch(registerUrl, {
@@ -84,5 +91,6 @@ export default {
     editProfiles,
     register,
     getShopName,
-    addFavorite
+    addFavorite,
+    getUserByID
 };

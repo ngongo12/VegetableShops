@@ -117,6 +117,7 @@ exports.doneOrder = async (uid, orderID) => {
     const result = await orderService.updateOrder(orderID, {
         doneAt: new Date(),
         state: 'done',
+        doneBy: uid
     });
 
     if (result?.acknowledged) {

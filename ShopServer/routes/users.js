@@ -83,4 +83,19 @@ router.get('/getShopByID', async (req, res, next) => {
   }
 })
 
+router.get('/getUserByID', async (req, res, next) => {
+  const { id } = req.query;
+  if (id) {
+    const userRep = await userController.getUserByID(id);
+    res.json(userRep);
+  }
+  else {
+    res.json({
+      message: 'Không có dữ liệu',
+      result: false
+    })
+
+  }
+})
+
 module.exports = router;

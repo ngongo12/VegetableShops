@@ -84,6 +84,18 @@ export const DateFm = ( props ) => {
     )
 }
 
+export const DateTimeFm = ( props ) => {
+    const { children, style, onPress } = props;
+    let date = new Date(children);
+
+    let sDate = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+    return (
+        <Text onPress={onPress} style={[styles.font, style]}>
+            {sDate}
+        </Text>
+    )
+}
+
 export const PressableText = ( props ) => {
     const { children, style, onPress } = props;
     return (

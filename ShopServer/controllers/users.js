@@ -116,3 +116,7 @@ exports.getShopName = async ( id ) => {
 exports.getShopByID = async ( id ) => {
     return await userService.getShopByID(id);
 }
+
+exports.getUserByID = async ( id ) => {
+    return await userService.getUserByID(id);
+}

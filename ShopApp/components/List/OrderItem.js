@@ -18,7 +18,7 @@ const OrderItem = props => {
     const { products } = item;
     const firstProduct = products[0];
     return (
-        <Pressable style={styles.container} onPress={()=>navigate('OrderDetailScreen')}>
+        <Pressable style={styles.container} onPress={()=>navigate('OrderDetailScreen', { orderID : item._id })}>
             <ItemHeader shopID={item?.shopID} isDone={isDone} />
             <View style={[styles.itemContain, styles.bottomBorder]}>
                 <FastImage source={{ uri: firstProduct?.images[0] }} style={styles.image} />

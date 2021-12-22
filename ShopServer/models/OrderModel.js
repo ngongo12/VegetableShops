@@ -18,6 +18,7 @@ const orderSchema = new Schema({
     deliveryAt: { type: Date },
     cancelAt: { type: Date },
     cancelBy: { type: ObjectId},
+    doneBy: { type: ObjectId},
     doneAt: { type: Date },
     cancelReason: { type: String },
     shopID: { type: ObjectId },
