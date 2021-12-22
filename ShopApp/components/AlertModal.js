@@ -52,8 +52,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 40,
-        borderTopLeftRadius: 40,
-        borderTopRightRadius: 40
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
+        borderColor: 'silver',
+        borderWidth: 1,
+        borderBottomWidth: 0
     }
 })
 

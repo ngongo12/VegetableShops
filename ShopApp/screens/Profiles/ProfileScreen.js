@@ -6,6 +6,7 @@ import {
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import userActions from '../../actions/userActions';
+import cartActions from '../../actions/cartActions';
 import { Title } from '../../components/Text/AppTexts';
 import ProfileHeader from '../../components/Header/ProfileHeader';
 import ButtonSetting from '../../components/Button/ButtonSetting';
@@ -13,7 +14,7 @@ import OrderStateIcon from '../../components/Icon/OrderStateIcon';
 import AlerModal from '../../components/AlertModal';
 
 const ProfileScreen = (props) => {
-    const { user: { user }, navigation: { navigate }, actions } = props;
+    const { user: { user }, navigation: { navigate }, actions, cActions } = props;
     const [visibleModal, setVisibleModal] = useState(false);
     //console.log(user)
     const onPressLogout = () => {
@@ -21,6 +22,7 @@ const ProfileScreen = (props) => {
     }
     const onLogout = () => {
         actions.actionLogOut();
+        cActions.resetCart();
         navigate('LoginScreen');
     }
     return (
@@ -62,7 +64,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        actions: bindActionCreators(userActions, dispatch)
+        actions: bindActionCreators(userActions, dispatch),
+        cActions: bindActionCreators(cartActions, dispatch)
     }
 }
 

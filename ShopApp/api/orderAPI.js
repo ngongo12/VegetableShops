@@ -23,12 +23,25 @@ export const getOrderByID = (id) => {
 }
 
 export const setOrder = (type, uid, orderID) => {
-    return fetch(`${orderURL}${type}`, {
+    return fetch(`${orderURL}${type}Order`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({uid, orderID})
+    })
+    .then(res => res.json())
+    .then(res => res)
+    .catch(e => console.log(e));
+}
+
+export const cancelOrder = (uid, orderID, message) => {
+    return fetch(`${orderURL}cancelOrder`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({uid, orderID, message})
     })
     .then(res => res.json())
     .then(res => res)
@@ -54,5 +67,6 @@ export default {
     getOrderByID,
     setOrder,
     getShopOrderByState,
-    getMyOrderByState
+    getMyOrderByState,
+    cancelOrder
 }

@@ -96,6 +96,9 @@ const cartReducer = (state = [], {type, payload}) => {
             storeData(uid, temp);
             return temp;
         }
+        case actions.RESET_CART: {
+            return [];
+        }
         default: return temp;
     }
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, Pressable, View, ScrollView } from 'react-native';
+import { StyleSheet, Modal, View, ScrollView, ToastAndroid, Pressable, TextInput } from 'react-native';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -12,7 +12,7 @@ import FastImage from 'react-native-fast-image';
 import orderAPI from '../../api/orderAPI';
 import userAPI, { getShopName } from '../../api/userAPI';
 import { DARK_GREEN, MainColor, MAIN_BACKGROUND, RED } from '../../constants/colors';
-import { DefautText, Title, SellPrice, DateTimeFm } from '../../components/Text/AppTexts';
+import { DefautText, Title, SellPrice, DateTimeFm, HeaderText } from '../../components/Text/AppTexts';
 import NomalButton from '../../components/Button/NomalButton';
 
 const OrderDetailsScreen = (props) => {
@@ -25,6 +25,8 @@ const OrderDetailsScreen = (props) => {
     const [product, setProduct] = useState();
     const [orderState, setOrderState] = useState('');
     const [canCancel, setCanCancel] = useState(true);
+    const [visibleModal, setVisibleModal] = useState(false);
+    const [reason, setReason] = useState('');
 
     useEffect(() => {
         fetchOrder();
@@ -49,6 +51,7 @@ const OrderDetailsScreen = (props) => {
     }, [order])
 
     const fetchOrder = () => {
+        console.log('start fetch order');
         orderAPI.getOrderByID(orderID).then(res => setOrder(res?.result))
             .catch(e => console.error(e));
     }
@@ -56,6 +59,108 @@ const OrderDetailsScreen = (props) => {
     const fetchCustomer = (id) => {
         userAPI.getUserByID(id).then(res => setCustomer(res))
             .catch(e => console.error(e));
+    }
+
+    const confirmOrder = () => {
+        orderAPI.setOrder('confirm', user._id, order?._id)
+            .then(res => {
+                const { result } = res;
+                if (!result) {
+                    ToastAndroid.show('Lỗi hệ thống', ToastAndroid.SHORT);
+                    return;
+                }
+                if (result?.success) {
+                    ToastAndroid.show(result?.message, ToastAndroid.SHORT);
+                    fetchOrder();
+                }
+                else {
+                    if (result?.message) {
+                        ToastAndroid.show(result?.message, ToastAndroid.SHORT);
+                    }
+                    else {
+                        ToastAndroid.show('Lỗi hệ thống', ToastAndroid.SHORT);
+                    }
+                }
+            })
+            .catch(e => console.error(e))
+    }
+
+    const deliveryOrder = () => {
+        orderAPI.setOrder('delivery', user._id, order?._id)
+            .then(res => {
+                const { result } = res;
+                if (!result) {
+                    ToastAndroid.show('Lỗi hệ thống', ToastAndroid.SHORT);
+                    return;
+                }
+                if (result?.success) {
+                    ToastAndroid.show(result?.message, ToastAndroid.SHORT);
+                    fetchOrder();
+                }
+                else {
+                    if (result?.message) {
+                        ToastAndroid.show(result?.message, ToastAndroid.SHORT);
+                    }
+                    else {
+                        ToastAndroid.show('Lỗi hệ thống', ToastAndroid.SHORT);
+                    }
+                }
+            })
+            .catch(e => console.error(e))
+    }
+
+    const doneOrder = () => {
+        orderAPI.setOrder('done', user._id, order?._id)
+            .then(res => {
+                const { result } = res;
+                if (!result) {
+                    ToastAndroid.show('Lỗi hệ thống', ToastAndroid.SHORT);
+                    return;
+                }
+                if (result?.success) {
+                    ToastAndroid.show(result?.message, ToastAndroid.SHORT);
+                    fetchOrder();
+                }
+                else {
+                    if (result?.message) {
+                        ToastAndroid.show(result?.message, ToastAndroid.SHORT);
+                    }
+                    else {
+                        ToastAndroid.show('Lỗi hệ thống', ToastAndroid.SHORT);
+                    }
+                }
+            })
+            .catch(e => console.error(e))
+    }
+
+    const onCancelOrder = () => {
+        if (reason.length < 6) {
+            ToastAndroid.show('Lý do quá ngắn hãy điền cụ thể ', ToastAndroid.SHORT);
+            return;
+        }
+
+        orderAPI.cancelOrder(user._id, order?._id, reason)
+            .then(res => {
+                const { result } = res;
+                if (!result) {
+                    ToastAndroid.show('Lỗi hệ thống', ToastAndroid.SHORT);
+                    return;
+                }
+                if (result?.success) {
+                    ToastAndroid.show(result?.message, ToastAndroid.SHORT);
+                    setVisibleModal(false);
+                    fetchOrder();
+                }
+                else {
+                    if (result?.message) {
+                        ToastAndroid.show(result?.message, ToastAndroid.SHORT);
+                    }
+                    else {
+                        ToastAndroid.show('Lỗi hệ thống', ToastAndroid.SHORT);
+                    }
+                }
+            })
+            .catch(e => console.error(e))
     }
 
     //console.log('order ', order?.totalPrice)
@@ -73,6 +178,9 @@ const OrderDetailsScreen = (props) => {
                             <DefautText>{customer?.fullname} | SĐT: {customer?.phone}</DefautText>
                             <DefautText>{deliveryAddress?.details}, {deliveryAddress?.ward?.name}</DefautText>
                             <DefautText>{deliveryAddress?.district?.name}, {deliveryAddress?.province?.name}</DefautText>
+                            <DefautText>Khoảng cách: {order?.distance}km </DefautText>
+                            {order?.deliveryMethod && <DefautText>Phương thức vận chuyển: {order?.deliveryMethod?.name}</DefautText>}
+                            <DefautText>Phí ship: <SellPrice style={{ fontSize: 12 }}>{order?.deliveryFee}</SellPrice></DefautText>
                         </View>
                     </View>
                     <Icon name='right' size={25} style={{ paddingHorizontal: 10 }} />
@@ -109,7 +217,7 @@ const OrderDetailsScreen = (props) => {
                             style={styles.icon}
                         />
                         <Title style={styles.title}>Phương thức thanh toán</Title>
-                        <DefautText style={{ color: MainColor }}>COD</DefautText>
+                        <DefautText style={{ color: MainColor }}>{order?.payMethod}</DefautText>
                     </View>
                 </View>
                 <View style={styles.container}>
@@ -129,7 +237,7 @@ const OrderDetailsScreen = (props) => {
                         </DefautText>
                     </View>
                 </View>
-                <View style={[styles.container, { paddingBottom: 10 }]}>
+                <View style={[styles.container, styles.bottomBorder, { paddingBottom: 10 }]}>
                     <View style={[styles.headerContent]}>
                         <Title style={styles.title}>Mã đơn hàng</Title>
                         <DefautText style={{ color: MainColor }}>{order?._id}</DefautText>
@@ -160,12 +268,30 @@ const OrderDetailsScreen = (props) => {
                         </View>
                     )}
                 </View>
-
+                {(user._id === order?.shopID && order?.state === 'created') && <NomalButton onPress={confirmOrder} style={styles.button}>Xác nhận đơn hàng</NomalButton>}
+                {(user._id === order?.shopID && order?.state === 'confirm') && <NomalButton onPress={deliveryOrder} style={styles.button}>Xác nhận chuyển hàng</NomalButton>}
+                {(order?.state === 'delivery') && <NomalButton onPress={doneOrder} style={styles.button}>Xác nhận hoàn thành</NomalButton>}
+                {canCancel && <NomalButton onPress={() => setVisibleModal(true)} style={[styles.button]} color={RED}>Hủy đơn hàng</NomalButton>}
             </ScrollView>
-            {(user._id === order?.shopID && order?.state === 'created') && <NomalButton style={styles.button}>Xác nhận đơn hàng</NomalButton>}
-            {(user._id === order?.shopID && order?.state === 'confirm') && <NomalButton style={styles.button}>Xác nhận chuyển hàng</NomalButton>}
-            {(order?.state === 'delivery') && <NomalButton style={styles.button}>Xác nhận hoàn thành</NomalButton>}
-            {canCancel && <NomalButton style={[styles.button]} color={RED}>Hủy đơn hàng</NomalButton>}
+            <Modal
+                visible={visibleModal}
+                dimissModal={() => setVisibleModal(false)}
+                transparent={true}
+                animationType='slide'
+            >
+                <Pressable style={{ flex: 1 }} onPress={() => setVisibleModal(false)} />
+                <View style={styles.modalContent}>
+                    <HeaderText>Hủy đơn hàng</HeaderText>
+                    <DefautText style={{ margin: 10 }}>Bạn muốn hủy đơn hàng này?</DefautText>
+                    <TextInput
+                        placeholder='Hãy điền lý do hủy đơn hàng *'
+                        value={reason}
+                        onChangeText={setReason}
+                        style={styles.inputText}
+                    />
+                    <NomalButton onPress={onCancelOrder} style={{ width: '100%' }} color={RED}>Hủy</NomalButton>
+                </View>
+            </Modal>
         </>
     )
 }
@@ -267,6 +393,24 @@ const styles = StyleSheet.create({
     button: {
         marginTop: 0,
         paddingHorizontal: 10,
+    },
+    modalContent: {
+        backgroundColor: '#fff',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 40,
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
+        borderColor: 'silver',
+        borderWidth: 1,
+        borderBottomWidth: 0
+    },
+    inputText: {
+        borderWidth: 0.5,
+        borderColor: 'silver',
+        width: '100%',
+        paddingHorizontal: 10,
+        fontSize: 13
     }
 })
 

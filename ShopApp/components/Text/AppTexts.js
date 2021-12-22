@@ -57,7 +57,8 @@ export const SellPrice = ( props ) => {
     const { children, style } = props;
     return (
         <Text style={[styles.font, styles.price, style]}>
-            { fmNumber(children) } đ
+            {!children }
+            { children ? fmNumber(children) : 0 } đ
         </Text>
     )
 }

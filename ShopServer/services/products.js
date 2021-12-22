@@ -86,6 +86,7 @@ exports.getSalesProducts = async (uid) => {
 }
 
 exports.increaseSold = async (pid, num) => {
+    //console.log('>>>>>>>>>>>>>>>>num ', num)
     await productModel.updateOne(
         { _id: pid },
         {

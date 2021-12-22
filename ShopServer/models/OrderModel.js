@@ -6,7 +6,7 @@ const ObjectId = Schema.ObjectId;
 const orderSchema = new Schema({
     id: { type: ObjectId },
     payMethod: { type: Object },
-    deliveryMothed: { type: Object },
+    deliveryMethod: { type: Object },
     message: { type: String },
     distance: { type: Number },
     deliveryFee: { type: Number },

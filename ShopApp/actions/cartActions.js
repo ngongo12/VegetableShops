@@ -35,6 +35,11 @@ export const deleteChosenProduct = payload => ({
     payload
 })
 
+export const resetCart = payload => ({
+    type: actions.RESET_CART,
+    payload
+})
+
 export default {
     addToCart,
     removeFromCart,
@@ -42,5 +47,6 @@ export default {
     descreaseAmount,
     changeChosen,
     clearChosen,
-    deleteChosenProduct
+    deleteChosenProduct,
+    resetCart
 }
