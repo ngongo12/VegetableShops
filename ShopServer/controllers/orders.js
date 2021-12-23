@@ -1,5 +1,6 @@
 const orderService = require('../services/orders');
-const productService = require('../services/products')
+const productService = require('../services/products');
+const notificationService = require('../services/notification');
 
 exports.createOrder = async (order) => {
     return await orderService.createOrder(order);
@@ -143,4 +144,9 @@ exports.getShopOrderByState = async (uid, state) => {
 
 exports.getMyOrderByState = async (uid, state) => {
     return await orderService.getMyOrderByState(uid, state);
+}
+
+exports.sendMessage = async (tokens, notification) => {
+    console.log('notification controller');
+    return await notificationService.sendMessage(tokens, notification);
 }

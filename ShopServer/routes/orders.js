@@ -66,4 +66,12 @@ router.get('/getMyOrderByState', async (req, res, next) =>{
     })
 });
 
+router.post('/sendNotification', async (req, res, next) =>{
+    const { tokens, notification } = req.body;
+    const result = await orderController.sendMessage(tokens, notification);
+    res.json({
+        result
+    })
+});
+
 module.exports = router;
