@@ -1,4 +1,5 @@
 import React from 'react';
+import { LogBox } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider } from 'react-redux';
@@ -25,7 +26,9 @@ import OrderDetailScreen from './screens/MyOrder/OrderDetailScreen';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
-
+  LogBox.ignoreLogs([
+    "Can't perform a React state update on an unmounted component."
+  ])
   return (
     <Provider store={redux.store}>
       <NavigationContainer ref={navigationRef}>

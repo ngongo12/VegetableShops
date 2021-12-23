@@ -25,6 +25,7 @@ import { MainColor, RED } from '../../constants/colors';
 import TextFieldForProduct from '../../components/Text/TextFieldForProduct';
 import LoadingView from '../../components/LoadingView';
 import ProductDetailHeader from '../../components/Header/ProductDetailHeader';
+import { navigate } from '../../config/rootNavigation';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -147,6 +148,13 @@ const ProductDetailScreen = (props) => {
         }
     }
 
+    const onBuyNow = () => {
+        addToCart();
+        navigate('CartScreen');
+    }
+
+    //console.log(product?.sold?.toString())
+
     return (
         <>
             {product && (
@@ -198,6 +206,7 @@ const ProductDetailScreen = (props) => {
                             <Title>Thông tin sản phẩm</Title>
                             <TextFieldForProduct style={styles.textfield} name='Danh mục'>{category?.name}</TextFieldForProduct>
                             <TextFieldForProduct style={styles.textfield} name='Thương hiệu'>{product.brand}</TextFieldForProduct>
+                            <TextFieldForProduct style={styles.textfield} name='Đã bán'>{product?.sold ? product?.sold : 0}</TextFieldForProduct>
                             <TextFieldForProduct style={styles.textfield} name='Xuất xứ'>{product.origin}</TextFieldForProduct>
                             <TextFieldForProduct style={styles.textfield} name='Trạng thái'>{(product?.amount && product.amount > 0) ? 'Còn hàng' : 'Hết hàng'}</TextFieldForProduct>
                             <TextFieldForProduct style={styles.textfield} name='Đơn vị tính'>{product.unit}</TextFieldForProduct>
@@ -207,26 +216,27 @@ const ProductDetailScreen = (props) => {
                             <DefautText>{product.description}</DefautText>
                         </View>
                     </ScrollView>
-                    <View style={styles.buttonView}>
-                        <Pressable style={[styles.button, styles.buttonVerticle]}>
-                            <MCIcon name='chat-processing-outline' color={MainColor} size={23} />
-                            <DefautText style={{ fontSize: 12 }}>Hỏi giá</DefautText>
-                        </Pressable>
-                        <View
-                            style={{
-                                backgroundColor: MainColor,
-                                height: '100%',
-                                width: 2
-                            }}
-                        />
-                        <Pressable onPress={addToCart} style={[styles.button, styles.buttonVerticle]}>
-                            <MCIcon name='cart-arrow-down' color={MainColor} size={23} />
-                            <DefautText style={{ fontSize: 12 }}>Giỏ hàng</DefautText>
-                        </Pressable>
-                        <Pressable style={[styles.button, styles.buttonBuy]}>
-                            <DefautText style={{ fontSize: 13, color: '#fff' }} >Mua ngay</DefautText>
-                        </Pressable>
-                    </View>
+                    {(user._id !== product?.owner) && (
+                        <View style={styles.buttonView}>
+                            <Pressable style={[styles.button, styles.buttonVerticle]}>
+                                <MCIcon name='chat-processing-outline' color={MainColor} size={23} />
+                                <DefautText style={{ fontSize: 12 }}>Hỏi giá</DefautText>
+                            </Pressable>
+                            <View
+                                style={{
+                                    backgroundColor: MainColor,
+                                    height: '100%',
+                                    width: 2
+                                }}
+                            />
+                            <Pressable onPress={addToCart} style={[styles.button, styles.buttonVerticle]}>
+                                <MCIcon name='cart-arrow-down' color={MainColor} size={23} />
+                                <DefautText style={{ fontSize: 12 }}>Giỏ hàng</DefautText>
+                            </Pressable>
+                            <Pressable onPress={onBuyNow} style={[styles.button, styles.buttonBuy]}>
+                                <DefautText style={{ fontSize: 13, color: '#fff' }} >Mua ngay</DefautText>
+                            </Pressable>
+                        </View>)}
                 </View>
             )}
             {!product && <LoadingView />}

@@ -10,6 +10,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import FastImage from 'react-native-fast-image';
 import orderAPI from '../../api/orderAPI';
+import { navigate } from '../../config/rootNavigation';
 import userAPI, { getShopName } from '../../api/userAPI';
 import { DARK_GREEN, MainColor, MAIN_BACKGROUND, RED } from '../../constants/colors';
 import { DefautText, Title, SellPrice, DateTimeFm, HeaderText } from '../../components/Text/AppTexts';
@@ -190,7 +191,9 @@ const OrderDetailsScreen = (props) => {
                     {
                         product?.map(e => {
                             return (
-                                <View style={[styles.itemContain, styles.bottomBorder]} key={e._id}>
+                                <Pressable
+                                    onPress={() => navigate('ProductDetailScreen', { productID: e?._id })}
+                                    style={[styles.itemContain, styles.bottomBorder]} key={e._id}>
                                     <FastImage source={{ uri: e?.images[0] }} style={styles.image} />
                                     <View style={{ flex: 1, paddingHorizontal: 10 }}>
                                         <DefautText>{e?.name}</DefautText>
@@ -199,7 +202,7 @@ const OrderDetailsScreen = (props) => {
                                             <DefautText>x{e?.amount}</DefautText>
                                         </View>
                                     </View>
-                                </View>
+                                </Pressable>
                             )
                         })
                     }
