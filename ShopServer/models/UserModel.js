@@ -19,7 +19,8 @@ const userSchema = new Schema({
     favorites: { type: Array },
     seenProducts: { type: Array },
     shopName: { type: String },
-    shopAddress: { type: Object }
+    shopAddress: { type: Object },
+    token: { type: String }
 })
 
 module.exports = mongoose.model('user', userSchema);

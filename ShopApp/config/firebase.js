@@ -17,8 +17,10 @@ const firebaseConfig = {
 // Initialize Firebase
 export const firebase = initializeApp(firebaseConfig);
 export const storage = getStorage();
+//export const messaging = getMessaging();
 
 export default {
     firebase,
     storage,
+    //messaging
 }
