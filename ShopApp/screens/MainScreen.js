@@ -58,6 +58,10 @@ const MainScreen = (props) => {
     //     messaging().hasPermission().then(res => console.log('hasPermission', res))
     // }, [])
 
+    const displayNotification = () => {
+        
+    }
+
     //console.log(cart)
     return (
         <Tab.Navigator
