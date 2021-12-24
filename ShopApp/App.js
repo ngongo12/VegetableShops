@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { LogBox } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider } from 'react-redux';
 import redux from './config/redux';
+import messaging from '@react-native-firebase/messaging';
 import { navigationRef } from './config/rootNavigation';
 import { MainColor } from './constants/colors';
 import MainScreen from './screens/MainScreen';
@@ -29,6 +30,15 @@ const App = () => {
   LogBox.ignoreLogs([
     "Can't perform a React state update on an unmounted component."
   ])
+
+  useEffect(() => {
+    messaging().onMessage(async remoteMessage => {
+      console.log('FCM message: ', JSON.stringify(remoteMessage));
+      //Notification at here
+    });
+
+  }, [])
+
   return (
     <Provider store={redux.store}>
       <NavigationContainer ref={navigationRef}>

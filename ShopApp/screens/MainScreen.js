@@ -54,9 +54,9 @@ const MainScreen = (props) => {
         messaging().getToken().then(token => setNewToken(token))
             .catch(e => console.error(e))
     }
-    useEffect(() => {
-        messaging().hasPermission().then(res => console.log('hasPermission', res))
-    }, [])
+    // useEffect(() => {
+    //     messaging().hasPermission().then(res => console.log('hasPermission', res))
+    // }, [])
 
     //console.log(cart)
     return (
