@@ -1,5 +1,6 @@
 var express = require('express');
 const orderController = require('../controllers/orders');
+const notificationController = require('../controllers/notification');
 var router = express.Router();
 
 router.post('/createOrder', async (req, res, next) =>{
@@ -67,9 +68,11 @@ router.get('/getMyOrderByState', async (req, res, next) =>{
 });
 
 router.post('/sendNotification', async (req, res, next) =>{
-    const { tokens, notification } = req.body;
-    console.log(tokens);
-    const result = await orderController.sendMessage(tokens, notification);
+    const { uid, notification } = req.body;
+    //console.log(tokens);
+    //console.log('>>>>>>>>>>>>>>>uid ',uid);
+    //const result = await orderController.sendMessage(tokens, notification, data);
+    const result = await notificationController.sendNotification(notification, uid);
     res.json({
         result
     })
