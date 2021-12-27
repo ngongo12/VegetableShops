@@ -25,7 +25,7 @@ const ProfileScreen = (props) => {
     const onLogout = () => {
         actions.actionLogOut();
         cActions.resetCart();
-        navigate('LoginScreen');
+        //navigate('LoginScreen');
     }
 
     return (

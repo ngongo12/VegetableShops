@@ -71,7 +71,7 @@ const LoginScreen = (props) => {
         //nếu có user thì vào thẳng main screen
         if (user.user) {
             actions.updateLoginState(true);
-            navigate('MainScreen');
+            //navigate('MainScreen');
         };
         if (user.message) {
             ToastAndroid.show(user.message, ToastAndroid.SHORT);
