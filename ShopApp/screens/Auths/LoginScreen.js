@@ -62,6 +62,12 @@ const LoginScreen = (props) => {
                 if (password) {
                     setPassword(password)
                 }
+                if (!user?.notFirst) {
+                    actions.actionLogin({
+                        phone,
+                        password
+                    });
+                }
             });
     }, [isFocused])
 
@@ -131,7 +137,7 @@ const LoginScreen = (props) => {
                     animationType='fade'
                     transparent={true}
                     statusBarTranslucent={true}
-                    message= 'Đăng đăng nhập. Xin chờ'
+                    message='Đăng đăng nhập. Xin chờ'
                 />)}
             </LinearGradient>
 
@@ -178,7 +184,7 @@ const styles = StyleSheet.create({
         textAlign: 'right',
         paddingRight: 16
     },
-    
+
 })
 
 //export default LoginScreen

@@ -54,7 +54,8 @@ const userReducer = (state = initData, { type, payload }) => {
                 isLoading: false,
                 isLogined: false,
                 message: null,
-                user: null
+                user: null,
+                notFirst: true
             }
         default:
             return state;
