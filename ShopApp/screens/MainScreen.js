@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import messaging from '@react-native-firebase/messaging';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import notifee, { AndroidImportance, AndroidStyle, AndroidVisibility } from '@notifee/react-native';
+import notifee, { AndroidImportance, AndroidStyle } from '@notifee/react-native';
 import userActions from '../actions/userActions';
 import cartActions from '../actions/cartActions';
 
@@ -80,7 +80,7 @@ const MainScreen = (props) => {
         const channelId = await notifee.createChannel({
             id: messageId,
             name: messageId,
-            importance: AndroidImportance.HIGH
+            importance: AndroidImportance.HIGH,
         });
         //console.log('channelId ', channelId);
         const { title, body, android: { imageUrl } } = notification;
@@ -145,6 +145,7 @@ const MainScreen = (props) => {
                 />
                 <Tab.Screen
                     name='NotificationScreen' component={NotificationScreen}
+                    
                 />
 
                 <Tab.Screen

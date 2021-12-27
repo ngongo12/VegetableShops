@@ -49,6 +49,7 @@ router.get('/getTopProductByCategory', async (req, res, next) =>{
 
 router.post('/getProductsInArray', async (req, res, next) =>{
     const { arr } = req.body;
+    console.log(arr)
     const products = await productController.getProductsInArray(arr);
     res.json({
         products

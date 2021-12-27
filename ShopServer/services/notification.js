@@ -3,7 +3,7 @@ const notificationModel = require("../models/NotificationModel");
 
 exports.sendMessage = async (tokens, notification, data) => {
     //console.log('notification service');
-    console.log(data)
+   // console.log(data)
     return await admin.admin.messaging().sendMulticast({
         tokens,
         notification,
@@ -13,7 +13,10 @@ exports.sendMessage = async (tokens, notification, data) => {
 }
 
 exports.createNotification = async (notification) => {
-    const item = new notificationModel(notification);
+    const item = new notificationModel({
+        ...notification,
+        createdAt: new Date()
+    });
     return await item.save();
 }
 

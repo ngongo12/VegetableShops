@@ -167,7 +167,7 @@ exports.cancelOrder = async (uid, orderID, message) => {
 }
 
 exports.doneOrder = async (uid, orderID) => {
-
+    const order = await this.getOrderByID(orderID);
     const result = await orderService.updateOrder(orderID, {
         doneAt: new Date(),
         state: 'done',

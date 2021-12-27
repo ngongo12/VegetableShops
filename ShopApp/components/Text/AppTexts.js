@@ -17,6 +17,25 @@ export const DefautText = ( props ) => {
     )
 }
 
+export const BodyText = ( props ) => {
+    const { children, style, onPress } = props;
+    let s = children.replace('</b>', '<b>');
+    s = s.split('<b>');
+    //console.log(s)
+    return (
+        <>
+        {s?.length === 3 && <Text style={[styles.font, styles.defaultText, style]} onPress={onPress}>
+            {s[0]}
+            <Text style={[styles.font, styles.defaultText, style, {fontWeight: 'bold'}]}>{s[1]}</Text>
+            {s[2]}
+        </Text>}
+        {s?.length !== 3 && <Text style={[styles.font, styles.defaultText, style]} onPress={onPress}>
+            { children }
+        </Text>}
+        </>
+    )
+}
+
 export const LargeText = ( props ) => {
     const { children, style } = props
     return (
@@ -120,7 +139,8 @@ const styles = StyleSheet.create({
         fontFamily: 'calibri',
     },
     defaultText: {
-        
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     title: {
         fontSize: 16,
