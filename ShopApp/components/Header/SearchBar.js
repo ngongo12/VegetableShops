@@ -24,7 +24,7 @@ const SearchBar = (props) => {
 }
 
 export const SearchBarInput = props => {
-    const { onPress, value, onChangeText, onEndEditing } = props
+    const { onPress, value, onChangeText, onEndEditing, notFocus } = props
     return (
         <Pressable style={styles.constainer} onPress={() => navigate('SearchScreen')} >
             <ScanIcon />
@@ -34,7 +34,7 @@ export const SearchBarInput = props => {
                 onChangeText={onChangeText}
                 onEndEditing={onEndEditing}
                 style={{flex: 1}}
-                autoFocus={true}
+                autoFocus={!notFocus}
             />
             {value.length > 0 && (<Icon name='search1'
                 size={20}
@@ -57,7 +57,8 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginLeft: 8,
         marginTop: 8,
-        marginBottom: 8
+        marginBottom: 8,
+        height: 44
     },
     text: {
         padding: 8,

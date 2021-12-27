@@ -123,12 +123,11 @@ exports.getUserByID = async ( id ) => {
 }
 
 exports.getShopInfo = async ( id ) => {
-    const shop = await userService.getShopByID(id);
-    const count = await productController.countProductsOfShop(id);
-    const sold = await productController.sumSold(id);
+    const shopInfo = await userService.getShopInfo(id);
+    //const count = await productController.countProductsOfShop(id);
+    const soldDetail = await productController.sumSold(id);
     return {
-        shop,
-        count,
-        sold
+        shopInfo,
+        soldDetail
     }
 }

@@ -18,14 +18,17 @@ import userActions from '../../actions/userActions';
 import cartActions from '../../actions/cartActions';
 import { Rating } from 'react-native-ratings';
 import Icon from 'react-native-vector-icons/AntDesign';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { DefautText, OriginPrice, SellPrice, Title } from '../../components/Text/AppTexts';
+import { DefaultDate, DefautText, OriginPrice, SellPrice, Title } from '../../components/Text/AppTexts';
 import { productUrl } from '../../api/productAPI';
 import { MainColor, RED } from '../../constants/colors';
 import TextFieldForProduct from '../../components/Text/TextFieldForProduct';
 import LoadingView from '../../components/LoadingView';
 import ProductDetailHeader from '../../components/Header/ProductDetailHeader';
 import { navigate } from '../../config/rootNavigation';
+import userAPI from '../../api/userAPI';
+import FastImage from 'react-native-fast-image';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -153,7 +156,7 @@ const ProductDetailScreen = (props) => {
         navigate('CartScreen');
     }
 
-    //console.log(product?.sold?.toString())
+    //console.log(product)
 
     return (
         <>
@@ -202,6 +205,7 @@ const ProductDetailScreen = (props) => {
                                 <DefautText style={styles.percent}>{Math.round((product.originPrice - product.sellPrice) / (product.originPrice) * 100)}</DefautText>
                             </View>)}
                         </View>
+                        <ShopInfo shopId={product?.owner} uid={user?._id} />
                         <View style={[styles.content, { marginTop: 10 }]}>
                             <Title>Thông tin sản phẩm</Title>
                             <TextFieldForProduct style={styles.textfield} name='Danh mục'>{category?.name}</TextFieldForProduct>
@@ -241,6 +245,55 @@ const ProductDetailScreen = (props) => {
             )}
             {!product && <LoadingView />}
         </>
+    )
+}
+
+const ShopInfo = (props) => {
+    const { shopId, uid } = props;
+    const [shopInfo, setShopInfo] = useState();
+    const [soldDetail, setSoldDetail] = useState()
+    useEffect(() => {
+        if (shopId) {
+            userAPI.getShopInfo(shopId).then(res => {
+                setShopInfo(res?.shopInfo),
+                    setSoldDetail(res?.soldDetail[0]);
+            });
+        }
+    }, [shopId])
+    console.log(shopInfo)
+    return (
+        <View style={[styles.content, { marginTop: 10 }]}>
+            <View style={{ flexDirection: 'row' }}>
+                <FastImage source={{ uri: shopInfo?.avatar }} style={styles.avatar} />
+                <View style={{ paddingHorizontal: 10 }}>
+                    <Title>{shopInfo?.shopName}</Title>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <EvilIcons name='location' size={18} />
+                        <DefautText style={{ fontSize: 13, paddingHorizontal: 5 }}>{shopInfo?.shopAddress?.province?.name}</DefautText>
+                    </View>
+                </View>
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
+                <View style={styles.box}>
+                    <Title style={{color: MainColor}}>{soldDetail?.numOfProduct}</Title>
+                    <DefautText>Sản phẩm</DefautText>
+                </View>
+                <View style={styles.bar} />
+                <View style={styles.box}>
+                    <Title style={{color: MainColor}}>{soldDetail?.totalSold}</Title>
+                    <DefautText>Đã bán</DefautText>
+                </View>
+                <View style={styles.bar} />
+                <View style={styles.box}>
+                    <DefaultDate style={{color: MainColor, fontWeight: 'bold'}}>{shopInfo?.createdAt}</DefaultDate>
+                    <DefautText>Ngày tham gia</DefautText>
+                </View>
+            </View>
+            {shopId !== uid && (<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 16 }}>
+                <DefautText style={[styles.btn, ]}>Chat Ngay</DefautText>
+                <DefautText onPress={()=>navigate('ShopDetailScreen', { shopId })} style={[styles.btn, {marginLeft: 10, backgroundColor: MainColor, color: '#fff', borderColor: MainColor}]}>Xem Shop</DefautText>
+            </View>)}
+        </View>
     )
 }
 
@@ -308,6 +361,29 @@ const styles = StyleSheet.create({
     buttonBuy: {
         backgroundColor: MainColor,
         flex: 2
+    },
+    avatar: {
+        width: 50,
+        height: 50,
+        borderRadius: 50
+    },
+    box: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    bar: {
+        height: '50%',
+        width: 1.5,
+        backgroundColor: '#ddd'
+    },
+    btn: {
+        borderRadius: 5,
+        borderWidth: 0.5,
+        width: 100,
+        textAlign: 'center',
+        paddingVertical: 5,
+        fontWeight: '600'
     }
 })
 

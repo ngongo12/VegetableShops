@@ -99,6 +99,13 @@ export const register = ( user ) => {
     .catch(e => console.log(e));
 }
 
+export const getShopInfo = id => {
+    return fetch(`${apiURL}users/getShopInfo?id=${id}`)
+        .then(res => res.json())
+        .then(res => res)
+        .catch(e => 'undefine');
+}
+
 export default {
     login,
     editProfiles,
@@ -106,5 +113,6 @@ export default {
     getShopName,
     addFavorite,
     getUserByID,
-    changePassword
+    changePassword,
+    getShopInfo
 };

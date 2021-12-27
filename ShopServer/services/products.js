@@ -112,14 +112,14 @@ exports.countProductsOfShop = async (id) => {
 }
 
 exports.sumSold = async (id) => {
-    console.log(id)
+    //console.log(id)
     return await productModel.aggregate(
         [
             {
                 $match: { owner: new mongoose.Types.ObjectId(id)}
             },
             {
-                $group: { _id: null, sum: { $sum: "$sold" }, count: { $sum: 1} }
+                $group: { _id: id, totalSold: { $sum: "$sold" }, numOfProduct: { $sum: 1} }
             },
         ]
     )
