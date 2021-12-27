@@ -97,3 +97,11 @@ exports.increaseSold = async (pid, num) => {
         }
     )
 }
+
+exports.search = async (value) => {
+
+    return await productModel.find({ name: {
+        '$regex': value,
+        '$options': 'i'
+    }})
+}

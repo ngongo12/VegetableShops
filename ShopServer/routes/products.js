@@ -63,5 +63,12 @@ router.get('/getSalesProducts', async (req, res, next) =>{
         products
     })
 });
+router.get('/search', async (req, res, next) =>{
+    const { value } = req.query;
+    const products = await productController.search(value);
+    res.json({
+        products
+    })
+});
 
 module.exports = router;

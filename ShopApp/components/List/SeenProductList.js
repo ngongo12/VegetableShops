@@ -11,17 +11,18 @@ import { bindActionCreators } from 'redux';
 import userActions from '../../actions/userActions';
 
 import FastImage from 'react-native-fast-image';
-import { productUrl } from '../../api/productAPI';
+import productAPI, { productUrl } from '../../api/productAPI';
 import { PressableText, Title } from '../Text/AppTexts';
 import { navigate } from '../../config/rootNavigation';
+import ProductItem from './ProductItem';
 
 const SeenProductList = (props) => {
     const { user: { user } } = props;
     const [products, setProducts] = useState(null);
-    console.log(user.seenProducts)
+    //dconsole.log(user.seenProducts)
     useEffect(() => {
         fetchData();
-    }, [user.seenProducts]);
+    }, []);
 
 
     const fetchData = () => {
@@ -35,12 +36,18 @@ const SeenProductList = (props) => {
             .then(res => res.json())
             .then(res => {
                 if (res.products) {
-                    setProducts(res.products);
+                    let temp = [];
+                    user.seenProducts.forEach(e => {
+                        const product = res.products.filter(elm => elm._id === e);
+                        temp.push(product[0])
+                    })
+
+                    setProducts(temp);
                 }
             })
             .catch(e => console.log(e));
     }
-    console.log('products', products)
+    //console.log('products', products)
     return (
         <>
             {products?.length > 0 && (
@@ -51,10 +58,11 @@ const SeenProductList = (props) => {
                     </View>
                     <FlatList
                         data={products}
-                        renderItem={ItemView}
+                        renderItem={ProductItem}
                         nestedScrollEnabled={true}
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}
+                        style={{flex: 1}}
                     />
                 </View>
             )}
@@ -62,15 +70,6 @@ const SeenProductList = (props) => {
     )
 }
 
-const ItemView = (props) => {
-    const { item } = props;
-    //console.log(item)
-    return (
-        <Pressable onPress={() => navigate('ProductDetailScreen', { productID: item._id })}>
-            <FastImage source={{ uri: item.images[0] }} style={styles.image} />
-        </Pressable>
-    )
-}
 
 const styles = StyleSheet.create({
     container: {

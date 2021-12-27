@@ -49,3 +49,7 @@ exports.getProductsInArray = async (arr) => {
 exports.getSalesProducts = async (uid) => {
     return await productService.getSalesProducts(uid);
 }
+
+exports.search = async (value) => {
+    return await productService.search(value);
+}

@@ -2,21 +2,45 @@ import React from 'react';
 import {
     StyleSheet,
     Pressable,
-    View
+    View,
+    TextInput
 } from 'react-native';
-import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from 'react-native-vector-icons/AntDesign';
 import {
     MainColor
 } from '../../constants/colors';
 import { DefautText } from '../Text/AppTexts';
 import { ScanIcon } from '../Icon/AppIcons';
+import { navigate } from '../../config/rootNavigation';
 
 const SearchBar = (props) => {
     const { onPress } = props
     return (
-        <Pressable style={styles.constainer} onPress={onPress} >
+        <Pressable style={styles.constainer} onPress={() => navigate('SearchScreen')} >
             <ScanIcon />
             <DefautText style={styles.text}>Tìm sản phẩm, danh mục</DefautText>
+        </Pressable>
+    )
+}
+
+export const SearchBarInput = props => {
+    const { onPress, value, onChangeText, onEndEditing } = props
+    return (
+        <Pressable style={styles.constainer} onPress={() => navigate('SearchScreen')} >
+            <ScanIcon />
+            <TextInput style={styles.text}
+                placeholder='Tìm sản phẩm, danh mục'
+                value={value}
+                onChangeText={onChangeText}
+                onEndEditing={onEndEditing}
+                style={{flex: 1}}
+                autoFocus={true}
+            />
+            {value.length > 0 && (<Icon name='search1'
+                size={20}
+                style={{ paddingHorizontal: 16 }}
+                onPress={onPress}
+            />)}
         </Pressable>
     )
 }

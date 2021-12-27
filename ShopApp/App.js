@@ -24,6 +24,7 @@ import PaymentScreen from './screens/PaymentScreen';
 import CreateStore from './screens/Stores/CreateStore';
 import MyOrderScreen from './screens/MyOrder';
 import OrderDetailScreen from './screens/MyOrder/OrderDetailScreen';
+import SearchScreen from './screens/SearchScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -181,6 +182,10 @@ const App = () => {
                 title: 'Chi tiết đơn hàng'
               }
             }
+          />
+          <Stack.Screen
+            name="SearchScreen"
+            component={SearchScreen}
           />
         </Stack.Navigator>
       </NavigationContainer>

@@ -7,11 +7,12 @@ import {
     ImageBackground,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
+import { navigate } from '../../config/rootNavigation'
 import { SellPrice, ProductName, OriginPrice, SalePercent } from '../Text/AppTexts';
 
 const { width, height } = Dimensions.get('window');
 const ProductItem = (props) => {
-    const { item, navigate } = props;
+    const { item } = props;
 
     return (
         <Pressable style={styles.constainer} onPress={() => navigate('ProductDetailScreen', { productID: item._id })} >
@@ -37,7 +38,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         borderRadius: 5,
         overflow: 'hidden',
-        maxWidth: width / 2 - 7
+        maxWidth: width / 2 - 7,
+        minWidth: width / 2.5
     },
     image: {
         width: '100%',
