@@ -41,3 +41,7 @@ exports.getUserByID = async ( id ) => {
 exports.getUserToken = async ( id ) => {
     return await userModel.findOne({ _id: id }, 'token');
 }
+
+exports.getShopInfo = async (id) => {
+    return await userModel.findOne({ _id: id }, 'id shopName shopAddress phone');
+}

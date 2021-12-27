@@ -1,46 +1,45 @@
 const productModel = require('../models/ProductModel');
+const mongoose = require('mongoose');
 
 exports.newEmpty = async () => {
-    const emptyProduct = new productModel({createdAt: new Date()});
+    const emptyProduct = new productModel({ createdAt: new Date() });
     return await emptyProduct.save();
 }
 
 exports.getById = async (id) => {
-    return await productModel.findOne({_id: id});
+    return await productModel.findOne({ _id: id });
 }
 
 exports.getWithLimit = async (uid, page, num) => {
-    
-    if(uid)
-    {
+
+    if (uid) {
         //console.log(uid);
         const products = await productModel
-            .find({owner: { $ne : uid } }, '_id name images sellPrice originPrice owner')
-            .skip((page-1)*num)
+            .find({ owner: { $ne: uid } }, '_id name images sellPrice originPrice owner')
+            .skip((page - 1) * num)
             .limit(num);
         return products;
     }
     const products = await productModel
         .find({}, '_id name images sellPrice originPrice')
-        .skip((page-1)*num)
+        .skip((page - 1) * num)
         .limit(num);
     return products;
 }
 
 exports.getMyProductsWithLimit = async (uid, page, num) => {
-    
-    if(uid)
-    {
+
+    if (uid) {
         //console.log(uid);
         const products = await productModel
-            .find({owner: uid } , '_id name images sellPrice originPrice owner')
-            .skip((page-1)*num)
+            .find({ owner: uid }, '_id name images sellPrice originPrice owner')
+            .skip((page - 1) * num)
             .limit(num);
         return products;
     }
     const products = await productModel
         .find({}, '_id name images sellPrice originPrice')
-        .skip((page-1)*num)
+        .skip((page - 1) * num)
         .limit(num);
     return products;
 }
@@ -90,7 +89,7 @@ exports.increaseSold = async (pid, num) => {
     await productModel.updateOne(
         { _id: pid },
         {
-            $inc: { 
+            $inc: {
                 sold: num,
                 amount: -num //Tăng số lượng đã bán và giảm số lượng sản phẩm
             }
@@ -100,8 +99,28 @@ exports.increaseSold = async (pid, num) => {
 
 exports.search = async (value) => {
 
-    return await productModel.find({ name: {
-        '$regex': value,
-        '$options': 'i'
-    }})
+    return await productModel.find({
+        name: {
+            '$regex': value,
+            '$options': 'i'
+        }
+    })
+}
+
+exports.countProductsOfShop = async (id) => {
+    return await productModel.count({ owner: id })
+}
+
+exports.sumSold = async (id) => {
+    console.log(id)
+    return await productModel.aggregate(
+        [
+            {
+                $match: { owner: new mongoose.Types.ObjectId(id)}
+            },
+            {
+                $group: { _id: null, sum: { $sum: "$sold" }, count: { $sum: 1} }
+            },
+        ]
+    )
 }
