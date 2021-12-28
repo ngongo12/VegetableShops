@@ -45,6 +45,7 @@ const ProductDetailScreen = (props) => {
     const [category, setCategory] = useState();
     useEffect(() => {
         fetchData();
+        updateNOSeen();
         changeSeenProducts();
     }, []);
 
@@ -131,6 +132,11 @@ const ProductDetailScreen = (props) => {
                 seenProducts: temp
             }
         })
+    }
+
+    const updateNOSeen = () => {
+        //console.log('update numofseen')
+        fetch(`${productUrl}updateNOSeen?id=${productID}`).catch(e => console.log('update nos',e));
     }
 
     const addToCart = () => {
@@ -260,40 +266,43 @@ const ShopInfo = (props) => {
             });
         }
     }, [shopId])
+    console.log(shopId)
     console.log(shopInfo)
     return (
-        <View style={[styles.content, { marginTop: 10 }]}>
-            <View style={{ flexDirection: 'row' }}>
-                <FastImage source={{ uri: shopInfo?.avatar }} style={styles.avatar} />
-                <View style={{ paddingHorizontal: 10 }}>
-                    <Title>{shopInfo?.shopName}</Title>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <EvilIcons name='location' size={18} />
-                        <DefautText style={{ fontSize: 13, paddingHorizontal: 5 }}>{shopInfo?.shopAddress?.province?.name}</DefautText>
+        <>
+            {shopInfo && (<View style={[styles.content, { marginTop: 10 }]}>
+                <View style={{ flexDirection: 'row' }}>
+                    <FastImage source={{ uri: shopInfo?.avatar }} style={styles.avatar} />
+                    <View style={{ paddingHorizontal: 10 }}>
+                        <Title>{shopInfo?.shopName}</Title>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <EvilIcons name='location' size={18} />
+                            <DefautText style={{ fontSize: 13, paddingHorizontal: 5 }}>{shopInfo?.shopAddress?.province?.name}</DefautText>
+                        </View>
                     </View>
                 </View>
-            </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-                <View style={styles.box}>
-                    <Title style={{color: MainColor}}>{soldDetail?.numOfProduct}</Title>
-                    <DefautText>Sản phẩm</DefautText>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
+                    <View style={styles.box}>
+                        <Title style={{ color: MainColor }}>{soldDetail?.numOfProduct}</Title>
+                        <DefautText>Sản phẩm</DefautText>
+                    </View>
+                    <View style={styles.bar} />
+                    <View style={styles.box}>
+                        <Title style={{ color: MainColor }}>{soldDetail?.totalSold}</Title>
+                        <DefautText>Đã bán</DefautText>
+                    </View>
+                    <View style={styles.bar} />
+                    <View style={styles.box}>
+                        <DefaultDate style={{ color: MainColor, fontWeight: 'bold' }}>{shopInfo?.createdAt}</DefaultDate>
+                        <DefautText>Ngày tham gia</DefautText>
+                    </View>
                 </View>
-                <View style={styles.bar} />
-                <View style={styles.box}>
-                    <Title style={{color: MainColor}}>{soldDetail?.totalSold}</Title>
-                    <DefautText>Đã bán</DefautText>
-                </View>
-                <View style={styles.bar} />
-                <View style={styles.box}>
-                    <DefaultDate style={{color: MainColor, fontWeight: 'bold'}}>{shopInfo?.createdAt}</DefaultDate>
-                    <DefautText>Ngày tham gia</DefautText>
-                </View>
-            </View>
-            {shopId !== uid && (<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 16 }}>
-                <DefautText style={[styles.btn, ]}>Chat Ngay</DefautText>
-                <DefautText onPress={()=>navigate('ShopDetailScreen', { shopId })} style={[styles.btn, {marginLeft: 10, backgroundColor: MainColor, color: '#fff', borderColor: MainColor}]}>Xem Shop</DefautText>
+                {shopId !== uid && (<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 16 }}>
+                    <DefautText style={[styles.btn,]}>Chat Ngay</DefautText>
+                    <DefautText onPress={() => navigate('ShopDetailScreen', { shopId })} style={[styles.btn, { marginLeft: 10, backgroundColor: MainColor, color: '#fff', borderColor: MainColor }]}>Xem Shop</DefautText>
+                </View>)}
             </View>)}
-        </View>
+        </>
     )
 }
 

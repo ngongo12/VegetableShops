@@ -38,6 +38,10 @@ exports.getMyProductsWithLimit = async (uid, page, num) => {
     return await productService.getMyProductsWithLimit(uid, page, num);
 }
 
+exports.getAllShopProducts = async (uid) => {
+    return await productService.getAllShopProducts(uid);
+}
+
 exports.getTopProductByCategory = async (id, uid) => {
     return await productService.getTopProductByCategory(id, uid);
 }
@@ -52,6 +56,10 @@ exports.getSalesProducts = async (uid) => {
 
 exports.search = async (value) => {
     return await productService.search(value);
+}
+
+exports.updateNOSeen = async (id) => {
+    return await productService.updateNOSeen(id);
 }
 
 exports.countProductsOfShop = async (id) => {

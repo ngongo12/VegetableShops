@@ -44,6 +44,11 @@ exports.getMyProductsWithLimit = async (uid, page, num) => {
     return products;
 }
 
+exports.getAllShopProducts = async (uid) => {
+    const products = await productModel
+        .find({ owner: uid }, '_id name images sellPrice originPrice owner sold createdAt nOSeen');
+    return products;
+}
 
 exports.update = async (product) => {
     return await productModel.updateOne(
@@ -97,6 +102,17 @@ exports.increaseSold = async (pid, num) => {
     )
 }
 
+exports.updateNOSeen = async (id) => {
+    await productModel.updateOne(
+        {_id: id},
+        {
+            $inc: {
+                nOSeen: 1
+            }
+        }
+    )
+}
+
 exports.search = async (value) => {
 
     return await productModel.find({
@@ -116,10 +132,10 @@ exports.sumSold = async (id) => {
     return await productModel.aggregate(
         [
             {
-                $match: { owner: new mongoose.Types.ObjectId(id)}
+                $match: { owner: new mongoose.Types.ObjectId(id) }
             },
             {
-                $group: { _id: id, totalSold: { $sum: "$sold" }, numOfProduct: { $sum: 1} }
+                $group: { _id: id, totalSold: { $sum: "$sold" }, numOfProduct: { $sum: 1 } }
             },
         ]
     )

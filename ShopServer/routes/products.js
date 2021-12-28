@@ -39,6 +39,14 @@ router.get('/getMyProductsWithLimit', async (req, res, next) =>{
     })
 });
 
+router.get('/getAllShopProducts', async (req, res, next) =>{
+    const { uid } = req.query;
+    const products = await productController.getAllShopProducts(uid);
+    res.json({
+        products
+    })
+});
+
 router.get('/getTopProductByCategory', async (req, res, next) =>{
     const { id, uid } = req.query;
     const products = await productController.getTopProductByCategory(id, uid);
@@ -69,6 +77,12 @@ router.get('/search', async (req, res, next) =>{
     res.json({
         products
     })
+});
+
+router.get('/updateNOSeen', async (req, res, next) =>{
+    //console.log('updateNOSeen')
+    const { id } = req.query;
+    await productController.updateNOSeen(id);
 });
 
 module.exports = router;
