@@ -266,8 +266,8 @@ const ShopInfo = (props) => {
             });
         }
     }, [shopId])
-    console.log(shopId)
-    console.log(shopInfo)
+    // console.log(shopId)
+    // console.log(shopInfo)
     return (
         <>
             {shopInfo && (<View style={[styles.content, { marginTop: 10 }]}>
@@ -298,7 +298,7 @@ const ShopInfo = (props) => {
                     </View>
                 </View>
                 {shopId !== uid && (<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 16 }}>
-                    <DefautText style={[styles.btn,]}>Chat Ngay</DefautText>
+                    <DefautText onPress={()=> navigate('ChatScreen', { userID : shopInfo._id })} style={[styles.btn,]}>Chat Ngay</DefautText>
                     <DefautText onPress={() => navigate('ShopDetailScreen', { shopId })} style={[styles.btn, { marginLeft: 10, backgroundColor: MainColor, color: '#fff', borderColor: MainColor }]}>Xem Shop</DefautText>
                 </View>)}
             </View>)}

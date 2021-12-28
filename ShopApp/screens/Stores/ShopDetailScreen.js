@@ -11,14 +11,13 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { SliderBox } from "react-native-image-slider-box";
 import userActions from '../../actions/userActions';
 import cartActions from '../../actions/cartActions';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { DefaultDate, DefautText, OriginPrice, SellPrice, Title } from '../../components/Text/AppTexts';
+import { DefaultDate, DefautText, Title } from '../../components/Text/AppTexts';
 import { productUrl } from '../../api/productAPI';
-import { MainColor, RED } from '../../constants/colors';
+import { MainColor } from '../../constants/colors';
 import { navigate } from '../../config/rootNavigation';
 import userAPI from '../../api/userAPI';
 import FastImage from 'react-native-fast-image';

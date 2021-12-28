@@ -6,6 +6,7 @@ import redux from './config/redux';
 import notifee, { AndroidImportance, AndroidVisibility } from '@notifee/react-native';
 import messaging from '@react-native-firebase/messaging';
 import NavigatorScreen from './screens/NavigatorScreen';
+import { socket, startSocket } from './config/socket';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -48,7 +49,9 @@ const App = () => {
   //   })
     
   // }
-
+  useEffect(() => {
+    startSocket();
+  }, [])
   return (
     <Provider store={redux.store}>
       <NavigatorScreen />

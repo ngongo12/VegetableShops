@@ -26,7 +26,8 @@ import CreateStore from '../screens/Stores/CreateStore';
 import MyOrderScreen from '../screens/MyOrder';
 import OrderDetailScreen from '../screens/MyOrder/OrderDetailScreen';
 import SearchScreen from '../screens/SearchScreen';
-import ShopDetailScreen from '../screens/Stores/ShopDetailScreen'
+import ShopDetailScreen from '../screens/Stores/ShopDetailScreen';
+import ChatScreen from '../screens/Chat/ChatScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -157,6 +158,10 @@ const NavigatorScreen = props => {
                         <Stack.Screen
                             name="ShopDetailScreen"
                             component={ShopDetailScreen}
+                        />
+                        <Stack.Screen
+                            name="ChatScreen"
+                            component={ChatScreen}
                         />
                     </>
                 )}
