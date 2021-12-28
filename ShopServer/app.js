@@ -10,7 +10,8 @@ var usersRouter = require('./routes/users');
 var categoriesRouter = require('./routes/categories');
 var productsRouter = require('./routes/products');
 var orderRouter = require('./routes/orders');
-var notificationRouter = require('./routes/notification')
+var notificationRouter = require('./routes/notification');
+var socketRoute = require('./routes/socket');
 
 //mongo
 const mongoose = require('mongoose');
@@ -22,6 +23,8 @@ mongoose.connect(process.env.MONGODB, {useNewUrlParser: true, useUnifiedTopology
 .catch((e) => console.log('>>>>>Database connect error: ', e));
 
 var app = express();
+
+
 
 
 // view engine setup
@@ -40,6 +43,7 @@ app.use('/categories', categoriesRouter);
 app.use('/products', productsRouter);
 app.use('/orders', orderRouter);
 app.use('/notification', notificationRouter);
+app.use('/chatSocket', socketRoute);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
