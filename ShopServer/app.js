@@ -5,13 +5,15 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 require('dotenv').config();
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var categoriesRouter = require('./routes/categories');
-var productsRouter = require('./routes/products');
-var orderRouter = require('./routes/orders');
-var notificationRouter = require('./routes/notification');
+var indexRoute = require('./routes/index');
+var usersRoute = require('./routes/users');
+var categoriesRoute = require('./routes/categories');
+var productsRoute = require('./routes/products');
+var orderRoute = require('./routes/orders');
+var notificationRoute = require('./routes/notification');
 var socketRoute = require('./routes/socket');
+var contactRoute = require('./routes/contact');
+var messageRoute = require('./routes/message');
 
 //mongo
 const mongoose = require('mongoose');
@@ -37,13 +39,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/categories', categoriesRouter);
-app.use('/products', productsRouter);
-app.use('/orders', orderRouter);
-app.use('/notification', notificationRouter);
+app.use('/', indexRoute);
+app.use('/users', usersRoute);
+app.use('/categories', categoriesRoute);
+app.use('/products', productsRoute);
+app.use('/orders', orderRoute);
+app.use('/notification', notificationRoute);
 app.use('/chatSocket', socketRoute);
+app.use('/contact', contactRoute);
+app.use('/message', messageRoute);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
