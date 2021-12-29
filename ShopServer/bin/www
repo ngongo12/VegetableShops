@@ -30,6 +30,15 @@ server.on('error', onError);
 server.on('listening', onListening);
 
 /**
+ * Socket io
+ */
+
+const socketAPI = require('../socketIO/socket_api');
+var io = socketAPI.io;
+io.attach(server);
+
+
+/**
  * Normalize a port into a number, string, or false.
  */
 

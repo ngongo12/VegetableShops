@@ -2,15 +2,15 @@ const productService = require('../services/products');
 
 exports.newEmpty = async () => {
     const product = await productService.newEmpty();
-    if(product){
+    if (product) {
         return product._id;
     }
-    else{
+    else {
         return false
     }
 }
 
-exports.update = async ( product ) => {
+exports.update = async (product) => {
     const result = await productService.update(product);
     if (result.matchedCount > 0) {
         return {
@@ -38,6 +38,10 @@ exports.getMyProductsWithLimit = async (uid, page, num) => {
     return await productService.getMyProductsWithLimit(uid, page, num);
 }
 
+exports.getAllShopProducts = async (uid) => {
+    return await productService.getAllShopProducts(uid);
+}
+
 exports.getTopProductByCategory = async (id, uid) => {
     return await productService.getTopProductByCategory(id, uid);
 }
@@ -48,4 +52,20 @@ exports.getProductsInArray = async (arr) => {
 
 exports.getSalesProducts = async (uid) => {
     return await productService.getSalesProducts(uid);
+}
+
+exports.search = async (value) => {
+    return await productService.search(value);
+}
+
+exports.updateNOSeen = async (id) => {
+    return await productService.updateNOSeen(id);
+}
+
+exports.countProductsOfShop = async (id) => {
+    return await productService.countProductsOfShop(id);
+}
+
+exports.sumSold = async (id) => {
+    return await productService.sumSold(id);
 }

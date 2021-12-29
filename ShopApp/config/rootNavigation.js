@@ -11,6 +11,15 @@ export const navigate = (name, params) => {
     }
 }
 
+export const goBack = () => {
+    if(navigationRef.isReady()){
+        navigationRef.goBack();
+    }
+    else{
+        console.log('navigationRef is not ready');
+    }
+}
+
 export default {
     navigate,
     navigationRef

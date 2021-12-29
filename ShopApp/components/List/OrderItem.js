@@ -14,12 +14,12 @@ import FastImage from 'react-native-fast-image';
 import { navigate } from '../../config/rootNavigation';
 
 const OrderItem = props => {
-    const { item, isDone, deliveryState } = props;
+    const { item, isDone, deliveryState, isShop } = props;
     const { products } = item;
     const firstProduct = products[0];
     return (
         <Pressable style={styles.container} onPress={()=>navigate('OrderDetailScreen', { orderID : item._id })}>
-            <ItemHeader shopID={item?.shopID} isDone={isDone} />
+            <ItemHeader shopID={item?.shopID} isDone={isDone} isShop={isShop} orderID={item._id} />
             <Pressable onPress={()=> navigate('ProductDetailScreen', { productID : firstProduct?._id })} style={[styles.itemContain, styles.bottomBorder]}>
                 <FastImage source={{ uri: firstProduct?.images[0] }} style={styles.image} />
                 <View style={{ flex: 1, paddingHorizontal: 10 }}>
@@ -48,9 +48,8 @@ const OrderItem = props => {
 }
 
 const ItemHeader = props => {
-    const { shopID, isDone } = props;
+    const { shopID, isDone, isShop, orderID } = props;
     const [shopName, setShopName] = useState('');
-
     useEffect(() => {
         getShopName(shopID).then(res => setShopName(res))
             .catch(e => console.error(e));
@@ -58,11 +57,11 @@ const ItemHeader = props => {
     return (
         <View style={[styles.headerContent, styles.bottomBorder]}>
             <Icon
-                name='isv'
+                name={isShop ? 'tago' : 'isv'}
                 size={20}
                 style={styles.icon}
             />
-            <Title style={styles.title}>{shopName}</Title>
+            <Title style={styles.title}>{isShop? orderID :shopName}</Title>
             <DefautText style={styles.isDone}>{isDone ? 'Hoàn thành' : 'Chưa hoàn thành'}</DefautText>
         </View>
     )

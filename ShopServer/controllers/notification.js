@@ -21,3 +21,7 @@ exports.sendNotification = async (notification, uid) => {
         console.error('Không lấy được token');
     }
 }
+
+exports.getNotificationByUserID = async (uid) => {
+    return await notificationService.getNotificationByUserID(uid);
+}

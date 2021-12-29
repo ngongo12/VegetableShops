@@ -46,6 +46,19 @@ export const addFavorite = ( productId, user) => {
     })
 }
 
+export const changePassword = (user) => {
+    return fetch(`${apiURL}users/changePassword`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ user })
+    })
+    .then(res => res.json())
+    .then(res => res)
+    .catch(e => console.log(e));
+}
+
 export const getShopName = id => {
     return fetch(`${apiURL}users/getShopName?id=${id}`)
         .then(res => res.json())
@@ -86,11 +99,20 @@ export const register = ( user ) => {
     .catch(e => console.log(e));
 }
 
+export const getShopInfo = id => {
+    return fetch(`${apiURL}users/getShopInfo?id=${id}`)
+        .then(res => res.json())
+        .then(res => res)
+        .catch(e => 'undefine');
+}
+
 export default {
     login,
     editProfiles,
     register,
     getShopName,
     addFavorite,
-    getUserByID
+    getUserByID,
+    changePassword,
+    getShopInfo
 };

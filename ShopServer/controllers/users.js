@@ -1,4 +1,5 @@
 const userService = require('../services/users');
+const productController = require('../controllers/products');
 const bcrypt = require('bcrypt');
 
 exports.editProfile = async (user) => {
@@ -119,4 +120,14 @@ exports.getShopByID = async ( id ) => {
 
 exports.getUserByID = async ( id ) => {
     return await userService.getUserByID(id);
+}
+
+exports.getShopInfo = async ( id ) => {
+    const shopInfo = await userService.getShopInfo(id);
+    //const count = await productController.countProductsOfShop(id);
+    const soldDetail = await productController.sumSold(id);
+    return {
+        shopInfo,
+        soldDetail
+    }
 }

@@ -34,6 +34,7 @@ const ContainScreen = (props) => {
             renderItem={({ item }) => (
                 <OrderItem
                     item={item}
+                    isShop={true}
                     deliveryState='Đang chờ lấy hàng'
                 />
             )}

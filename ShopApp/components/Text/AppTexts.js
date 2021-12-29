@@ -17,6 +17,25 @@ export const DefautText = ( props ) => {
     )
 }
 
+export const BodyText = ( props ) => {
+    const { children, style, onPress } = props;
+    let s = children.replace('</b>', '<b>');
+    s = s.split('<b>');
+    //console.log(s)
+    return (
+        <>
+        {s?.length === 3 && <Text style={[styles.font, styles.defaultText, style]} onPress={onPress}>
+            {s[0]}
+            <Text style={[styles.font, styles.defaultText, style, {fontWeight: 'bold'}]}>{s[1]}</Text>
+            {s[2]}
+        </Text>}
+        {s?.length !== 3 && <Text style={[styles.font, styles.defaultText, style]} onPress={onPress}>
+            { children }
+        </Text>}
+        </>
+    )
+}
+
 export const LargeText = ( props ) => {
     const { children, style } = props
     return (
@@ -89,7 +108,19 @@ export const DateTimeFm = ( props ) => {
     const { children, style, onPress } = props;
     let date = new Date(children);
 
-    let sDate = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+    let sDate = `${date.getDate() < 10 ? '0' : ''}${date.getDate()}-${date.getMonth() < 9 ? '0' : ''}${date.getMonth()+1}-${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+    return (
+        <Text onPress={onPress} style={[styles.font, style]}>
+            {sDate}
+        </Text>
+    )
+}
+
+export const DefaultDate = ( props ) => {
+    const { children, style, onPress } = props;
+    let date = new Date(children);
+
+    let sDate = `${date.getDate() < 10 ? '0' : ''}${date.getDate()}/${date.getMonth() < 9 ? '0' : ''}${date.getMonth()+1}/${date.getFullYear()}`;
     return (
         <Text onPress={onPress} style={[styles.font, style]}>
             {sDate}
@@ -120,7 +151,8 @@ const styles = StyleSheet.create({
         fontFamily: 'calibri',
     },
     defaultText: {
-        
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     title: {
         fontSize: 16,

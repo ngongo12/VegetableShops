@@ -52,7 +52,7 @@ const MainListHeader = (props) => {
                     )
                 })
             }
-            <Title style={styles.title}>GỢI Ý HÔM NAY</Title>
+            <Title style={[styles.title]}>GỢI Ý HÔM NAY</Title>
         </View>
     )
 }

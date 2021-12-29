@@ -29,7 +29,9 @@ const buttonStyles = StyleSheet.create({
         paddingLeft: 20,
         paddingRight: 20,
         paddingTop: 16,
-        paddingBottom: 15
+        paddingBottom: 15,
+        borderBottomWidth: 0.5,
+        borderColor: '#dedede'
     },
     text: {
         marginLeft: 20,
