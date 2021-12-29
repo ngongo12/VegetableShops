@@ -10,7 +10,13 @@ export const sendMessage = (data) => {
     }).catch(e => console.log(e));
 }
 
+export const getListMessage = (contactId) => {
+    fetch(`${apiURL}message?id=${contactId}`)
+        .then(res => res)
+        .catch(e => console.log(e));
+}
 
 export default {
-    sendMessage
+    sendMessage,
+    getListMessage,
 }
