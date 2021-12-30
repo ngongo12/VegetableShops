@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
     View,
     StatusBar,
     StyleSheet,
     TextInput,
     ToastAndroid,
-    FlatList
+    FlatList,
+    Keyboard
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { socket } from '../../config/socket';
 import userActions from '../../actions/userActions';
+import messageActions from '../../actions/messageActions';
 
 import FastImage from 'react-native-fast-image';
 import { DefautText, Title } from '../../components/Text/AppTexts';
@@ -31,15 +33,18 @@ const ChatScreen = (props) => {
                 userID
             }
         },
-        user: { user }
+        user: { user },
+        messageReducer: { messages },
+        messageAction
     } = props;
     const [contact, setContact] = useState();
     const [fetchedContact, setFetchedContact] = useState(false);
-    const [messages, setMessages] = useState([]);
+    //const [messages, setMessages] = useState([]);
     const [flagLoad, setFlagLoad] = useState(false);
-    let tempData = [];
+    const [keyboardIsShow, setKeyboardIsShow] = useState(false);
+    let flatlist = useRef();
 
-    //console.log('>>>>>>>>>>>>>>> chat user',user)
+    console.log('>>>>>>>>>>>>>>> message Reducer', messages)
     useEffect(() => {
         //Trong trường hợp chỉ truyền vào userID
         if (userID) {
@@ -60,7 +65,22 @@ const ChatScreen = (props) => {
                 })
                 .catch(e => console.log(e));
         }
+        flatlist.current.scrollToEnd({ animating: true });
     }, [])
+
+    useEffect(() => {
+        const onShowKeyboard = Keyboard.addListener('keyboardDidShow', () => {
+            setKeyboardIsShow(true);
+        });
+        const onHideKeyboard = Keyboard.addListener('keyboardDidHide', () => {
+            setKeyboardIsShow(false);
+        });
+        return () => {
+            onShowKeyboard.remove();
+            onHideKeyboard.remove();
+        }
+    }, [])
+
     useEffect(() => {
         //Trường hợp đã gọi api lấy được contact
         if (fetchedContact) {
@@ -84,27 +104,38 @@ const ChatScreen = (props) => {
                 console.log('>>>>>>message', data);
                 setFlagLoad(!flagLoad);
                 const { msg } = data;
-                //addToMessageList(msg);
-                setMessages(() => [...[msg], ...messages]);
+
+                messageAction.add({
+                    msg: [msg]
+                })
             })
         }
     }, [contact, flagLoad]);
-    let addToMessageList = (msg) => {
-        console.log('add message');
-        //temp.push(msg);
-        setMessages(tempData)
-        setMessages(() => [...[msg], ...messages]);
+
+    useEffect(() => {
+        scrollFlatlistToEnd();
+    }, [messages, keyboardIsShow])
+
+    const scrollFlatlistToEnd = () => {
+        if (flatlist?.current && messages?.length > 3) {
+            flatlist?.current?.scrollToIndex({ animated: true, index: 0 });
+        }
     }
+
     return (
         <View style={styles.container}>
             <StatusBar translucent={false} backgroundColor={MainColor} />
             <ShopHeader shopId={userID} />
-            <FlatList
-                data={messages}
-                renderItem={({item}) => <ChatBox {...{ item, myID: user._id }} />}
-                //extraData={flagLoad}
-                style={{ flex: 1, paddingBottom: 5}}
-            />
+            <View style={[styles.container, { paddingBottom: 5, backgroundColor: 'pink', alignItems: 'flex-end' }]}>
+                <View style={{ flex: 1 }} />
+                <FlatList
+                    ref={flatlist}
+                    data={messages}
+                    renderItem={({ item }) => <ChatBox {...{ item, myID: user._id }} />}
+                    inverted={true}
+                    style={{ flexGrow: 0, width: '100%' }}
+                />
+            </View>
             <InputView contact={contact} user={user} />
         </View>
     )
@@ -241,13 +272,15 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        user: state.userReducer
+        user: state.userReducer,
+        messageReducer: state.messageReducer
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        actions: bindActionCreators(userActions, dispatch)
+        actions: bindActionCreators(userActions, dispatch),
+        messageAction: bindActionCreators(messageActions, dispatch)
     }
 }
 
