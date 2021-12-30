@@ -4,7 +4,8 @@ import {
     StatusBar,
     StyleSheet,
     TextInput,
-    TouchableHighlight
+    ToastAndroid,
+    FlatList
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -19,41 +20,114 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { MainColor } from '../../constants/colors';
 import { goBack } from '../../config/rootNavigation';
 import chatAPI from '../../api/chatAPI';
+import contactAPI from '../../api/contactAPI';
+import ChatBox from '../../components/chat/ChatBox';
 
 const ChatScreen = (props) => {
-
     const {
         route: {
-            params: { userID }
-        }
+            params: {
+                contactId,
+                userID
+            }
+        },
+        user: { user }
     } = props;
+    const [contact, setContact] = useState();
+    const [fetchedContact, setFetchedContact] = useState(false);
+    const [messages, setMessages] = useState([]);
+    const [flagLoad, setFlagLoad] = useState(false);
+    let tempData = [];
 
+    //console.log('>>>>>>>>>>>>>>> chat user',user)
     useEffect(() => {
-        if(socket.hasListeners('server_msg')){
-            console.log('Has listener');
-            return;
+        //Trong trường hợp chỉ truyền vào userID
+        if (userID) {
+            contactAPI.getContactIdByUserIDs([userID, user._id])
+                .then(res => {
+                    setContact(res);
+                    setFetchedContact(true);
+                })
+                .catch(e => console.log(e));
         }
-        socket.on('server_msg', (data) => {
-            console.log(data);
-        })
-    }, []);
 
+        //Trong trường hợp chỉ truyền vào contactId
+        if (contactId) {
+            contactAPI.getContactByID(contactId)
+                .then(res => {
+                    setContact(res);
+                    //setFetchedContact(true); trường hợp này ko lấy được tức có lỗi xảy ra
+                })
+                .catch(e => console.log(e));
+        }
+    }, [])
+    useEffect(() => {
+        //Trường hợp đã gọi api lấy được contact
+        if (fetchedContact) {
+            //Contact vẫn rỗng tức là chưa có contact
+            if (!contact) {
+                contactAPI.create({
+                    userIDs: [userID, user._id]
+                }).then(res => setContact(res))
+                    .catch(e => console.log('create contact ', e));
+            }
+        }
+    }, [fetchedContact])
+    useEffect(() => {
+        if (contact) {
+            if (socket.hasListeners(contact._id)) {
+                console.log('Has listener');
+                socket.off(contact._id);
+                //return;
+            }
+            socket.on(contact._id, (data) => {
+                console.log('>>>>>>message', data);
+                setFlagLoad(!flagLoad);
+                const { msg } = data;
+                //addToMessageList(msg);
+                setMessages(() => [...[msg], ...messages]);
+            })
+        }
+    }, [contact, flagLoad]);
+    let addToMessageList = (msg) => {
+        console.log('add message');
+        //temp.push(msg);
+        setMessages(tempData)
+        setMessages(() => [...[msg], ...messages]);
+    }
     return (
         <View style={styles.container}>
             <StatusBar translucent={false} backgroundColor={MainColor} />
             <ShopHeader shopId={userID} />
-            <View style={styles.container}></View>
-            <InputView />
+            <FlatList
+                data={messages}
+                renderItem={({item}) => <ChatBox {...{ item, myID: user._id }} />}
+                //extraData={flagLoad}
+                style={{ flex: 1, paddingBottom: 5}}
+            />
+            <InputView contact={contact} user={user} />
         </View>
     )
 }
 
 const InputView = (props) => {
+    const { contact, user } = props;
     const [text, setText] = useState('');
-    const sendMessage = () => {
+    const sendTextMessage = () => {
+        if (!contact) {
+            ToastAndroid.show('Lỗi khi lấy contact. Vui lòng thử lại sau', ToastAndroid.SHORT);
+            return;
+        }
         chatAPI.sendMessage({
-            msg: text,
-            token: 'server_msg'
+            msg: {
+                contactId: contact?._id,
+                sendBy: user?._id,
+                messageContent: {
+                    type: 'text',
+                    message: text
+                }
+            },
+            token: contact?._id
         })
         setText('');
     }
@@ -69,7 +143,7 @@ const InputView = (props) => {
                 <MaterialCommunityIcons
                     name='send' size={26}
                     style={styles.icon}
-                    onPress={sendMessage}
+                    onPress={sendTextMessage}
                 />
             </View>
         </View>

@@ -8,8 +8,20 @@ exports.getListContact = async (id) => {
     );
 }
 
-exports.createEmptyContact = async () => {
-    const item = new contactModel({ createdAt: new Date() });
+exports.getContactByID = async (id) => {
+    return await contactModel.find(
+        {
+            _id: id
+        }
+    );
+}
+
+exports.create = async (contact) => {
+    const item = new contactModel({
+        ...contact,
+        state: 'new',
+        createdAt: new Date()
+    });
     return await item.save();
 }
 

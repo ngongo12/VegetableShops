@@ -1,7 +1,7 @@
 import apiURL from "../constants/api_url";
 
 export const sendMessage = (data) => {
-    fetch(`${apiURL}chatSocket`, {
+    return fetch(`${apiURL}chatSocket`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -11,7 +11,7 @@ export const sendMessage = (data) => {
 }
 
 export const getListMessage = (contactId) => {
-    fetch(`${apiURL}message?id=${contactId}`)
+    return fetch(`${apiURL}message?id=${contactId}`)
         .then(res => res)
         .catch(e => console.log(e));
 }
