@@ -103,7 +103,7 @@ exports.increaseSold = async (pid, num) => {
 }
 
 exports.updateNOSeen = async (id) => {
-    await productModel.updateOne(
+    return await productModel.updateOne(
         {_id: id},
         {
             $inc: {

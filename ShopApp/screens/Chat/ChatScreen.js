@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
     View,
     StatusBar,
     StyleSheet,
     TextInput,
-    TouchableHighlight
+    ToastAndroid,
+    FlatList,
+    Keyboard
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { socket } from '../../config/socket';
 import userActions from '../../actions/userActions';
+import messageActions from '../../actions/messageActions';
 
 import FastImage from 'react-native-fast-image';
 import { DefautText, Title } from '../../components/Text/AppTexts';
@@ -19,41 +22,143 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { MainColor } from '../../constants/colors';
 import { goBack } from '../../config/rootNavigation';
 import chatAPI from '../../api/chatAPI';
+import contactAPI from '../../api/contactAPI';
+import ChatBox from '../../components/chat/ChatBox';
 
 const ChatScreen = (props) => {
-
     const {
         route: {
-            params: { userID }
-        }
+            params: {
+                contactId,
+                userID
+            }
+        },
+        user: { user },
+        messageReducer: { messages },
+        messageAction
     } = props;
+    const [contact, setContact] = useState();
+    const [fetchedContact, setFetchedContact] = useState(false);
+    //const [messages, setMessages] = useState([]);
+    const [flagLoad, setFlagLoad] = useState(false);
+    const [keyboardIsShow, setKeyboardIsShow] = useState(false);
+    let flatlist = useRef();
+
+    console.log('>>>>>>>>>>>>>>> message Reducer', messages)
+    useEffect(() => {
+        //Trong trường hợp chỉ truyền vào userID
+        if (userID) {
+            contactAPI.getContactIdByUserIDs([userID, user._id])
+                .then(res => {
+                    setContact(res);
+                    setFetchedContact(true);
+                })
+                .catch(e => console.log(e));
+        }
+
+        //Trong trường hợp chỉ truyền vào contactId
+        if (contactId) {
+            contactAPI.getContactByID(contactId)
+                .then(res => {
+                    setContact(res);
+                    //setFetchedContact(true); trường hợp này ko lấy được tức có lỗi xảy ra
+                })
+                .catch(e => console.log(e));
+        }
+        flatlist.current.scrollToEnd({ animating: true });
+    }, [])
 
     useEffect(() => {
-        if(socket.hasListeners('server_msg')){
-            console.log('Has listener');
-            return;
+        const onShowKeyboard = Keyboard.addListener('keyboardDidShow', () => {
+            setKeyboardIsShow(true);
+        });
+        const onHideKeyboard = Keyboard.addListener('keyboardDidHide', () => {
+            setKeyboardIsShow(false);
+        });
+        return () => {
+            onShowKeyboard.remove();
+            onHideKeyboard.remove();
         }
-        socket.on('server_msg', (data) => {
-            console.log(data);
-        })
-    }, []);
+    }, [])
+
+    useEffect(() => {
+        //Trường hợp đã gọi api lấy được contact
+        if (fetchedContact) {
+            //Contact vẫn rỗng tức là chưa có contact
+            if (!contact) {
+                contactAPI.create({
+                    userIDs: [userID, user._id]
+                }).then(res => setContact(res))
+                    .catch(e => console.log('create contact ', e));
+            }
+        }
+    }, [fetchedContact])
+    useEffect(() => {
+        if (contact) {
+            if (socket.hasListeners(contact._id)) {
+                console.log('Has listener');
+                socket.off(contact._id);
+                //return;
+            }
+            socket.on(contact._id, (data) => {
+                console.log('>>>>>>message', data);
+                setFlagLoad(!flagLoad);
+                const { msg } = data;
+
+                messageAction.add({
+                    msg: [msg]
+                })
+            })
+        }
+    }, [contact, flagLoad]);
+
+    useEffect(() => {
+        scrollFlatlistToEnd();
+    }, [messages, keyboardIsShow])
+
+    const scrollFlatlistToEnd = () => {
+        if (flatlist?.current && messages?.length > 3) {
+            flatlist?.current?.scrollToIndex({ animated: true, index: 0 });
+        }
+    }
 
     return (
         <View style={styles.container}>
             <StatusBar translucent={false} backgroundColor={MainColor} />
             <ShopHeader shopId={userID} />
-            <View style={styles.container}></View>
-            <InputView />
+            <View style={[styles.container, { paddingBottom: 5, backgroundColor: 'pink', alignItems: 'flex-end' }]}>
+                <View style={{ flex: 1 }} />
+                <FlatList
+                    ref={flatlist}
+                    data={messages}
+                    renderItem={({ item }) => <ChatBox {...{ item, myID: user._id }} />}
+                    inverted={true}
+                    style={{ flexGrow: 0, width: '100%' }}
+                />
+            </View>
+            <InputView contact={contact} user={user} />
         </View>
     )
 }
 
 const InputView = (props) => {
+    const { contact, user } = props;
     const [text, setText] = useState('');
-    const sendMessage = () => {
+    const sendTextMessage = () => {
+        if (!contact) {
+            ToastAndroid.show('Lỗi khi lấy contact. Vui lòng thử lại sau', ToastAndroid.SHORT);
+            return;
+        }
         chatAPI.sendMessage({
-            msg: text,
-            token: 'server_msg'
+            msg: {
+                contactId: contact?._id,
+                sendBy: user?._id,
+                messageContent: {
+                    type: 'text',
+                    message: text
+                }
+            },
+            token: contact?._id
         })
         setText('');
     }
@@ -69,7 +174,7 @@ const InputView = (props) => {
                 <MaterialCommunityIcons
                     name='send' size={26}
                     style={styles.icon}
-                    onPress={sendMessage}
+                    onPress={sendTextMessage}
                 />
             </View>
         </View>
@@ -167,13 +272,15 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        user: state.userReducer
+        user: state.userReducer,
+        messageReducer: state.messageReducer
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        actions: bindActionCreators(userActions, dispatch)
+        actions: bindActionCreators(userActions, dispatch),
+        messageAction: bindActionCreators(messageActions, dispatch)
     }
 }
 

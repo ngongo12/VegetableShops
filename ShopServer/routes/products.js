@@ -80,9 +80,9 @@ router.get('/search', async (req, res, next) =>{
 });
 
 router.get('/updateNOSeen', async (req, res, next) =>{
-    //console.log('updateNOSeen')
+    console.log('updateNOSeen')
     const { id } = req.query;
-    await productController.updateNOSeen(id);
+    return await productController.updateNOSeen(id);
 });
 
 module.exports = router;

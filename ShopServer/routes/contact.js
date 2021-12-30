@@ -2,25 +2,31 @@ var express = require('express');
 const contactController = require('../controllers/contact');
 var router = express.Router();
 
-router.get('/', async (req, res, next) => {
+router.get('/getListById', async (req, res, next) => {
     const { id } = req.query;
     const contacts = await contactController.getListContact(id);
 
     res.json(contacts);
 })
 
-router.post('/getContactIdByUserIDs', async (req, res, next) => {
-    const { ids } = req.body;
-    const contact = await contactController.getContactIdByUserIDs(ids);
-
+router.get('/getContactByID', async (req, res, next) => {
+    const { id } = req.query;
+    const contact = await contactController.getContactByID(id);
     res.json(contact);
 })
 
-router.get('/createEmpty', async (req, res, next) => {
-    
-    const contact = await contactController.createEmptyContact();
+router.post('/getContactIdByUserIDs', async (req, res, next) => {
+    const { ids } = req.body;
+    const contact = await contactController.getContactIdByUserIDs(ids);
+    res.json(contact[0]);
+})
 
-    res.json(contact);
+router.post('/create', async (req, res, next) => {
+    const { contact } = req.body;
+    console.log(contact)
+    const result = await contactController.create(contact);
+
+    res.json(result);
 })
 
 router.post('/update', async (req, res, next) => {

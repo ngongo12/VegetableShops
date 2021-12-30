@@ -108,7 +108,7 @@ export const DateTimeFm = ( props ) => {
     const { children, style, onPress } = props;
     let date = new Date(children);
 
-    let sDate = `${date.getDate() < 10 ? '0' : ''}${date.getDate()}-${date.getMonth() < 9 ? '0' : ''}${date.getMonth()+1}-${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+    let sDate = `${date.getHours()}:${date.getMinutes()<10 ? '0' : ''}${date.getMinutes()} ${date.getDate() < 10 ? '0' : ''}${date.getDate()}-${date.getMonth() < 9 ? '0' : ''}${date.getMonth()+1}-${date.getFullYear()}`;
     return (
         <Text onPress={onPress} style={[styles.font, style]}>
             {sDate}

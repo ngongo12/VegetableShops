@@ -2,8 +2,8 @@ import { storeData } from '../api/asyncStorage';
 import * as actions from '../constants/cartActionType';
 
 const cartReducer = (state = [], {type, payload}) => {
-    console.log(`cartReducer `, type);
-    console.log(`cartReducer `, payload);
+    // console.log(`cartReducer `, type);
+    // console.log(`cartReducer `, payload);
     let temp = state;
     //const { uid, productID } = payload;
     switch(type){
