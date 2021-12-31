@@ -14,6 +14,7 @@ import ButtonSetting from '../../components/Button/ButtonSetting';
 import OrderStateIcon from '../../components/Icon/OrderStateIcon';
 import AlerModal from '../../components/AlertModal';
 import SeenProductList from '../../components/List/SeenProductList';
+import { socket } from '../../config/socket';
 
 const ProfileScreen = (props) => {
     const { user: { user }, navigation: { navigate }, actions, cActions } = props;
@@ -23,6 +24,7 @@ const ProfileScreen = (props) => {
         setVisibleModal(true);
     }
     const onLogout = () => {
+        socket.off(user._id);
         actions.actionLogOut();
         cActions.resetCart();
         //navigate('LoginScreen');

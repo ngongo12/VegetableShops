@@ -33,9 +33,7 @@ exports.updateContact = async (id, contact) => {
 }
 
 exports.getContactIdByUserIDs = async (ids) => {
-    return await contactModel.find(
-        {
-            contactId: { $in: ids }
-        }
-    )
+        return await contactModel.find(
+            { userIDs: { $all: ids } }
+        )
 }

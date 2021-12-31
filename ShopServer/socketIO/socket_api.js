@@ -1,5 +1,6 @@
 const socketIo = require('socket.io');
 const io = socketIo();
+const messageController = require('../controllers/message');
 
 var socketAPI = {};
 
@@ -12,8 +13,13 @@ io.on('connection', (socket) => {
     });
 });
 
-socketAPI.sendMessage = (token, msg) => {
-    io.sockets.emit(token, { msg });
+socketAPI.sendMessage = async (token, msg, sendTo) => {
+    const result = await messageController.createMessage(msg);
+    //console.log(result);
+    io.sockets.emit(token, { msg: result });
+    if (sendTo) {
+        io.sockets.emit(sendTo, 'new')
+    }
 }
 
 module.exports = socketAPI;

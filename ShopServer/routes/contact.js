@@ -17,6 +17,7 @@ router.get('/getContactByID', async (req, res, next) => {
 
 router.post('/getContactIdByUserIDs', async (req, res, next) => {
     const { ids } = req.body;
+    //console.log(ids)
     const contact = await contactController.getContactIdByUserIDs(ids);
     res.json(contact[0]);
 })

@@ -117,6 +117,17 @@ const ProductDetailScreen = (props) => {
         }
     }
 
+    const askForProduct = () => {
+        const temp = {
+            _id: product?._id,
+            name: product?.name,
+            image: product?.images[0],
+            sellPrice: product?.sellPrice
+        }
+
+        navigate('ChatScreen', { userID: product?.owner, product: temp })
+    }
+
     const changeSeenProducts = () => {
         if (seenProducts.indexOf(productID) === 0) return; // Không có thay đổi dữ liệu gì nên out
 
@@ -228,7 +239,7 @@ const ProductDetailScreen = (props) => {
                     </ScrollView>
                     {(user._id !== product?.owner) && (
                         <View style={styles.buttonView}>
-                            <Pressable style={[styles.button, styles.buttonVerticle]}>
+                            <Pressable onPress={askForProduct} style={[styles.button, styles.buttonVerticle]}>
                                 <MCIcon name='chat-processing-outline' color={MainColor} size={23} />
                                 <DefautText style={{ fontSize: 12 }}>Hỏi giá</DefautText>
                             </Pressable>

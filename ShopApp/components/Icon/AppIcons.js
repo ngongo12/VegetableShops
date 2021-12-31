@@ -6,6 +6,8 @@ import {
 } from 'react-native';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import ChatBubleIconImport from './ChatBubleIcon';
+import { goBack } from '../../config/rootNavigation';
 import {
     MainColor
 } from '../../constants/colors';
@@ -19,16 +21,6 @@ export const ScanIcon = ( props ) => {
     )
 }
 
-export const ChatBubleIcon = ( props ) => {
-    const { onPress, count } = props;
-
-    return (
-        <TouchableOpacity style={[styles.icon, {marginRight: 8}]} onPress={onPress}>
-            <AntDesign name='message1' size={24} color={'white'} />
-            {(count != 0) && <Text style={styles.badge}>{ count}</Text>}
-        </TouchableOpacity>
-    )
-}
 export const LogoutIcon = ( props ) => {
     const { onPress, count } = props;
 
@@ -38,6 +30,14 @@ export const LogoutIcon = ( props ) => {
         </TouchableOpacity>
     )
 }
+
+export const BackIcon = () => {
+    return(
+        <AntDesign onPress={goBack} name='arrowleft' size={24} color={'#fff'} style={{ paddingRight: 0, paddingLeft: 16 }} />
+    )
+}
+
+export const ChatBubleIcon = ChatBubleIconImport;
 
 export default {
     ScanIcon,

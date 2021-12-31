@@ -13,9 +13,9 @@ const messageReducer = (state = defaultState, { type, payload }) => {
     switch(type){
         case actions.CLEAR_MESSAGES: return { messages: [], count: 0 };
         case actions.ADD_MASSAGES: {
-            const { msg } = payload;
+            const { msg, isAddNew } = payload;
             return {
-                messages: [...msg, ...messages],
+                messages: isAddNew ? [...msg, ...messages] : [...messages, ...msg],
                 count
             }
         }
