@@ -73,6 +73,7 @@
     var msg_history = document.getElementById("msg_history");
     var socket = io();
     const myID = '618b8f9080c155c6d7104c14';
+    const sendTo = '618c70181d419663e3470e3a'
     const contactID = '61cd1f0782fda6c11f131345';
     socket.on(contactID, (obj) => {
         const { msg } = obj;
@@ -146,7 +147,7 @@
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({msg, token: contactID})
+            body: JSON.stringify({msg, token: contactID, sendTo})
         }).catch(e => console.log(e))
         document.getElementById("msg-input").value = "";
     }

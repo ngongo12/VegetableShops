@@ -13,10 +13,13 @@ io.on('connection', (socket) => {
     });
 });
 
-socketAPI.sendMessage = async (token, msg) => {
+socketAPI.sendMessage = async (token, msg, sendTo) => {
     const result = await messageController.createMessage(msg);
     //console.log(result);
     io.sockets.emit(token, { msg: result });
+    if (sendTo) {
+        io.sockets.emit(sendTo, 'new')
+    }
 }
 
 module.exports = socketAPI;

@@ -22,8 +22,15 @@ export const getLastMessage = (contactId) => {
         .catch(e => console.log(e));
 }
 
+export const getMoreMessage = (contactId, lastMessageID) => {
+    return fetch(`${apiURL}message/getMoreMessage?id=${contactId}&lastMessageID=${lastMessageID}`)
+        .then(res => res.json())
+        .catch(e => console.log(e));
+}
+
 export default {
     sendMessage,
     getListMessage,
-    getLastMessage
+    getLastMessage,
+    getMoreMessage
 }

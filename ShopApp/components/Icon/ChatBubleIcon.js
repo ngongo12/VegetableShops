@@ -17,7 +17,7 @@ import {
 
 
 const ChatBubleIcon = ( props ) => {
-    const { messageReducer: { count: count } } = props;
+    const { messageReducer: { count } } = props;
     const isFocused = useIsFocused();
     // useEffect(() => {
     //     let temp = 0;

@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import notifee, { AndroidImportance, AndroidStyle } from '@notifee/react-native';
 import userActions from '../actions/userActions';
 import cartActions from '../actions/cartActions';
+import messageActions from '../actions/messageActions';
 
 import { MainColor } from '../constants/colors';
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -14,11 +15,12 @@ import NotificationScreen from './NotificationScreen';
 import StoreScreen from './Stores/StoreScreen';
 import ProfileScreen from './Profiles/ProfileScreen';
 import { getData, clearAllData } from '../api/asyncStorage';
+import { socket } from '../config/socket';
 //import { messaging } from '../config/firebase';
 const Tab = createBottomTabNavigator();
 
 const MainScreen = (props) => {
-    const { user: { user }, cActions, cart, actions } = props;
+    const { user: { user }, cActions, messageAction, actions } = props;
     const [newToken, setNewToken] = useState();
     useEffect(() => {
         //clearAllData();
@@ -28,6 +30,14 @@ const MainScreen = (props) => {
             .catch(e => console.log(e));
 
         getDeviceToken();
+        if(!user) return;
+        if(socket.hasListeners(user._id)){
+            socket.off(user._id)
+        }
+        socket.on(user._id, (socket) =>{
+            //console.log(socket)
+            messageAction.countNew();
+        })
 
     }, [user])
 
@@ -100,7 +110,7 @@ const MainScreen = (props) => {
                 }
             }
         })
-        
+
 
     }
 
@@ -145,7 +155,7 @@ const MainScreen = (props) => {
                 />
                 <Tab.Screen
                     name='NotificationScreen' component={NotificationScreen}
-                    
+
                 />
 
                 <Tab.Screen
@@ -166,7 +176,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators(userActions, dispatch),
-        cActions: bindActionCreators(cartActions, dispatch)
+        cActions: bindActionCreators(cartActions, dispatch),
+        messageAction: bindActionCreators(messageActions, dispatch)
     }
 }
 

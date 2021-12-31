@@ -164,10 +164,12 @@ const ShopAddProductScreen = (props) => {
     }
 
     return (
+        <>
+        <DefaultHeader isBack={true} title='Thêm sản phẩm' />
         <ScrollView style={styles.container}
             nestedScrollEnabled={true}
         >
-            <DefaultHeader title='Thêm sản phẩm' />
+            
             <Pressable>
                 <FastImage source={choosenImage ? { uri: choosenImage } : require('../../assets/images/item_not_found.png')} style={styles.cover} />
             </Pressable>
@@ -251,6 +253,7 @@ const ShopAddProductScreen = (props) => {
                 onItemPress={[openGallery, openCamera]}
             />
         </ScrollView>
+        </>
     )
 }
 

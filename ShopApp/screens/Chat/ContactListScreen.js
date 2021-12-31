@@ -15,12 +15,9 @@ import { connect } from 'react-redux';
 import { socket } from '../../config/socket';
 import userActions from '../../actions/userActions';
 import messageActions from '../../actions/messageActions';
-import { useIsFocused } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import { DateTimeFm, DefautText, Title } from '../../components/Text/AppTexts';
 import userAPI from '../../api/userAPI';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { MainColor } from '../../constants/colors';
 import { goBack, navigate } from '../../config/rootNavigation';
 import chatAPI from '../../api/chatAPI';
@@ -31,7 +28,7 @@ import DefaultHeader from '../../components/Header/DefaultHeader';
 const ContactListScreen = (props) => {
     const {
         user: { user },
-        messageReducer: { messages },
+        messageReducer: { messages, count },
         messageAction
     } = props;
     const [contacts, setContacts] = useState();
@@ -40,7 +37,7 @@ const ContactListScreen = (props) => {
         contactAPI.getListContact(user?._id)
             .then(res => setContacts(res))
             .catch(e => console.log(e));
-    }, [])
+    }, [count])
 
     //console.log(contacts)
 
@@ -59,7 +56,6 @@ const ContactListScreen = (props) => {
         </View>
     )
 }
-
 
 
 const ContactItem = (props) => {

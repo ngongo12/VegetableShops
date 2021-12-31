@@ -6,7 +6,7 @@ exports.getListMessage = async (id) => {
             contactId: id,
             $orderby: { createdAt: -1}
         }
-    ).sort({ createdAt: -1}).limit(5);
+    ).sort({ createdAt: -1}).limit(14);
 }
 
 exports.getLastMessage = async (id) => {
@@ -15,6 +15,18 @@ exports.getLastMessage = async (id) => {
             contactId: id,
         }
     ).sort({ createdAt: -1}).limit(1);
+}
+
+exports.getMoreMessage = async (id, lastMessageID) => {
+    return await messageModel.find(
+        {
+            contactId: id,
+            _id: { $lt: lastMessageID }
+        }
+    )
+    .sort({ createdAt: -1})
+    //.skip({ _id: lastMessageID })
+    .limit(5);
 }
 
 exports.createMessage = async (message) => {

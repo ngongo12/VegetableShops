@@ -6,7 +6,7 @@ import {
     TextInput,
     ToastAndroid,
     FlatList,
-    Keyboard
+    Keyboard,
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -25,6 +25,7 @@ import chatAPI from '../../api/chatAPI';
 import contactAPI from '../../api/contactAPI';
 import ChatBox from '../../components/chat/ChatBox';
 import onBackPress from '../../config/backPressHandler';
+import LoadMore from '../../components/List/LoadMore';
 
 const ChatScreen = (props) => {
     const {
@@ -45,6 +46,10 @@ const ChatScreen = (props) => {
     //const [messages, setMessages] = useState([]);
     const [isSendProduct, setIsSendProduct] = useState(false);
     const [keyboardIsShow, setKeyboardIsShow] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [canLoadMore, setCanLoadMore] = useState(true);
+    const [canScroll, setCanScroll] = useState(true);
+
     let flatlist = useRef();
     const isFocused = useIsFocused();
 
@@ -109,11 +114,12 @@ const ChatScreen = (props) => {
             }
         }
     }, [fetchedContact])
+
     useEffect(() => {
         if (contact) {
             chatAPI.getListMessage(contact._id)
                 .then(res => messageAction.add({
-                    msg: res?.reverse(),
+                    msg: res,
                     isAddNew: true
                 }))
                 .catch(e => console.log(e))
@@ -135,7 +141,7 @@ const ChatScreen = (props) => {
             })
 
             //Gửi sản phẩm cần hỏi nếu có
-            if(product && !isSendProduct){
+            if (product && !isSendProduct) {
                 chatAPI.sendMessage({
                     msg: {
                         contactId: contact?._id,
@@ -154,13 +160,61 @@ const ChatScreen = (props) => {
     }, [contact]);
 
     useEffect(() => {
-        scrollFlatlistToEnd();
-    }, [messages, keyboardIsShow])
+        if (canScroll)
+            scrollFlatlistToStart();
+    }, [messages])
 
-    const scrollFlatlistToEnd = () => {
+    useEffect(() => {
+        scrollFlatlistToStart();
+    }, [keyboardIsShow])
+
+    const scrollFlatlistToStart = () => {
         if (flatlist?.current && messages?.length > 3) {
             flatlist?.current?.scrollToIndex({ animated: true, index: 0 });
         }
+    }
+
+    const onLoadMore = () => {
+        if (!canLoadMore) {
+            return
+        }
+        console.log('loading more')
+        if (messages.length == 0) {
+            setCanLoadMore(false);
+            return;
+        }
+        setIsLoading(true);
+        const lastMessage = messages[messages.length - 1];
+        chatAPI.getMoreMessage(contact._id, lastMessage._id)
+            .then(res => {
+                if (res) {
+                    messageAction.add({
+                        msg: res,
+                        isAddNew: false
+                    })
+                }
+                else {
+                    setCanLoadMore(false);
+                }
+            })
+            .catch(e => {
+                console.log(e);
+                setCanLoadMore(false);
+            })
+
+        setIsLoading(false);
+    }
+
+    const handleScroll = (event) => {
+        let yOffset = event.nativeEvent.contentOffset.y;
+        //Nếu scroll hơn 30 thì không scroll về top khi có tin nhắn mới
+        if (yOffset < 30) {
+            setCanScroll(true);
+        }
+        else {
+            setCanScroll(false)
+        }
+        console.log(canScroll)
     }
 
     return (
@@ -174,23 +228,27 @@ const ChatScreen = (props) => {
                     data={messages}
                     renderItem={({ item }) => <ChatBox {...{ item, myID: user._id }} />}
                     inverted={true}
+                    ListFooterComponent={() => <LoadMore isLoading={isLoading} />}
+                    onEndReached={onLoadMore}
+                    onEndThreshold={0}
+                    onScroll={handleScroll}
                     style={{ flexGrow: 0, width: '100%' }}
                 />
             </View>
-            <InputView contact={contact} user={user} />
+            <InputView contact={contact} user={user} sendTo={userID} />
         </View>
     )
 }
 
 const InputView = (props) => {
-    const { contact, user } = props;
+    const { contact, user, sendTo } = props;
     const [text, setText] = useState('');
     const sendTextMessage = () => {
         if (!contact) {
             ToastAndroid.show('Lỗi khi lấy contact. Vui lòng thử lại sau', ToastAndroid.SHORT);
             return;
         }
-        if(text?.trim().length === 0){
+        if (text?.trim().length === 0) {
             return
         }
         chatAPI.sendMessage({
@@ -202,7 +260,8 @@ const InputView = (props) => {
                     message: text.trim()
                 }
             },
-            token: contact?._id
+            token: contact?._id,
+            sendTo
         })
         setText('');
     }
@@ -221,7 +280,7 @@ const InputView = (props) => {
                     style={styles.icon}
                     onPress={sendTextMessage}
                     color={text?.trim().length === 0 ? 'grey' : MainColor}
-                    
+
                 />
             </View>
         </View>

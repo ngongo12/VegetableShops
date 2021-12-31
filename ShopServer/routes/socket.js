@@ -3,8 +3,8 @@ const socketAPI = require('../socketIO/socket_api');
 var router = express.Router();
 
 router.post('/', async (req, res, next) => {
-    const { msg, token } = req.body;
-    socketAPI.sendMessage(token, msg);
+    const { msg, token, sendTo } = req.body;
+    socketAPI.sendMessage(token, msg, sendTo);
     res.json({ msg });
 })
 

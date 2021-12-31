@@ -176,7 +176,7 @@ const OrderDetailsScreen = (props) => {
                             <DefautText>Địa chỉ nhận hàng</DefautText>
                         </View>
                         <View style={{ paddingLeft: 52 }}>
-                            <DefautText>{customer?.fullname} | SĐT: {customer?.phone}</DefautText>
+                            <DefautText style={{ fontWeight: 'bold' }}>{customer?.fullname} | SĐT: {customer?.phone}</DefautText>
                             <DefautText>{deliveryAddress?.details}, {deliveryAddress?.ward?.name}</DefautText>
                             <DefautText>{deliveryAddress?.district?.name}, {deliveryAddress?.province?.name}</DefautText>
                             <DefautText>Khoảng cách: {order?.distance}km </DefautText>
@@ -265,10 +265,20 @@ const OrderDetailsScreen = (props) => {
                         {!order?.doneAt && <DefautText>Chưa hoàn thành</DefautText>}
                     </View>
                     {order?.cancelAt && (
-                        <View style={[styles.row, { paddingHorizontal: 10 }]}>
-                            <DefautText style={styles.title}>Đơn hàng đã bị hủy</DefautText>
-                            {order?.cancelAt && <DateTimeFm>{order?.cancelAt}</DateTimeFm>}
-                        </View>
+                        <>
+                            <View style={[styles.row, { paddingHorizontal: 10 }]}>
+                                <DefautText style={styles.title}>Đơn hàng đã bị hủy</DefautText>
+                                {order?.cancelAt && <DateTimeFm>{order?.cancelAt}</DateTimeFm>}
+                            </View>
+                            <View style={[styles.row, { paddingHorizontal: 10 }]}>
+                                <DefautText style={styles.title}>Người hủy</DefautText>
+                                <DefautText>{order?.cancelBy === user._id ? 'Bạn' : 'Người bán' }</DefautText>
+                            </View>
+                            <View style={[styles.row, { paddingHorizontal: 10 }]}>
+                                <DefautText style={styles.title}>Lý do</DefautText>
+                                <DefautText>{order?.cancelReason }</DefautText>
+                            </View>
+                        </>
                     )}
                 </View>
                 {(user._id === order?.shopID && order?.state === 'created') && <NomalButton onPress={confirmOrder} style={styles.button}>Xác nhận đơn hàng</NomalButton>}

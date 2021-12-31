@@ -64,7 +64,7 @@ const OutMessage = (props) => {
 
 const ProductContent = props => {
     const { product } = props;
-    console.log(product)
+    //console.log(product)
     return(
         <View style={[styles.outMessageText, styles.productContent]}>
             <FastImage source={{uri: product?.image}} style={styles.image} />
