@@ -5,8 +5,9 @@ import {
     Dimensions,
     Animated
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import { MainColor } from '../../constants/colors';
-import { DateTimeFm, DefautText } from '../Text/AppTexts';
+import { DateTimeFm, DefautText, SellPrice } from '../Text/AppTexts';
 
 const { width, height } = Dimensions.get('window');
 const maxWidth = width * 2 / 3;
@@ -22,37 +23,55 @@ const ChatBox = (props) => {
     //         useNativeDriver: true
     //     }).start();
     // }, []);
-
+    //console.log(item)
     return (
         <Animated.View style={[styles.container]}>
             {
                 (myID !== item.sendBy) ?
-                    <InMessage message={item?.messageContent} />
+                    <InMessage item={item} />
                     :
-                    <OutMessage message={item?.messageContent} />
+                    <OutMessage item={item} />
             }
         </Animated.View>
     )
 }
 
 const InMessage = (props) => {
-    const { message } = props;
-    console.log('Tin nhắn vào')
+    const { item } = props;
+    const { messageContent, createdAt } = item;
+
     return (
         <View>
-            <DateTimeFm style={styles.time}>{new Date()}</DateTimeFm>
-            <DefautText style={styles.inMessageText}>{message?.message}</DefautText>
+            <DateTimeFm style={styles.time}>{createdAt}</DateTimeFm>
+            {(messageContent?.type === 'text') && <DefautText style={styles.inMessageText}>{messageContent?.message}</DefautText>}
+            {(messageContent?.type === 'product') && <ProductContent product={messageContent?.product} /> }
         </View>
     )
 }
 
 const OutMessage = (props) => {
-    const { message } = props;
-    console.log('Tin nhắn ra')
+    const { item } = props;
+    const { messageContent, createdAt } = item;
+
     return (
         <View style={{ alignItems: 'flex-end' }}>
-            <DateTimeFm style={styles.time}>{new Date()}</DateTimeFm>
-            <DefautText style={styles.outMessageText}>{message?.message}</DefautText>
+            <DateTimeFm style={styles.time}>{createdAt}</DateTimeFm>
+            {(messageContent?.type === 'text') && <DefautText style={styles.outMessageText}>{messageContent?.message}</DefautText>}
+            {(messageContent?.type === 'product') && <ProductContent product={messageContent?.product} /> }
+        </View>
+    )
+}
+
+const ProductContent = props => {
+    const { product } = props;
+    console.log(product)
+    return(
+        <View style={[styles.outMessageText, styles.productContent]}>
+            <FastImage source={{uri: product?.image}} style={styles.image} />
+            <View style={{paddingLeft: 10, justifyContent: 'space-between'}}>
+                <DefautText style={{fontSize: 15}} numberOfLines={2} ellipsizeMode='tail'>{product?.name}</DefautText>
+                <SellPrice style={{fontWeight: 'normal', fontSize: 13}}>{product?.sellPrice}</SellPrice>
+            </View>
         </View>
     )
 }
@@ -87,6 +106,17 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 0,
         backgroundColor: MainColor,
         color: '#fff'
+    },
+    productContent: {
+        maxWidth: maxWidth,
+        minWidth: width /2,
+        backgroundColor: 'white',
+        flexDirection: 'row',
+        paddingVertical: 10
+    },
+    image: {
+        width: 64,
+        height: 64
     }
 })
 

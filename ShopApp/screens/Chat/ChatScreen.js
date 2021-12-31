@@ -13,7 +13,7 @@ import { connect } from 'react-redux';
 import { socket } from '../../config/socket';
 import userActions from '../../actions/userActions';
 import messageActions from '../../actions/messageActions';
-
+import { useIsFocused } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import { DefautText, Title } from '../../components/Text/AppTexts';
 import userAPI from '../../api/userAPI';
@@ -24,14 +24,17 @@ import { goBack } from '../../config/rootNavigation';
 import chatAPI from '../../api/chatAPI';
 import contactAPI from '../../api/contactAPI';
 import ChatBox from '../../components/chat/ChatBox';
+import onBackPress from '../../config/backPressHandler';
 
 const ChatScreen = (props) => {
     const {
         route: {
             params: {
                 contactId,
-                userID
-            }
+                userID,
+                product
+            },
+            name
         },
         user: { user },
         messageReducer: { messages },
@@ -40,11 +43,24 @@ const ChatScreen = (props) => {
     const [contact, setContact] = useState();
     const [fetchedContact, setFetchedContact] = useState(false);
     //const [messages, setMessages] = useState([]);
-    const [flagLoad, setFlagLoad] = useState(false);
+    const [isSendProduct, setIsSendProduct] = useState(false);
     const [keyboardIsShow, setKeyboardIsShow] = useState(false);
     let flatlist = useRef();
+    const isFocused = useIsFocused();
 
-    console.log('>>>>>>>>>>>>>>> message Reducer', messages)
+    //console.log('>>>>>>>>>>>>>>> product', product)
+    useEffect(() => {
+        onBackPress(() => {
+            if (name === 'ChatScreen') {
+                messageAction.clear();
+            }
+        })
+    }, [])
+
+    useEffect(() => {
+        messageAction.clear();
+    }, [isFocused])
+
     useEffect(() => {
         //Trong trường hợp chỉ truyền vào userID
         if (userID) {
@@ -95,6 +111,13 @@ const ChatScreen = (props) => {
     }, [fetchedContact])
     useEffect(() => {
         if (contact) {
+            chatAPI.getListMessage(contact._id)
+                .then(res => messageAction.add({
+                    msg: res?.reverse(),
+                    isAddNew: true
+                }))
+                .catch(e => console.log(e))
+            //
             if (socket.hasListeners(contact._id)) {
                 console.log('Has listener');
                 socket.off(contact._id);
@@ -102,15 +125,33 @@ const ChatScreen = (props) => {
             }
             socket.on(contact._id, (data) => {
                 console.log('>>>>>>message', data);
-                setFlagLoad(!flagLoad);
+                //setFlagLoad(!flagLoad);
                 const { msg } = data;
 
                 messageAction.add({
-                    msg: [msg]
+                    msg: [msg],
+                    isAddNew: true
                 })
             })
+
+            //Gửi sản phẩm cần hỏi nếu có
+            if(product && !isSendProduct){
+                chatAPI.sendMessage({
+                    msg: {
+                        contactId: contact?._id,
+                        sendBy: user?._id,
+                        messageContent: {
+                            type: 'product',
+                            message: `[1 Sản phẩm]`,
+                            product
+                        }
+                    },
+                    token: contact?._id
+                })
+                setIsSendProduct(true);
+            }
         }
-    }, [contact, flagLoad]);
+    }, [contact]);
 
     useEffect(() => {
         scrollFlatlistToEnd();
@@ -149,13 +190,16 @@ const InputView = (props) => {
             ToastAndroid.show('Lỗi khi lấy contact. Vui lòng thử lại sau', ToastAndroid.SHORT);
             return;
         }
+        if(text?.trim().length === 0){
+            return
+        }
         chatAPI.sendMessage({
             msg: {
                 contactId: contact?._id,
                 sendBy: user?._id,
                 messageContent: {
                     type: 'text',
-                    message: text
+                    message: text.trim()
                 }
             },
             token: contact?._id
@@ -169,12 +213,15 @@ const InputView = (props) => {
                     value={text}
                     onChangeText={setText}
                     placeholder='Soạn tin...'
+                    onEndEditing={sendTextMessage}
                     style={{ flex: 1, fontSize: 13 }}
                 />
                 <MaterialCommunityIcons
                     name='send' size={26}
                     style={styles.icon}
                     onPress={sendTextMessage}
+                    color={text?.trim().length === 0 ? 'grey' : MainColor}
+                    
                 />
             </View>
         </View>

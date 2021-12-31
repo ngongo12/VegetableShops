@@ -8,16 +8,17 @@ import {
 import {
     MainColor
 } from '../../constants/colors';
-import { ChatBubleIcon } from '../Icon/AppIcons';
+import { BackIcon, ChatBubleIcon } from '../Icon/AppIcons';
 import CartIcon from '../Icon/CartIcon';
 import { Title } from '../Text/AppTexts';
 
 const DefaultHeader = ( props ) => {
-    const { title } = props
+    const { title, isBack } = props
     return (
         <View>
             <StatusBar backgroundColor={MainColor} translucent={false} />
             <View style={styles.constainer}>
+                {isBack && <BackIcon />}
                 <Title style={styles.text} >{title}</Title>
                 <CartIcon />
                 <ChatBubleIcon count={11} />

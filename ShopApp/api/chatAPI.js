@@ -12,11 +12,18 @@ export const sendMessage = (data) => {
 
 export const getListMessage = (contactId) => {
     return fetch(`${apiURL}message?id=${contactId}`)
-        .then(res => res)
+        .then(res => res.json())
+        .catch(e => console.log(e));
+}
+
+export const getLastMessage = (contactId) => {
+    return fetch(`${apiURL}message/lastMessage?id=${contactId}`)
+        .then(res => res.json())
         .catch(e => console.log(e));
 }
 
 export default {
     sendMessage,
     getListMessage,
+    getLastMessage
 }

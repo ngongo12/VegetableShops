@@ -28,6 +28,7 @@ import OrderDetailScreen from '../screens/MyOrder/OrderDetailScreen';
 import SearchScreen from '../screens/SearchScreen';
 import ShopDetailScreen from '../screens/Stores/ShopDetailScreen';
 import ChatScreen from '../screens/Chat/ChatScreen';
+import ContactListScreen from './Chat/ContactListScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -162,6 +163,10 @@ const NavigatorScreen = props => {
                         <Stack.Screen
                             name="ChatScreen"
                             component={ChatScreen}
+                        />
+                        <Stack.Screen
+                            name="ContactListScreen"
+                            component={ContactListScreen}
                         />
                     </>
                 )}
