@@ -112,7 +112,7 @@ const PaymentScreen = (props) => {
             <Modal
                 visible={visibleModal}
             >
-                <Title style={[styles.headerContent, {backgroundColor: MainColor, marginTop: 0, color: '#fff'}]}><Icon name='left' size={15}/>{`       `}Hãy chọn địa chỉ giao hàng</Title>
+                <Title style={[styles.headerContent, {backgroundColor: MainColor, marginTop: 0, color: '#fff', paddingLeft: 16}]}>Hãy chọn địa chỉ giao hàng</Title>
                 <FlatList
                     data={address}
                     renderItem={({ item, index }) => <ItemAddress
@@ -141,7 +141,7 @@ const ItemAddress = props => {
                     <DefautText style={styles.itemText}>{item?.district?.name}</DefautText>
                     <DefautText style={styles.itemLargeText}>{item?.province?.name}</DefautText>
                 </View>
-                {(chosenAddress === item) && (<DefautText style={styles.delete} onPress={() => setVisibleModal(true)}>Đã chọn</DefautText>)}
+                {(chosenAddress === item) && (<DefautText style={styles.delete} >Đã chọn</DefautText>)}
             </Pressable>
         </>
 

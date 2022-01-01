@@ -46,6 +46,7 @@ const ProfileScreen = (props) => {
                 <SeenProductList />
                 <View style={{ alignContent: 'flex-end' }}>
                     <ButtonSetting iconName='setting' name='Thiết lập tài khoản' onPress={() => navigate('AccountSettingScreen')} />
+                    <ButtonSetting iconName='hearto' name='Danh sách yêu thích' />
                     <ButtonSetting iconName='gift' name='Ví Voucher' />
                     <ButtonSetting iconName='filetext1' name='Quy chế - Chính sách' />
                     <ButtonSetting iconName='questioncircleo' name='Trung tâm hỗ trợ' />
