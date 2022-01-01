@@ -29,6 +29,7 @@ import SearchScreen from '../screens/SearchScreen';
 import ShopDetailScreen from '../screens/Stores/ShopDetailScreen';
 import ChatScreen from '../screens/Chat/ChatScreen';
 import ContactListScreen from './Chat/ContactListScreen';
+import EditAddressScreen from './Profiles/address/EditAddressScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -167,6 +168,16 @@ const NavigatorScreen = props => {
                         <Stack.Screen
                             name="ContactListScreen"
                             component={ContactListScreen}
+                        />
+                        <Stack.Screen
+                            name="EditAddressScreen"
+                            component={EditAddressScreen}
+                            options={
+                                {
+                                    ...options,
+                                    title: 'Thay đổi địa chỉ'
+                                }
+                            }
                         />
                     </>
                 )}

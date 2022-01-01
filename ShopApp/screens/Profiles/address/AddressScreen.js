@@ -39,11 +39,23 @@ const AddressScreen = props => {
         });
     }
 
+    const onChangeDefaultAddress = item => {
+        let temp = user.address;
+        temp = temp.filter(e => e !== item);
+        temp = [item, ...temp];
+        actions.actionEditProfile({
+            user: {
+                _id: user._id,
+                address: temp
+            }
+        });
+    }
+
     return (
         <>
         <FlatList
             data={address}
-            renderItem={({ item, index }) => <ItemOfList {... {item, index, onDelete}} />}
+            renderItem={({ item, index }) => <ItemOfList {... {item, index, onDelete, onChangeDefaultAddress}} />}
             ListFooterComponent={() => {
                 return (
                     <Pressable style={[styles.listFooter, address.length === 0 && {marginTop: 0}]} onPress={() => navigate('NewAddressScreen')}>
@@ -63,16 +75,18 @@ const AddressScreen = props => {
 }
 
 const ItemOfList = props => {
-    const { item, onPress, index, onDelete } = props;
+    const { item, index, onDelete, onChangeDefaultAddress } = props;
     const [visibleModal, setVisibleModal] = useState(false);
     return (
         <>
-        <Pressable style={styles.item} onPress={onPress}>
+        <Pressable style={styles.item} onPress={() => navigate('EditAddressScreen', { myAddress: item, myIndex: index})}>
             <View style={styles.itemContent}>
                 <DefautText style={styles.itemText}>{`${item?.details}, ${item?.ward?.name}`}</DefautText>
                 <DefautText style={styles.itemText}>{item?.district?.name}</DefautText>
                 <DefautText style={styles.itemLargeText}>{item?.province?.name}</DefautText>
-                {index==0 && <DefautText style={[styles.defautValue]}>Mặc định</DefautText>}
+                {index===0 ? <DefautText style={[styles.defautValue]}>Mặc định</DefautText>
+                : <DefautText style={[styles.defautValue]} onPress={() => onChangeDefaultAddress(item)}>Đặt làm mặc định</DefautText>
+                }
             </View>
             <DefautText style={styles.delete} onPress={() => setVisibleModal(true)}>Xóa</DefautText>
         </Pressable>
@@ -142,8 +156,8 @@ const styles = StyleSheet.create({
         marginHorizontal: 15,
         fontSize: 12,
         color: RED,
-        width: 100,
-        textAlign: 'center',
+        paddingHorizontal: 16,
+        alignSelf: 'flex-start',
         paddingVertical: 3,
         borderWidth: 0.5,
         borderRadius: 3,
