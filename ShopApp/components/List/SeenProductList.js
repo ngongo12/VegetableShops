@@ -58,7 +58,7 @@ const SeenProductList = (props) => {
                     </View>
                     <FlatList
                         data={products}
-                        renderItem={ProductItem}
+                        renderItem={({item})=><ProductItem item={item} hasBorder={true} />}
                         nestedScrollEnabled={true}
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}

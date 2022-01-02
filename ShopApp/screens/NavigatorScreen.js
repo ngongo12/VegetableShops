@@ -31,6 +31,7 @@ import ChatScreen from '../screens/Chat/ChatScreen';
 import ContactListScreen from './Chat/ContactListScreen';
 import EditAddressScreen from './Profiles/address/EditAddressScreen';
 import ProductsOfCategoryScreen from './Products/ProductsOfCategoryScreen';
+import FavoriteProductScreen from './Products/FavoriteProductScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -187,6 +188,16 @@ const NavigatorScreen = props => {
                                 {
                                     ...options,
                                     title: 'Danh mục sản phẩm'
+                                }
+                            }
+                        />
+                        <Stack.Screen
+                            name="FavoriteProductScreen"
+                            component={FavoriteProductScreen}
+                            options={
+                                {
+                                    ...options,
+                                    title: 'Sản phẩm yêu thích'
                                 }
                             }
                         />

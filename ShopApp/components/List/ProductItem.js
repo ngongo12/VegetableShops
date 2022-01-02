@@ -12,9 +12,9 @@ import { SellPrice, ProductName, OriginPrice, SalePercent } from '../Text/AppTex
 
 const { width, height } = Dimensions.get('window');
 const ProductItem = (props) => {
-    const { item } = props;
+    const { item, hasBorder } = props;
     return (
-        <Pressable style={styles.constainer} onPress={() => navigate('ProductDetailScreen', { productID: item._id })} >
+        <Pressable style={[styles.constainer, hasBorder && styles.border]} onPress={() => navigate('ProductDetailScreen', { productID: item._id })} >
             <FastImage source={{ uri: item.images[0] }} style={styles.image} resizeMode={FastImage.resizeMode.cover} />
             <View style={styles.content}>
                 <ProductName>{item.name}</ProductName>
@@ -35,10 +35,14 @@ const styles = StyleSheet.create({
         flex: 1,
         margin: 4,
         backgroundColor: '#fff',
-        borderRadius: 5,
+        borderRadius: 8,
         overflow: 'hidden',
         maxWidth: width / 2 - 7,
-        minWidth: width / 2.5
+        minWidth: width / 2.2, 
+    },
+    border: {
+        borderWidth: 0.5,
+        borderColor: '#aaa'
     },
     image: {
         width: '100%',
