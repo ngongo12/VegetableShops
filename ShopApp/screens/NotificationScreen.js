@@ -20,9 +20,10 @@ import { navigate } from '../config/rootNavigation';
 const NotificationScreen = (props) => {
     const { user: { user } } = props;
     const [notifi, setNotifi] = useState();
+    const [refreshing, setRefreshing] = useState(false);
     const isFocused = useIsFocused();
     useEffect(() => {
-        if(user?._id){
+        if (user?._id) {
             fetchtNotification();
         }
     }, [isFocused])
@@ -38,35 +39,37 @@ const NotificationScreen = (props) => {
             <DefaultHeader title='Thông báo' />
             {notifi && <FlatList
                 data={notifi}
-                renderItem={({item, index}) => <Item item={item} index={index} />}
+                onRefresh={fetchtNotification}
+                refreshing={refreshing}
+                renderItem={({ item, index }) => <Item item={item} index={index} />}
             />}
         </View>
     )
 }
 
 const Item = (props) => {
-    const { item, index} = props;
+    const { item, index } = props;
     //console.log('>>>>>>>>item ', index)
     const onNavigate = () => {
-        switch(item?.type) {
-            case 'order': navigate('OrderDetailScreen', { orderID : item.linkID }); return;
-            case 'product': navigate('ProductDetailScreen', { productID : item.linkID }); return;
+        switch (item?.type) {
+            case 'order': navigate('OrderDetailScreen', { orderID: item.linkID }); return;
+            case 'product': navigate('ProductDetailScreen', { productID: item.linkID }); return;
         }
     }
-    return(
-        <Pressable onPress={onNavigate} style={[{flexDirection: 'row', padding: 10, borderBottomWidth: 0.5, borderColor: 'silver', backgroundColor: '#fff' }, (index%2==0) && {backgroundColor: '#F6FFFE'}]}>
-            <FastImage source={{uri: item?.image}} style={styles.image} />
-            <View style={{paddingLeft: 10, flex: 1}}>
-                <DefautText style={{color: 'black', marginBottom: 5}}>{item?.title}</DefautText>
+    return (
+        <Pressable onPress={onNavigate} style={[{ flexDirection: 'row', padding: 10, borderBottomWidth: 0.5, borderColor: 'silver', backgroundColor: '#fff' }, (index % 2 == 0) && { backgroundColor: '#F6FFFE' }]}>
+            <FastImage source={{ uri: item?.image }} style={styles.image} />
+            <View style={{ paddingLeft: 10, flex: 1 }}>
+                <DefautText style={{ color: 'black', marginBottom: 5 }}>{item?.title}</DefautText>
                 <BodyText>{item?.body}</BodyText>
-                <View style={{flexDirection: 'row', alignItems: 'center', paddingVertical: 5}}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 5 }}>
                     <EvilIcon name='clock' size={16} />
-                    <DateTimeFm style={{fontSize: 12, paddingLeft: 5}}>{item?.createdAt}</DateTimeFm>
+                    <DateTimeFm style={{ fontSize: 12, paddingLeft: 5 }}>{item?.createdAt}</DateTimeFm>
                 </View>
             </View>
         </Pressable>
     )
-} 
+}
 
 const styles = StyleSheet.create({
     container: {

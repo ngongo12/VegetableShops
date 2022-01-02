@@ -14,7 +14,7 @@ const NewOrderScreen = (props) => {
     const isFocused = useIsFocused();
 
     useEffect(() => {
-        fetchOrder();
+        if (isFocused) fetchOrder();
 
     }, [isFocused])
 

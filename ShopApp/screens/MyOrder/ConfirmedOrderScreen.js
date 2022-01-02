@@ -14,7 +14,7 @@ const ContainScreen = (props) => {
     const isFocused = useIsFocused();
 
     useEffect(() => {
-        fetchOrder();
+        if (isFocused) fetchOrder();
 
     }, [isFocused])
 

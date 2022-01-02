@@ -10,43 +10,49 @@ exports.getById = async (id) => {
     return await productModel.findOne({ _id: id });
 }
 
-exports.getWithLimit = async (uid, page, num) => {
-
+exports.getWithLimit = async (uid, _startAt, _num) => {
+    const startAt = parseInt(_startAt);
+    const num = parseInt(_num);
     if (uid) {
         //console.log(uid);
         const products = await productModel
             .find({ owner: { $ne: uid } }, '_id name images sellPrice originPrice owner')
-            .skip((page - 1) * num)
+            .skip(startAt)
+            .sort({ createdAt: -1 })
             .limit(num);
         return products;
     }
     const products = await productModel
         .find({}, '_id name images sellPrice originPrice')
-        .skip((page - 1) * num)
+        .skip(startAt)
+        .sort({ createdAt: -1 })
         .limit(num);
     return products;
 }
 
-exports.getMyProductsWithLimit = async (uid, page, num) => {
+exports.getMyProductsWithLimit = async (uid, startAt, num) => {
 
     if (uid) {
         //console.log(uid);
         const products = await productModel
             .find({ owner: uid }, '_id name images sellPrice originPrice owner')
-            .skip((page - 1) * num)
+            .skip(startAt)
+            .sort({ createdAt: -1 })
             .limit(num);
         return products;
     }
     const products = await productModel
         .find({}, '_id name images sellPrice originPrice')
-        .skip((page - 1) * num)
+        .skip(startAt)
+        .sort({ createdAt: -1 })
         .limit(num);
     return products;
 }
 
 exports.getAllShopProducts = async (uid) => {
     const products = await productModel
-        .find({ owner: uid }, '_id name images sellPrice originPrice owner sold createdAt nOSeen');
+        .find({ owner: uid }, '_id name images sellPrice originPrice owner sold createdAt nOSeen')
+        .sort({ createdAt: -1 });
     return products;
 }
 
@@ -63,8 +69,22 @@ exports.getTopProductByCategory = async (id, uid) => {
         .find({
             categoryId: id,
             owner: { $ne: uid }
-        }, '_id images')
+        }, '_id images sellPrice originPrice name')
+        .sort({ createdAt: -1 })
         .limit(10);
+    return products
+}
+
+exports.getMoreProductByCategory = async (id, uid, _startAt) => {
+    const startAt = parseInt(_startAt);
+    const products = await productModel
+        .find({
+            categoryId: id,
+            owner: { $ne: uid }
+        }, '_id images sellPrice originPrice name')
+        .limit(startAt)
+        .sort({ createdAt: -1 })
+        .limit(4);
     return products
 }
 
@@ -74,7 +94,7 @@ exports.getProductsInArray = async (arr) => {
             _id: { $in: arr }
         },
             '_id name images sellPrice originPrice owner amount'
-        )
+        ).sort({ createdAt: -1 })
     return products;
 }
 
@@ -85,7 +105,7 @@ exports.getSalesProducts = async (uid) => {
             owner: { $ne: uid }
         },
             '_id name images sellPrice originPrice owner'
-        )
+        ).sort({ createdAt: -1 })
     return products;
 }
 
@@ -103,14 +123,20 @@ exports.increaseSold = async (pid, num) => {
 }
 
 exports.updateNOSeen = async (id) => {
-    return await productModel.updateOne(
-        {_id: id},
-        {
-            $inc: {
-                nOSeen: 1
+    let result;
+    try {
+        result = await productModel.updateOne(
+            { _id: id },
+            {
+                $inc: {
+                    nOSeen: 1
+                }
             }
-        }
-    )
+        )
+    } catch (e) {
+        console.log(e);
+    }
+    return result;
 }
 
 exports.search = async (value) => {
@@ -120,7 +146,7 @@ exports.search = async (value) => {
             '$regex': value,
             '$options': 'i'
         }
-    })
+    }).sort({ createdAt: -1 })
 }
 
 exports.countProductsOfShop = async (id) => {

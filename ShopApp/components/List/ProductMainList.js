@@ -12,22 +12,63 @@ import categoryActions from '../../actions/categoryActions';
 import { productUrl } from '../../api/productAPI';
 import ProductItem from './ProductItem';
 import MainListHeader from '../Header/MainListHeader';
+import LoadMore from './LoadMore';
+import { MAIN_BACKGROUND } from '../../constants/colors';
 
 const ProductMainList = (props) => {
     const { navigate, user } = props;
     const [products, setProducts] = useState([]);
+    const [canFetchMore, setCanFetchMore] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
+    
     useEffect(() => {
-        fetch(productUrl + `getWithLimit?uid=${user?._id}`)
+        fetchtData();
+    }, [])
+
+    useEffect(() => {
+        
+    }, [products])
+
+
+
+    const fetchtData = () => {
+        fetch(productUrl + `getWithLimit?uid=${user?._id}&startAt=0&num=2`)
             .then((respone) => respone.json())
             .then((data) => {
                 if (data.products) {
-                    setProducts(data.products)
+                    setProducts(data.products);
                 }
                 else {
+                    setCanFetchMore(false);
                     ToastAndroid.show('Lấy danh sách bị lỗi', ToastAndroid.SHORT);
                 }
             })
-    }, [])
+    }
+
+    const fetchMoreData = () => {
+        if(!canFetchMore) return;
+        let startAt = products.length;
+        if(startAt < 0) startAt = 0;
+        setIsLoading(true);
+
+        fetch(productUrl + `getWithLimit?uid=${user?._id}&startAt=${startAt}&num=2`)
+            .then((respone) => respone.json())
+            .then((data) => {
+                if (data.products) {
+                    setProducts([...products , ...data.products]);
+                    if(data.products.length === 0) setCanFetchMore(false);
+                    // let temp = [...products , ...data.products];
+                    // console.log('>>>>>>>>>>>>>>>>>',temp)
+                    setIsLoading(false)
+                }
+                else {
+                    setIsLoading(false)
+                    ToastAndroid.show('Lấy danh sách bị lỗi', ToastAndroid.SHORT);
+                }
+            })
+            
+    }
 
 
     return (
@@ -40,6 +81,11 @@ const ProductMainList = (props) => {
                 nestedScrollEnabled={true}
                 ListHeaderComponent={MainListHeader}
                 showsVerticalScrollIndicator={false}
+                onEndReached={fetchMoreData}
+                onEndThreshold={0}
+                onRefresh={fetchtData}
+                refreshing={refreshing}
+                ListFooterComponent={()=> <LoadMore isLoading={isLoading} /> }
             />
         </View>
     )
@@ -48,6 +94,7 @@ const ProductMainList = (props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: MAIN_BACKGROUND
     },
     title: {
         margin: 11

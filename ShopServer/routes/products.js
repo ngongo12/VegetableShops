@@ -24,16 +24,16 @@ router.post('/update', async (req, res, next) =>{
 });
 
 router.get('/getWithLimit', async (req, res, next) =>{
-    const { uid } = req.query;
-    const products = await productController.getWithLimit(uid, 1, 10);
+    const { uid, startAt, num } = req.query;
+    const products = await productController.getWithLimit(uid, startAt, num);
     res.json({
         products
     })
 });
 
 router.get('/getMyProductsWithLimit', async (req, res, next) =>{
-    const { uid } = req.query;
-    const products = await productController.getMyProductsWithLimit(uid, 1, 10);
+    const { uid, startAt, num } = req.query;
+    const products = await productController.getMyProductsWithLimit(uid, startAt, num);
     res.json({
         products
     })
@@ -55,9 +55,17 @@ router.get('/getTopProductByCategory', async (req, res, next) =>{
     })
 });
 
+router.get('/getMoreProductByCategory', async (req, res, next) =>{
+    const { id, uid, startAt } = req.query;
+    const products = await productController.getMoreProductByCategory(id, uid, startAt);
+    res.json({
+        products
+    })
+});
+
 router.post('/getProductsInArray', async (req, res, next) =>{
     const { arr } = req.body;
-    console.log(arr)
+    //console.log(arr)
     const products = await productController.getProductsInArray(arr);
     res.json({
         products
@@ -80,8 +88,9 @@ router.get('/search', async (req, res, next) =>{
 });
 
 router.get('/updateNOSeen', async (req, res, next) =>{
-    console.log('updateNOSeen')
+    //console.log('updateNOSeen')
     const { id } = req.query;
+    //console.log('updateNOSeen ', id)
     return await productController.updateNOSeen(id);
 });
 

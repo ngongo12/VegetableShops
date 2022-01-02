@@ -15,6 +15,7 @@ import userAPI, { getShopName } from '../../api/userAPI';
 import { DARK_GREEN, MainColor, MAIN_BACKGROUND, RED } from '../../constants/colors';
 import { DefautText, Title, SellPrice, DateTimeFm, HeaderText } from '../../components/Text/AppTexts';
 import NomalButton from '../../components/Button/NomalButton';
+import LoadingView from '../../components/LoadingView'
 
 const OrderDetailsScreen = (props) => {
     const { user: { user }, route: { params } } = props;
@@ -31,8 +32,7 @@ const OrderDetailsScreen = (props) => {
 
     useEffect(() => {
         fetchOrder();
-
-    }, [isFocused])
+    }, [])
 
     useEffect(() => {
         if (order) {
@@ -168,7 +168,7 @@ const OrderDetailsScreen = (props) => {
 
     return (
         <>
-            <ScrollView>
+            {order ? ( <ScrollView>
                 <View style={[styles.container, { backgroundColor: '#fff', paddingBottom: 10, flexDirection: 'row', alignItems: 'center' }]}>
                     <View style={{ flex: 1 }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -285,7 +285,7 @@ const OrderDetailsScreen = (props) => {
                 {(user._id === order?.shopID && order?.state === 'confirm') && <NomalButton onPress={deliveryOrder} style={styles.button}>Xác nhận chuyển hàng</NomalButton>}
                 {(order?.state === 'delivery') && <NomalButton onPress={doneOrder} style={styles.button}>Xác nhận hoàn thành</NomalButton>}
                 {canCancel && <NomalButton onPress={() => setVisibleModal(true)} style={[styles.button]} color={RED}>Hủy đơn hàng</NomalButton>}
-            </ScrollView>
+            </ScrollView>): <LoadingView message='Đang tải...' /> }
             <Modal
                 visible={visibleModal}
                 dimissModal={() => setVisibleModal(false)}

@@ -16,6 +16,7 @@ import { productUrl } from '../../api/productAPI';
 import LinearGradient from 'react-native-linear-gradient';
 import { Title, PressableText, DefautText, SellPrice, OriginPrice, SalePercent } from '../Text/AppTexts';
 import { navigate } from '../../config/rootNavigation';
+import CountDownTime from '../Text/CountDownTime';
 
 const SaleProductList = (props) => {
     const { user:{user} } = props;
@@ -48,8 +49,9 @@ const SaleProductList = (props) => {
                     style={styles.container}
                 >
                     <View style={styles.title}>
-                        <Title style={[{ flex: 1 }, styles.colorWhite]}>Siêu Sale</Title>
-                        <PressableText style={[{ padding: 8 }, styles.colorWhite]}>Xem tất cả</PressableText>
+                        <Title style={[ styles.colorWhite]}>Siêu Sale</Title>
+                        <CountDownTime />
+                        <PressableText style={[{ padding: 8, flex: 1, textAlign: 'right' }, styles.colorWhite]}>Xem tất cả</PressableText>
                     </View>
                     <FlatList
                         data={products}

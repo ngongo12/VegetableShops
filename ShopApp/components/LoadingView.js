@@ -13,7 +13,7 @@ const LoadingView = ( props ) =>{
     return(
         <View style={styles.constainer}>
             <ActivityIndicator size='large' color={ MainColor } />
-            {message && <Title style={styles.text}></Title>}
+            {message && <Title style={styles.text}>{message}</Title>}
         </View>
     )
 }

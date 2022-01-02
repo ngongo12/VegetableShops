@@ -30,6 +30,7 @@ import ShopDetailScreen from '../screens/Stores/ShopDetailScreen';
 import ChatScreen from '../screens/Chat/ChatScreen';
 import ContactListScreen from './Chat/ContactListScreen';
 import EditAddressScreen from './Profiles/address/EditAddressScreen';
+import ProductsOfCategoryScreen from './Products/ProductsOfCategoryScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -176,6 +177,16 @@ const NavigatorScreen = props => {
                                 {
                                     ...options,
                                     title: 'Thay đổi địa chỉ'
+                                }
+                            }
+                        />
+                        <Stack.Screen
+                            name="ProductsOfCategoryScreen"
+                            component={ProductsOfCategoryScreen}
+                            options={
+                                {
+                                    ...options,
+                                    title: 'Danh mục sản phẩm'
                                 }
                             }
                         />

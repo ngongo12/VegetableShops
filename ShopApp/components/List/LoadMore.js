@@ -26,7 +26,8 @@ const styles = StyleSheet.create({
     constainer: {
         flexDirection: 'row',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        paddingVertical: 5
     },
     text: {
         marginTop: 3,

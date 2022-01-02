@@ -42,7 +42,7 @@ const CategoryProductList = (props) => {
                 <View style={styles.container}>
                     <View style={styles.title}>
                         <Title style={{ flex: 1 }}>{category?.name}</Title>
-                        <PressableText style={{ padding: 8 }}>Xem tất cả</PressableText>
+                        <PressableText onPress={() => navigate('ProductsOfCategoryScreen', {category})} style={{ padding: 8 }}>Xem tất cả</PressableText>
                     </View>
                     <FlatList
                         data={products}

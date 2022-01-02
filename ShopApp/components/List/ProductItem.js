@@ -13,7 +13,6 @@ import { SellPrice, ProductName, OriginPrice, SalePercent } from '../Text/AppTex
 const { width, height } = Dimensions.get('window');
 const ProductItem = (props) => {
     const { item } = props;
-
     return (
         <Pressable style={styles.constainer} onPress={() => navigate('ProductDetailScreen', { productID: item._id })} >
             <FastImage source={{ uri: item.images[0] }} style={styles.image} resizeMode={FastImage.resizeMode.cover} />

@@ -21,5 +21,5 @@ exports.createNotification = async (notification) => {
 }
 
 exports.getNotificationByUserID = async (uid) => {
-    return await notificationModel.find({ uid });
+    return await notificationModel.find({ uid }).sort({ createdAt: -1 });
 }

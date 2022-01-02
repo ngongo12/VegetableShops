@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { useIsFocused } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import userActions from '../../actions/userActions';
 import { MainColor } from '../../constants/colors';
@@ -18,18 +19,23 @@ const ShopProductScreen = (props) => {
         navigation: { navigate },
         user: { user }
     } = props;
-
+    const isFocused = useIsFocused();
     const [products, setProducts] = useState();
+    const [refreshing, setRefreshing] = useState(false)
 
     useEffect(() => {
-        fetchMyProduct();
-    }, [])
+        if (isFocused)
+            fetchMyProduct();
+    }, [isFocused])
 
     const fetchMyProduct = () => {
+        setRefreshing(true)
         fetch(`${productUrl}getMyProductsWithLimit?uid=${user._id}`)
             .then(res => res.json())
             .then(res => setProducts(res?.products))
+            .then(() => setRefreshing(false))
             .catch(e => console.log(e));
+        //setRefreshing(false);
     }
     //console.log(products);
     return (
@@ -42,6 +48,8 @@ const ShopProductScreen = (props) => {
                     keyExtractor={(item, index) => index}
                     nestedScrollEnabled={true}
                     showsVerticalScrollIndicator={false}
+                    onRefresh={fetchMyProduct}
+                    refreshing={refreshing}
                 />
             )}
             <Pressable style={styles.btnAdd} onPress={() => navigate('ShopAddProductScreen')}>
