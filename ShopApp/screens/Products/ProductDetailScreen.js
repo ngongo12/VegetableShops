@@ -28,7 +28,6 @@ import LoadingView from '../../components/LoadingView';
 import ProductDetailHeader from '../../components/Header/ProductDetailHeader';
 import { navigate } from '../../config/rootNavigation';
 import userAPI from '../../api/userAPI';
-import { socket } from '../../config/socket';
 import FastImage from 'react-native-fast-image';
 
 const { width, height } = Dimensions.get('screen');
@@ -38,7 +37,7 @@ const ProductDetailScreen = (props) => {
     const { actions, cActions, user: { user }, categories } = props;
     const { favorites, seenProducts } = user;
     const [product, setProduct] = useState();
-    const [rating, setRating] = useState(0);
+    const [rating, setRating] = useState(5);
     const [favorite, setFavorite] = useState(false);
     const [visibleHeader, setVisibleHeader] = useState(false);
     const [pressCount, setPressCount] = useState(0);
@@ -226,7 +225,6 @@ const ProductDetailScreen = (props) => {
                             <Title>Thông tin sản phẩm</Title>
                             <TextFieldForProduct style={styles.textfield} name='Danh mục'>{category?.name}</TextFieldForProduct>
                             <TextFieldForProduct style={styles.textfield} name='Thương hiệu'>{product.brand}</TextFieldForProduct>
-                            <TextFieldForProduct style={styles.textfield} name='Đã bán'>{product?.sold ? product?.sold : 0}</TextFieldForProduct>
                             <TextFieldForProduct style={styles.textfield} name='Xuất xứ'>{product.origin}</TextFieldForProduct>
                             <TextFieldForProduct style={styles.textfield} name='Trạng thái'>{(product?.amount && product.amount > 0) ? 'Còn hàng' : 'Hết hàng'}</TextFieldForProduct>
                             <TextFieldForProduct style={styles.textfield} name='Đơn vị tính'>{product.unit}</TextFieldForProduct>
