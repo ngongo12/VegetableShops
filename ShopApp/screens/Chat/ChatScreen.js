@@ -56,7 +56,7 @@ const ChatScreen = (props) => {
     //console.log('>>>>>>>>>>>>>>> product', product)
     useEffect(() => {
         onBackPress(() => {
-            if (name === 'ChatScreen') {
+            if (name === 'ChatScreen' && isFocused) {
                 messageAction.clear();
             }
         })

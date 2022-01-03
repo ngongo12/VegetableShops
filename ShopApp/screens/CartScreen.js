@@ -19,12 +19,20 @@ import { navigate } from '../config/rootNavigation';
 import onBackPress from '../config/backPressHandler';
 
 const CartScreen = (props) => {
-    const { cart, cAction, user: { user }, navigation: { goBack } } = props;
+    const { cart, cAction, user: { user }, navigation: { goBack }, route: { name } } = props;
     const { address } = user;
     const [isChoose, setIsChoose] = useState(false);
     const [cartProducts, setCartProducts] = useState([]);
     const [productList, setProductList] = useState();
     const [totalPrice, setTotalPrice] = useState(0);
+
+    useEffect(() => {
+        onBackPress(() => {
+            if (name === 'CartScreen') {
+                cAction.clearChosen({uid: user._id});
+            }
+        })
+    }, [])
 
     useEffect(() => {
         fetchCartProducts();
