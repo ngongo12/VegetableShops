@@ -53,8 +53,7 @@ const SeenProductList = (props) => {
             {products?.length > 0 && (
                 <View style={styles.container}>
                     <View style={styles.title}>
-                        <Title style={{ flex: 1 }}>Sản phẩm đã xem</Title>
-                        <PressableText style={{ padding: 8 }}>Xem tất cả</PressableText>
+                        <Title style={{ flex: 1, paddingVertical: 8 }}>Sản phẩm đã xem</Title>
                     </View>
                     <FlatList
                         data={products}
@@ -91,7 +90,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         borderWidth: 0.5,
         borderColor: 'silver',
-        margin: 5
+        margin: 5,
     },
 })
 

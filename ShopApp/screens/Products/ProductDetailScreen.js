@@ -28,6 +28,7 @@ import LoadingView from '../../components/LoadingView';
 import ProductDetailHeader from '../../components/Header/ProductDetailHeader';
 import { navigate } from '../../config/rootNavigation';
 import userAPI from '../../api/userAPI';
+import { socket } from '../../config/socket';
 import FastImage from 'react-native-fast-image';
 
 const { width, height } = Dimensions.get('screen');
@@ -172,8 +173,6 @@ const ProductDetailScreen = (props) => {
         addToCart();
         navigate('CartScreen');
     }
-
-    //console.log(product)
 
     return (
         <>

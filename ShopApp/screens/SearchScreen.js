@@ -14,6 +14,7 @@ import { productUrl } from '../api/productAPI';
 import ProductItem from '../components/List/MyProductItem';
 import { SearchBarInput } from '../components/Header/SearchBar';
 import { DefautText } from '../components/Text/AppTexts';
+import { BackIcon } from '../components/Icon/AppIcons';
 
 const SearchScreen = (props) => {
     const {
@@ -38,12 +39,14 @@ const SearchScreen = (props) => {
     //console.log(products);
     return (
         <View style={styles.container}>
-            <View style={{ flexDirection: 'row', backgroundColor: MainColor, paddingRight: 10 }}>
+            <View style={{ flexDirection: 'row', backgroundColor: MainColor, paddingRight: 10, alignItems: 'center' }}>
+                {/* <BackIcon /> */}
                 <SearchBarInput
                     value={text}
                     onChangeText={setText}
                     onEndEditing={onSearch}
                     onPress={onSearch}
+                    notFocus={false}
                 />
             </View>
 

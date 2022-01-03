@@ -1,6 +1,12 @@
 var express = require('express');
 const productController = require('../controllers/products');
+const socketIo = require('socket.io');
+const io = socketIo();
 var router = express.Router();
+
+io.on('updateSeenProduct', (res) => {
+    console.log('updateSeenProduct' ,res);
+})
 
 router.get('/newEmpty', async (req, res, next) =>{
     const id = await productController.newEmpty();

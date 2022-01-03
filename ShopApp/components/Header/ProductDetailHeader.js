@@ -8,7 +8,7 @@ import {
 import {
     MainColor
 } from '../../constants/colors';
-import { ChatBubleIcon } from '../Icon/AppIcons';
+import { BackIcon, ChatBubleIcon } from '../Icon/AppIcons';
 import CartIcon from '../Icon/CartIcon';
 import { Title } from '../Text/AppTexts';
 const statusbarH = StatusBar.currentHeight;
@@ -19,6 +19,7 @@ const ProductDetailHeader = (props) => {
             <View>
                 <StatusBar backgroundColor={visible ? MainColor : 'transparent'} translucent={true} />
                 <View style={[styles.constainer, visible && {backgroundColor: MainColor}]}>
+                    <BackIcon />
                     <Title style={[styles.text, !visible && {color: 'transparent'} ]} >{title}</Title>
                     <CartIcon pressCount={pressCount} />
                     <ChatBubleIcon count={11} />

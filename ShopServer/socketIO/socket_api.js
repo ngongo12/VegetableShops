@@ -22,4 +22,8 @@ socketAPI.sendMessage = async (token, msg, sendTo) => {
     }
 }
 
+io.on('updateSeenProduct', (res) => {
+    console.log('updateSeenProduct' ,res);
+})
+
 module.exports = socketAPI;
