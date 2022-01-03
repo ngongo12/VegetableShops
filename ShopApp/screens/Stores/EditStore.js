@@ -9,78 +9,70 @@ import {
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import userActions from '../../../actions/userActions';
+import userActions from '../../actions/userActions';
 import MapView, { Marker } from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
 import Icon from 'react-native-vector-icons/Foundation';
-import { DefautText, Title } from '../../../components/Text/AppTexts';
-import { MainColor, RED } from '../../../constants/colors';
-import * as addressAPI from '../../../api/addressAPI';
-import NomalButton from '../../../components/Button/NomalButton';
-import LoadingModal from '../../../components/LoadingModal';
-import { requestLocationPermission } from '../../../components/RequestPermission';
-import { searchAddress } from '../../../api/mapAPI';
-import FastImage from 'react-native-fast-image';
+import { DefautText, Title } from '../../components/Text/AppTexts';
+import { MainColor, RED } from '../../constants/colors';
+import * as addressAPI from '../../api/addressAPI';
+import NomalButton from '../../components/Button/NomalButton';
+import LoadingModal from '../../components/LoadingModal';
+import { requestLocationPermission } from '../../components/RequestPermission';
+import { searchAddress } from '../../api/mapAPI';
 
-const EditAddressScreen = props => {
-    const { 
-        user: { user, isLoading, success }, 
-        actions, 
-        navigation: { goBack },
-        route: { params }
-    } = props;
-    const { myAddress } = params;
+const EditStore = props => {
+    const { user: { user, isLoading, success }, actions, navigation: { goBack } } = props;
+    const { shopAddress, shopName : _shopName } = user;
     const [flag, setFlag] = useState(false);
     const [count, setCount] = useState(0);
-    const [index, setIndex] = useState(0);
+    const [shopName, setShopName] = useState(_shopName);
+    const [index, setIndex] = useState(2);
     const [provinces, setProvinces] = useState([]);
     const [districts, setDistricts] = useState([]);
     const [wards, setWards] = useState([]);
-    const [showInputText, setShowInputText] = useState(false);
-    const [details, setDetails] = useState('');
-    const [isShowMap, setIsShowMap] = useState(false);
+    const [showInputText, setShowInputText] = useState(true);
+    const [details, setDetails] = useState(shopAddress?.details);
+    const [isShowMap, setIsShowMap] = useState(true);
     const [hasLocationPermission, setHasLocationPermission] = useState(false);
     const [myLocation, setMyLocation] = useState();
-    const [shopLocation, setShopLocation] = useState();
-    const [newLocationName, setNewLocationName] = useState('');
-    const [focusedLocation, setFocusedLocation] = useState();
+    const [newLocationName, setNewLocationName] = useState(`${shopAddress?.details}, ${shopAddress?.ward?.name}, ${shopAddress?.district?.name}, ${shopAddress?.province?.name}`);
+    const [shopLocation, setShopLocation] = useState(shopAddress?.coordinate);
+    const [focusedLocation, setFocusedLocation] = useState(shopAddress?.coordinate);
     const [address, setAddress] = useState([
         {
             index: 0,
             level: 'Tỉnh/ Thành phố',
-            focused: true
+            focused: false,
+            value: shopAddress?.province
         },
         {
             index: 1,
             level: 'Quận/ Huyện',
-            focused: false
+            focused: false,
+            value: shopAddress?.district
         },
         {
             index: 2,
             level: 'Xã/ Phường',
-            focused: false
+            focused: true,
+            value: shopAddress?.ward
         },
     ]);
 
+
     useEffect(() => {
         if (flag && success) {
-            ToastAndroid.show('Thêm địa chỉ thành công', ToastAndroid.SHORT);
+            ToastAndroid.show('Tạo cửa hàng thành công', ToastAndroid.SHORT);
             goBack();
         }
     }, [isLoading])
 
     useEffect(() => {
         fetchProvinces();
-        fetchDistricts(myAddress?.province?.code);
-        fetchWards(myAddress?.district?.code);
+        fetchDistricts(shopAddress?.province?.code);
+        fetchWards(shopAddress?.district?.code);
     }, [])
-
-    const setFocused = (index) => {
-        setIndex(index);
-        let temp = address;
-        temp = temp.map(e => e.index !== index ? { ...e, focused: false } : { ...e, focused: true })
-        setAddress(temp)
-    }
 
     useEffect(() => {
         Geolocation.getCurrentPosition(
@@ -103,8 +95,15 @@ const EditAddressScreen = props => {
         );
     }, [hasLocationPermission])
 
-    const fetchProvinces = () => {
-        addressAPI.getAllProvinces().then(res => setProvinces(res));
+    const setFocused = (index) => {
+        setIndex(index);
+        let temp = address;
+        temp = temp.map(e => e.index !== index ? { ...e, focused: false } : { ...e, focused: true })
+        setAddress(temp)
+    }
+
+    const fetchProvinces = (code) => {
+        addressAPI.getAllProvinces(code).then(res => setProvinces(res));
     }
 
     const fetchDistricts = (code) => {
@@ -163,47 +162,20 @@ const EditAddressScreen = props => {
         temp[2].value = item;
         setAddress(temp);
         setCount(count + 1);
-        console.log(address)
+        //console.log(address)
     }
 
     useEffect(() => {
-        //console.log('>>>>>>>>>> myAddress ', myAddress);
-        if(myAddress){
-            setAddress([
-                {
-                    index: 0,
-                    level: 'Tỉnh/ Thành phố',
-                    focused: false,
-                    value: myAddress?.province
-                },
-                {
-                    index: 1,
-                    level: 'Quận/ Huyện',
-                    focused: false,
-                    value: myAddress?.district
-                },
-                {
-                    index: 2,
-                    level: 'Xã/ Phường',
-                    focused: true,
-                    value: myAddress?.ward
-                },
-            ]);
-            setDetails(myAddress.details);
-            //setFocused(2);
-            setIndex(2);
-            setShowInputText(true);
-            setShopLocation(myAddress.coordinate);
-            setFocusedLocation(myAddress.coordinate);
-            setIsShowMap(true);
-            setNewLocationName('e')
-        }
-    }, [])
-    //console.log(address)
 
-    const onEditAdress = () => {
+    }, [address])
+
+    const onAddAdress = () => {
         if (details.length <= 6) {
             ToastAndroid.show('Địa chỉ cụ thể quá ngắn', ToastAndroid.SHORT);
+            return;
+        }
+        if(shopName.length <= 6){
+            ToastAndroid.show('Tên cửa hàng quá ngắn', ToastAndroid.SHORT);
             return;
         }
         setFlag(true);
@@ -223,24 +195,23 @@ const EditAddressScreen = props => {
             details,
             coordinate: shopLocation
         }
-        let temp = user.address;
-        const { myIndex } = params;
-        temp.splice(myIndex, 1, newAddress);
-        //console.log(temp)
         actions.actionEditProfile({
             user: {
                 _id: user._id,
-                address: temp
+                shopAddress: newAddress,
+                shopName
             }
         });
     }
+
+    //console.log(shopLocation)
 
     const onGetShopAddress = () => {
         //Lấy tên đầy đủ của địa chỉ mới
         let newAddress = `${details}, ${address[2].value?.name}, ${address[1].value?.name}, ${address[0].value?.name}`;
         setNewLocationName(newAddress);
         searchAddress(newAddress).then(res => {
-            const { x, y } = res[0]?.location;
+            const {x, y} = res[0]?.location;
             setShopLocation({
                 longitude: x,
                 latitude: y
@@ -253,13 +224,24 @@ const EditAddressScreen = props => {
         });
     }
 
-    //console.log('wards: ', wards);
+    //console.log('location: ', shopLocation);
 
     return (
         <>
             <View style={styles.container}>
                 <View style={{ backgroundColor: '#fff', paddingBottom: 10 }}>
-                    <DefautText style={styles.label}>Khu vực được chọn</DefautText>
+                    <DefautText style={styles.label}>Tên cửa hàng</DefautText>
+                    <TextInput
+                        value={shopName}
+                        onChangeText={setShopName}
+                        placeholder='Tên cửa hàng của bạn'
+                        autoCapitalize='words'
+                        style={styles.input}
+                    />
+                    <View>
+                        <DefautText style={styles.label}>Địa chỉ cửa hàng</DefautText>
+                    </View>
+
                     <AddressItem
                         name={address[0].value ? address[0].value?.name : `Chọn ${address[0].level}`}
                         focused={address[0]?.focused}
@@ -287,30 +269,34 @@ const EditAddressScreen = props => {
                         onEndEditing={onGetShopAddress}
                         style={styles.input}
                     />}
-                    {(newLocationName.length > 0) && <NomalButton onPress={onEditAdress} style={{ marginHorizontal: 30 }}>Thay đổi</NomalButton>}
+                    {(newLocationName.length > 0 && shopName.length > 0) && (
+                        <NomalButton onPress={onAddAdress} style={{ marginHorizontal: 30 }}>Thay đổi thông tin</NomalButton>)}
                 </View>
                 <View style={{ flexDirection: 'row' }}>
-                    <DefautText style={styles.label}>{`Chọn ${address[index]?.level}`}</DefautText>
+                    <DefautText style={styles.label}>{`Chọn ${address[index].level}`}</DefautText>
                     <DefautText style={[styles.label, styles.showMap]} onPress={() => setIsShowMap(!isShowMap)}>
                         <Icon name='map' color={MainColor} size={15} />
                         <DefautText>  {isShowMap ? 'Ẩn' : 'Xem'} bản đồ</DefautText>
                     </DefautText>
                 </View>
-                {!isShowMap && (<View style={{ flex: 1 }}>
+                {!isShowMap && (<View style={{flex: 1}}>
                     {(index == 0) && (<FlatList
                         data={provinces}
                         renderItem={({ item }) => <ItemOfList item={item} onPress={() => setChooseProvince(item)} />}
                         style={styles.flatlist}
+                        showsVerticalScrollIndicator={false}
                     />)}
                     {(index == 1) && (<FlatList
                         data={districts}
                         renderItem={({ item }) => <ItemOfList item={item} onPress={() => setChooseDistrict(item)} />}
                         style={styles.flatlist}
+                        showsVerticalScrollIndicator={false}
                     />)}
                     {(index == 2) && (<FlatList
                         data={wards}
                         renderItem={({ item }) => <ItemOfList item={item} onPress={() => setChooseWard(item)} />}
                         style={styles.flatlist}
+                        showsVerticalScrollIndicator={false}
                     />)}
                 </View>)}
                 {isShowMap && (<MapView
@@ -325,21 +311,20 @@ const EditAddressScreen = props => {
                     {myLocation && (<Marker
                         coordinate={myLocation}
                         title='Vị trí của tôi'
-                        image={require('../../../assets/images/my_location.png')}
+                        image={require('../../assets/images/my_location.png')}
                     />)}
                     {shopLocation && (
                         <Marker draggable
                             coordinate={shopLocation}
                             onDragEnd={e => { setShopLocation(e.nativeEvent.coordinate)}}
-                            title='Địa chỉ mới'
-                        >
-                            <FastImage source={require('../../../assets/images/location_marker.png')} style={{width: 26, height: 26}} />
-                            </Marker>
+                            title={shopName.length > 0 ? shopName : 'Cửa hàng của tôi'}
+                            image={require('../../assets/images/shop_location.png')}
+                        />
                     )}
                 </MapView>)}
             </View>
             <LoadingModal
-                message='Đang thay đổi địa chỉ'
+                message='Đang thay đổi thông tin cửa hàng'
                 visible={isLoading}
             />
         </>
@@ -476,4 +461,4 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditAddressScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(EditStore)

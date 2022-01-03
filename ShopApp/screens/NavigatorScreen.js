@@ -32,6 +32,7 @@ import ContactListScreen from './Chat/ContactListScreen';
 import EditAddressScreen from './Profiles/address/EditAddressScreen';
 import ProductsOfCategoryScreen from './Products/ProductsOfCategoryScreen';
 import FavoriteProductScreen from './Products/FavoriteProductScreen';
+import EditStore from './Stores/EditStore';
 
 const Stack = createNativeStackNavigator();
 
@@ -132,6 +133,16 @@ const NavigatorScreen = props => {
                                 {
                                     ...options,
                                     title: 'Khởi tạo cửa hàng'
+                                }
+                            }
+                        />
+                        <Stack.Screen
+                            name="EditStore"
+                            component={EditStore}
+                            options={
+                                {
+                                    ...options,
+                                    title: 'Thay đổi thông tin cửa hàng'
                                 }
                             }
                         />

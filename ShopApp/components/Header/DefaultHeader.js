@@ -13,13 +13,13 @@ import CartIcon from '../Icon/CartIcon';
 import { Title } from '../Text/AppTexts';
 
 const DefaultHeader = ( props ) => {
-    const { title, isBack } = props
+    const { title, isBack, onPress } = props
     return (
         <View>
             <StatusBar backgroundColor={MainColor} translucent={false} />
             <View style={styles.constainer}>
                 {isBack && <BackIcon />}
-                <Title style={styles.text} >{title}</Title>
+                <Title style={styles.text} onPress={onPress} >{title}</Title>
                 <CartIcon />
                 <ChatBubleIcon count={11} />
             </View>

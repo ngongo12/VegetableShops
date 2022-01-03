@@ -21,7 +21,7 @@ const StoreScreen = (props) => {
 
     return (
         <View style={styles.container}>
-            <DefaultHeader title={user?.shopName ? user?.shopName : 'Cửa hàng của tôi'} />
+            <DefaultHeader onPress={() => navigate('EditStore')} title={user?.shopName ? user?.shopName : 'Cửa hàng của tôi'} />
             {(shopAddress && shopName) && (<Tab.Navigator
                 screenOptions={{
                     tabBarActiveTintColor: MainColor,
