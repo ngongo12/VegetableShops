@@ -13,17 +13,7 @@ const { width, height } = Dimensions.get('window');
 const maxWidth = width * 2 / 3;
 const ChatBox = (props) => {
     const { item, myID } = props;
-    //const value = new Animated.Value(0);
-    // console.log(item)
-    // console.log(myID)
-    // useEffect(() => {
-    //     Animated.timing(value, {
-    //         toValue: 1,
-    //         duration: 2000,
-    //         useNativeDriver: true
-    //     }).start();
-    // }, []);
-    //console.log(item)
+    
     return (
         <Animated.View style={[styles.container]}>
             {
