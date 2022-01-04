@@ -3,7 +3,8 @@ const notificationModel = require("../models/NotificationModel");
 
 exports.sendMessage = async (tokens, notification, data) => {
     //console.log('notification service');
-   // console.log(data)
+   console.log(data)
+   console.log(tokens)
     return await admin.admin.messaging().sendMulticast({
         tokens,
         notification,

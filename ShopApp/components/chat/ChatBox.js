@@ -41,10 +41,10 @@ const InMessage = (props) => {
     const { messageContent, createdAt } = item;
 
     return (
-        <View>
+        <View style={{alignItems: 'flex-start'}}>
             <DateTimeFm style={styles.time}>{createdAt}</DateTimeFm>
             {(messageContent?.type === 'text') && <DefautText style={styles.inMessageText}>{messageContent?.message}</DefautText>}
-            {(messageContent?.type === 'product') && <ProductContent product={messageContent?.product} /> }
+            {(messageContent?.type === 'product') && <ProductContent isLeft={true} product={messageContent?.product} /> }
         </View>
     )
 }
@@ -63,10 +63,10 @@ const OutMessage = (props) => {
 }
 
 const ProductContent = props => {
-    const { product } = props;
+    const { product, isLeft } = props;
     //console.log(product)
     return(
-        <View style={[styles.outMessageText, styles.productContent]}>
+        <View style={[isLeft ? styles.inMessageText : styles.outMessageText, styles.productContent]}>
             <FastImage source={{uri: product?.image}} style={styles.image} />
             <View style={{paddingLeft: 10, justifyContent: 'space-between'}}>
                 <DefautText style={{fontSize: 15}} numberOfLines={2} ellipsizeMode='tail'>{product?.name}</DefautText>
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
         minWidth: width /2,
         backgroundColor: 'white',
         flexDirection: 'row',
-        paddingVertical: 10
+        paddingVertical: 10,
     },
     image: {
         width: 64,

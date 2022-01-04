@@ -21,6 +21,8 @@ const Tab = createBottomTabNavigator();
 
 const MainScreen = (props) => {
     const { user: { user }, cActions, messageAction, actions } = props;
+    const [isShowNotfi, setIsShowNotfi] = useState(true);
+    let count = 0;
     const [newToken, setNewToken] = useState();
     useEffect(() => {
         //clearAllData();
@@ -30,16 +32,16 @@ const MainScreen = (props) => {
             .catch(e => console.log(e));
 
         getDeviceToken();
-        if(!user) return;
-        if(socket.hasListeners(user._id)){
+        if (!user) return;
+        if (socket.hasListeners(user._id)) {
             socket.off(user._id)
         }
-        socket.on(user._id, (socket) =>{
+        socket.on(user._id, (socket) => {
             //console.log(socket)
             messageAction.countNew();
         })
 
-    }, [user])
+    }, [])
 
     useEffect(() => {
         //console.log('newToken', !newToken)
@@ -69,24 +71,21 @@ const MainScreen = (props) => {
     //     messaging().hasPermission().then(res => console.log('hasPermission', res))
     // }, [])
 
-    //console.log(cart)
+    //console.log(newToken)
 
     useEffect(() => {
-        messaging().onMessage(async remoteMessage => {
-            //console.log('FCM message: ', JSON.stringify(remoteMessage));
-            //Notification at here
-            //console.warn('new messaging')
-            //console.log(remoteMessage);
-            const { notification, data, messageId } = remoteMessage;
-            //console.log('>>>>>>>>>>>>>>>>notifi ', notification)
-            //if (user?._id === data?.uid)
-            displayNotification(notification, messageId);
-        });
+        if (isShowNotfi && count < 1){
+            messaging().onMessage(async remoteMessage => {
+                const { notification, data, messageId } = remoteMessage;
+                    displayNotification(notification, messageId);
+            });
+            count++;
+        }
 
-
-    }, [])
-
+    }, [isShowNotfi])
+    
     const displayNotification = async (notification, messageId) => {
+        if(isShowNotfi){
         const channelId = await notifee.createChannel({
             id: messageId,
             name: messageId,
@@ -109,7 +108,7 @@ const MainScreen = (props) => {
                     picture: imageUrl
                 }
             }
-        })
+        })}
 
 
     }
