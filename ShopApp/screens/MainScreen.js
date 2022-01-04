@@ -21,11 +21,9 @@ const Tab = createBottomTabNavigator();
 
 const MainScreen = (props) => {
     const { user: { user }, cActions, messageAction, actions } = props;
-    const [isShowNotfi, setIsShowNotfi] = useState(true);
-    let count = 0;
+    const [hasNotifi, setHasNotifi] = useState(false)
     const [newToken, setNewToken] = useState();
     useEffect(() => {
-        //clearAllData();
 
         getData(user._id)
             .then(res => cActions.load(res))
@@ -44,9 +42,9 @@ const MainScreen = (props) => {
     }, [])
 
     useEffect(() => {
-        //console.log('newToken', !newToken)
+        
         if (newToken && newToken !== user.token) {
-            //console.log('update token')
+            
             actions.actionEditProfile({
                 user: {
                     _id: user._id,
@@ -62,30 +60,26 @@ const MainScreen = (props) => {
     } catch (e) {
         console.error(e);
     }
-    //console.log('isDeviceRegisteredForRemoteMessages: ', messaging().isDeviceRegisteredForRemoteMessages);
+
     const getDeviceToken = () => {
         messaging().getToken().then(token => setNewToken(token))
             .catch(e => console.error(e))
     }
-    // useEffect(() => {
-    //     messaging().hasPermission().then(res => console.log('hasPermission', res))
-    // }, [])
-
-    //console.log(newToken)
 
     useEffect(() => {
-        if (isShowNotfi && count < 1){
+        if (!hasNotifi){
             messaging().onMessage(async remoteMessage => {
                 const { notification, data, messageId } = remoteMessage;
                     displayNotification(notification, messageId);
             });
-            count++;
+            setHasNotifi(true);
+            
         }
 
-    }, [isShowNotfi])
+    }, [])
     
     const displayNotification = async (notification, messageId) => {
-        if(isShowNotfi){
+        
         const channelId = await notifee.createChannel({
             id: messageId,
             name: messageId,
@@ -108,7 +102,7 @@ const MainScreen = (props) => {
                     picture: imageUrl
                 }
             }
-        })}
+        })
 
 
     }

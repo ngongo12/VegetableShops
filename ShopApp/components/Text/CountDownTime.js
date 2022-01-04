@@ -57,15 +57,13 @@ const CountDownTime = props => {
         if (m < 10) {
             m = '0' + m;
         }
-        distance = Math.round(distance / 60);
-        let h = Math.round(distance / 24);
+        let h = Math.round(distance / 60);
         if(h < 10){
             h = '0' + h;
         }
         if(hour !== h) setHour(h);
         if(minute !== m)setMinute(m);
         if(sencond !== s)setSencond(s);
-        //console.log('>>>>>>>>>>> distance ', time)
     }
 
     return (
