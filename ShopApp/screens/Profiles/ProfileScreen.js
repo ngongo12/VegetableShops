@@ -30,6 +30,31 @@ const ProfileScreen = (props) => {
         //navigate('LoginScreen');
     }
 
+    const buttons = [
+        {
+            name: 'Thiết lập tài khoản',
+            iconName: 'setting',
+            onPress: () => navigate('AccountSettingScreen')
+        },
+        {
+            name: 'Danh sách yêu thích',
+            iconName: 'hearto',
+            onPress: () => navigate('FavoriteProductScreen')
+        },
+        {
+            name: 'Ví Voucher',
+            iconName: 'gift',
+        },
+        {
+            name: 'Quy chế - Chính sách',
+            iconName: 'filetext1',
+        },
+        {
+            name: 'Trung tâm hỗ trợ',
+            iconName: 'questioncircleo',
+        }
+    ]
+
     return (
         <ScrollView>
             <View style={styles.container}>
@@ -45,11 +70,11 @@ const ProfileScreen = (props) => {
                 </View>
                 <SeenProductList />
                 <View style={{ alignContent: 'flex-end' }}>
-                    <ButtonSetting iconName='setting' name='Thiết lập tài khoản' onPress={() => navigate('AccountSettingScreen')} />
-                    <ButtonSetting iconName='hearto' name='Danh sách yêu thích' onPress={() => navigate('FavoriteProductScreen')} />
-                    <ButtonSetting iconName='gift' name='Ví Voucher' />
-                    <ButtonSetting iconName='filetext1' name='Quy chế - Chính sách' />
-                    <ButtonSetting iconName='questioncircleo' name='Trung tâm hỗ trợ' />
+                {
+                    buttons.map((item, index) => (
+                        <ButtonSetting {...item } key={index} />
+                    ))
+                }
                 </View>
                 <AlerModal
                     title='Đăng xuất'

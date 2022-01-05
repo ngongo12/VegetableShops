@@ -57,7 +57,7 @@ const CountDownTime = props => {
         if (m < 10) {
             m = '0' + m;
         }
-        let h = Math.round(distance / 60);
+        let h = Math.round(distance / 60) % 24;
         if(h < 10){
             h = '0' + h;
         }
