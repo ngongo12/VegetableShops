@@ -11,18 +11,18 @@ import {
 import { useIsFocused } from '@react-navigation/native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import userActions from '../../actions/userActions';
+import userActions from '../../../actions/userActions';
 import LinearGradient from 'react-native-linear-gradient';
-import { HeaderText } from '../../components/Text/AppTexts';
-import TextInputLayout from '../../components/Text/TextInputLayout';
-import GradientButton from '../../components/Button/GradientButton';
-import StrokeButton from '../../components/Button/StrokeButton';
-import { getData } from '../../api/asyncStorage';
-import LoadingModal from '../../components/LoadingModal';
+import { HeaderText } from '../../../components/Text/AppTexts';
+import TextInputLayout from '../../../components/Text/TextInputLayout';
+import GradientButton from '../../../components/Button/GradientButton';
+import StrokeButton from '../../../components/Button/StrokeButton';
+import { getData } from '../../../api/asyncStorage';
+import LoadingModal from '../../../components/LoadingModal';
 
 const { height } = Dimensions.get('window');
 
-const LoginScreen = (props) => {
+const RequestTokenScreen = (props) => {
     const { navigation: { navigate }, actions, user } = props;
     const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
@@ -106,7 +106,7 @@ const LoginScreen = (props) => {
                 end={{ x: 1, y: 1.0 }}
                 colors={['#7BE495', '#529D9C']}
                 style={styles.container}>
-                <Image source={require('../../assets/images/background_login.png')} style={styles.image} />
+                <Image source={require('../../../assets/images/background_login.png')} style={styles.image} />
                 <Animated.View style={[styles.content, { transform: [{ ...{ translateY } }] }]}>
                     <HeaderText>ĐĂNG NHẬP</HeaderText>
                     <TextInputLayout
@@ -126,7 +126,7 @@ const LoginScreen = (props) => {
                         onChangeText={setPassword}
                         name='lock'
                     />
-                    <Text style={styles.text} onPress={() => navigate('ForgetPassword')}>Quên mật khẩu?</Text>
+                    <Text style={styles.text}>Quên mật khẩu?</Text>
                     <GradientButton onPress={onLogin} disabled={user.isLoading} >Đăng Nhập</GradientButton>
                     <StrokeButton onPress={() => navigate('RegisterScreen')} disabled={user.isLoading} >Đăng Ký</StrokeButton>
 
@@ -187,6 +187,4 @@ const styles = StyleSheet.create({
 
 })
 
-//export default LoginScreen
-
-export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(RequestTokenScreen)

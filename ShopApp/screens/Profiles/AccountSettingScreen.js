@@ -4,7 +4,8 @@ import {
     StyleSheet,
     Modal,
     Pressable,
-    ToastAndroid
+    ToastAndroid,
+    Switch
 } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -19,7 +20,7 @@ import userAPI from '../../api/userAPI';
 import { storeData } from '../../api/asyncStorage';
 
 const AccountSettingScreen = (props) => {
-    const { navigation: { navigate } } = props;
+    const { navigation: { navigate }, actions } = props;
     const { user: { user } } = props;
     const [visibleModal, setVisibleModal] = useState(false);
     const [visibleLoading, setVisibleLoading] = useState(false);
@@ -62,6 +63,17 @@ const AccountSettingScreen = (props) => {
             .catch(e => console.error(e));
     }
 
+    const changeNotificationAllown = () => {
+        actions.actionEditProfile({
+            user: {
+                _id: user._id,
+                allowNotify: {
+                    notification: !user?.allowNotify?.notification
+                }
+            }
+        })
+    }
+
     return (
         <View style={styles.container}>
             <Title style={styles.title}>Thiết lập tài khoản</Title>
@@ -84,6 +96,16 @@ const AccountSettingScreen = (props) => {
                     onPress={() => setVisibleModal(true)}
                     style={styles.button}
                 />
+                <ButtonSetting
+                    iconName='bells'
+                    name='Nhận thông báo'
+                    onPress={() => changeNotificationAllown()}
+                    style={styles.button}
+                >
+                    <Switch
+                        value={user?.allowNotify?.notification}
+                    />
+                </ButtonSetting>
             </View>
             <View style={styles.groupView}>
                 <ButtonSetting iconName='gift' name='Ví Voucher' style={styles.button} />

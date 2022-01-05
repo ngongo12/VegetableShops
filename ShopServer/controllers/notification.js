@@ -6,6 +6,7 @@ const userService = require('../services/users');
 exports.sendNotification = async (notification, uid) => {
     //console.log('>>>>>>>>>>>>>>>uid controller', uid);
     const user = await userService.getUserToken(uid);
+    if(!user?.allowNotify?.notification) return;
     //console.log('>>>>>>>>>>>>>>>user',user);
     if (user?.token) {
         const notifi =  await notificationService.createNotification(notification);

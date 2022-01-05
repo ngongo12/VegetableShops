@@ -20,7 +20,7 @@ const OrderItem = props => {
     return (
         <Pressable style={styles.container} onPress={()=>navigate('OrderDetailScreen', { orderID : item._id })}>
             <ItemHeader shopID={item?.shopID} isDone={isDone} isShop={isShop} orderID={item._id} />
-            <Pressable onPress={()=> navigate('ProductDetailScreen', { productID : firstProduct?._id })} style={[styles.itemContain, styles.bottomBorder]}>
+            <View style={[styles.itemContain, styles.bottomBorder]}>
                 <FastImage source={{ uri: firstProduct?.images[0] }} style={styles.image} />
                 <View style={{ flex: 1, paddingHorizontal: 10 }}>
                     <DefautText>{firstProduct?.name}</DefautText>
@@ -29,7 +29,7 @@ const OrderItem = props => {
                         <DefautText>x{firstProduct?.amount}</DefautText>
                     </View>
                 </View>
-            </Pressable>
+            </View>
             {products?.length > 1 && <DefautText style={styles.seeMore}>Xem thêm sản phẩm</DefautText>}
             <View style={[styles.row, styles.bottomBorder,{ padding: 10, alignItems: 'center', justifyContent: 'center'}]}>
                 <DefautText style={{ fontSize: 13, flex: 1 }}>{products?.length} sản phẩm</DefautText>

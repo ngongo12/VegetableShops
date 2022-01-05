@@ -33,6 +33,7 @@ import EditAddressScreen from './Profiles/address/EditAddressScreen';
 import ProductsOfCategoryScreen from './Products/ProductsOfCategoryScreen';
 import FavoriteProductScreen from './Products/FavoriteProductScreen';
 import EditStore from './Stores/EditStore';
+import ForgetPassword from './Auths/ForgetPassword';
 
 const Stack = createNativeStackNavigator();
 
@@ -54,6 +55,10 @@ const NavigatorScreen = props => {
                         <Stack.Screen
                             name="RegisterScreen"
                             component={RegisterScreen}
+                        />
+                        <Stack.Screen
+                            name="ForgetPassword"
+                            component={ForgetPassword}
                         />
                     </>
                 ) : (

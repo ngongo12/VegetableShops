@@ -20,7 +20,8 @@ const userSchema = new Schema({
     seenProducts: { type: Array },
     shopName: { type: String },
     shopAddress: { type: Object },
-    token: { type: String }
+    token: { type: String },
+    allowNotify: { type: Object },
 })
 
 module.exports = mongoose.model('user', userSchema);

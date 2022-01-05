@@ -15,7 +15,8 @@ import userAPI, { getShopName } from '../../api/userAPI';
 import { DARK_GREEN, MainColor, MAIN_BACKGROUND, RED } from '../../constants/colors';
 import { DefautText, Title, SellPrice, DateTimeFm, HeaderText } from '../../components/Text/AppTexts';
 import NomalButton from '../../components/Button/NomalButton';
-import LoadingView from '../../components/LoadingView'
+import LoadingView from '../../components/LoadingView';
+import { useSelector } from 'react-redux';
 
 const OrderDetailsScreen = (props) => {
     const { user: { user }, route: { params } } = props;
@@ -29,7 +30,6 @@ const OrderDetailsScreen = (props) => {
     const [canCancel, setCanCancel] = useState(true);
     const [visibleModal, setVisibleModal] = useState(false);
     const [reason, setReason] = useState('');
-
     useEffect(() => {
         fetchOrder();
     }, [])
@@ -272,7 +272,7 @@ const OrderDetailsScreen = (props) => {
                             </View>
                             <View style={[styles.row, { paddingHorizontal: 10 }]}>
                                 <DefautText style={styles.title}>Người hủy</DefautText>
-                                <DefautText>{order?.cancelBy === user._id ? 'Bạn' : 'Người bán' }</DefautText>
+                                <DefautText>{order?.cancelBy === order?.shopID ? 'Người bán' : 'Người mua' }</DefautText>
                             </View>
                             <View style={[styles.row, { paddingHorizontal: 10 }]}>
                                 <DefautText style={styles.title}>Lý do</DefautText>

@@ -28,7 +28,7 @@ exports.register = async (user) => {
         //salt = Math.random().toString(36).substring(2,12);
         const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync(user.password, salt);
-        const newUser = await userService.register({ ...user, password: hash, salt, createdAt: new Date() });
+        const newUser = await userService.register({ ...user, password: hash, salt, createdAt: new Date(), allowNotify: { notification: true } });
 
         if (newUser) {
             const { phone, fullname, _id } = newUser;

@@ -8,7 +8,7 @@ import { MainColor } from '../../constants/colors';
 import { DefautText } from '../Text/AppTexts';
 
 const ButtonSetting = ( props ) =>{
-    const {iconName, name, style, onPress} = props;
+    const {iconName, name, style, onPress, children} = props;
     return (
         <Pressable 
             onPress={onPress}
@@ -16,7 +16,9 @@ const ButtonSetting = ( props ) =>{
         >
             <Icon name={iconName} size={24} color={MainColor} />
             <DefautText style={buttonStyles.text}>{name}</DefautText>
-            <Icon name='right' size={20} color={MainColor} />
+            {children}
+            {!children && <Icon name='right' size={20} color={MainColor} />}
+            
         </Pressable>
     )
 }
