@@ -1,6 +1,6 @@
 const userService = require('../services/users');
 const productController = require('../controllers/products');
-const fetch = require("node-fetch")
+const sendSMS = require('../sendSMS/index');
 //import fetch from "../node_modules/node-fetch"
 const bcrypt = require('bcrypt');
 
@@ -131,5 +131,30 @@ exports.getShopInfo = async (id) => {
     return {
         shopInfo,
         soldDetail
+    }
+}
+
+exports.requestToken = async (phone) => {
+    if (phone) {
+        const user = await userService.getUserByPhone(phone);
+        if (user !== null) {
+            let token = Math.random().toString().slice(2, 8);
+            const salt = bcrypt.genSaltSync(10);
+            const hash = bcrypt.hashSync(token, salt);
+
+            await userService.saveToken(user._id, hash);
+
+            return await sendSMS.sendSMS(phone, token);
+        }
+        else {
+            return {
+                success: false,
+                message: 'Số điện thoại này chưa được đăng ký'
+            }
+        }
+    }
+    return {
+        success: false,
+        message: 'Số điện thoại bị sai'
     }
 }
