@@ -17,72 +17,16 @@ import { HeaderText } from '../../../components/Text/AppTexts';
 import TextInputLayout from '../../../components/Text/TextInputLayout';
 import GradientButton from '../../../components/Button/GradientButton';
 import StrokeButton from '../../../components/Button/StrokeButton';
-import { getData } from '../../../api/asyncStorage';
 import LoadingModal from '../../../components/LoadingModal';
+import { goBack } from '../../../config/rootNavigation';
 
 const { height } = Dimensions.get('window');
 
-const RequestTokenScreen = (props) => {
+const ChangePassword = (props) => {
     const { navigation: { navigate }, actions, user } = props;
-    const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
     const isFocused = useIsFocused();
     const value = new Animated.Value(0);
-    const onLogin = () => {
-        //gọi action khi user click vào nút đăng nhập
-        if (validate()) {
-            actions.actionLogin({
-                phone,
-                password
-            });
-        }
-
-    }
-    const validate = () => {
-        if (phone.trim().length < 10) {
-            ToastAndroid.show('Số điện thoại không hợp lệ', ToastAndroid.SHORT);
-            return false;
-        }
-        if (password.trim().length < 6) {
-            ToastAndroid.show('Mật khẩu ít nhất 6 ký tự', ToastAndroid.SHORT);
-            return false;
-        }
-
-        return true;
-    }
-    //console.log(user);
-
-    useEffect(() => {
-        getData('user')
-            .then(res => {
-                const { phone, password } = res;
-                if (phone) {
-                    setPhone(phone);
-                }
-                if (password) {
-                    setPassword(password)
-                }
-                if (!user?.notFirst) {
-                    actions.actionLogin({
-                        phone,
-                        password
-                    });
-                }
-            });
-    }, [isFocused])
-
-    useEffect(() => {
-        //Nếu không phải đang ở screen này thì không thực hiện task ở phía dưới
-        if (!isFocused) return;
-        //nếu có user thì vào thẳng main screen
-        if (user.user) {
-            actions.updateLoginState(true);
-            //navigate('MainScreen');
-        };
-        if (user.message) {
-            ToastAndroid.show(user.message, ToastAndroid.SHORT);
-        }
-    }, [user])
 
     useEffect(() => {
         Animated.timing(value, {
@@ -108,27 +52,17 @@ const RequestTokenScreen = (props) => {
                 style={styles.container}>
                 <Image source={require('../../../assets/images/background_login.png')} style={styles.image} />
                 <Animated.View style={[styles.content, { transform: [{ ...{ translateY } }] }]}>
-                    <HeaderText>ĐĂNG NHẬP</HeaderText>
+                    <HeaderText>YÊU CẦU ĐỔI MẬT KHẨU</HeaderText>
                     <TextInputLayout
-                        placeholder='Số điện thoại'
-                        maxLength={11}
-                        autoCapitalize='none'
-                        value={phone}
-                        onChangeText={setPhone}
-                        name='mobile1'
-                        keyboardType='phone-pad'
-                    />
-                    <TextInputLayout
-                        placeholder='Mật khẩu'
+                        placeholder='Mật khẩu mới'
                         secureTextEntry={true}
                         autoCapitalize='none'
                         value={password}
                         onChangeText={setPassword}
                         name='lock'
                     />
-                    <Text style={styles.text}>Quên mật khẩu?</Text>
-                    <GradientButton onPress={onLogin} disabled={user.isLoading} >Đăng Nhập</GradientButton>
-                    <StrokeButton onPress={() => navigate('RegisterScreen')} disabled={user.isLoading} >Đăng Ký</StrokeButton>
+                    <GradientButton onPress={() => navigate('FillToken', { phone })} disabled={user.isLoading} >Gửi Token</GradientButton>
+                    <StrokeButton onPress={goBack} disabled={user.isLoading} >Quay lại</StrokeButton>
 
                 </Animated.View>
                 {isFocused && (<LoadingModal
@@ -137,7 +71,7 @@ const RequestTokenScreen = (props) => {
                     animationType='fade'
                     transparent={true}
                     statusBarTranslucent={true}
-                    message='Đăng đăng nhập. Xin chờ'
+                    message='Đang gửi token'
                 />)}
             </LinearGradient>
 
@@ -187,4 +121,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(RequestTokenScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(ChangePassword)

@@ -56,7 +56,7 @@ const FillToken = (props) => {
                 <Animated.View style={[styles.content, { transform: [{ ...{ translateY } }]}]}>
                     <HeaderText>ĐIỀN TOKEN</HeaderText>
                     <TokenFillView token={token} setToken={setToken} />
-                    <GradientButton disabled={user.isLoading} >Gửi Token</GradientButton>
+                    <GradientButton onPress={() => navigate('ChangePassword')} disabled={user.isLoading || token.length < 6} >Tiếp tục</GradientButton>
                     <StrokeButton onPress={goBack} disabled={user.isLoading} >Quay lại</StrokeButton>
 
                 </Animated.View>
@@ -94,11 +94,10 @@ const TokenFillView = (props) => {
     const onPressTokenView = (index) => {
         setToken(token.slice(0, index))
         inputRef.current.focus();
-
     }
     return (
         <View style={{ margrinVertical: 10 }}>
-            <View style={{ flexDirection: 'row', justifyContent: 'center', paddingHorizontal: 30, paddingVertical: 50 }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'center', paddingHorizontal: 30, paddingBottom: 50, paddingTop: 60 }}>
                 {
                     tokenMap.map(item => (
                         <Text
@@ -113,10 +112,9 @@ const TokenFillView = (props) => {
                 value={token}
                 ref={inputRef}
                 onChangeText={setToken}
+                autoCapitalize='none'
                 style={{
-                    // height: 0,
-                    // width: 0,
-                    // padding: 0
+                    height: 0,
                 }}
             />
         </View>
