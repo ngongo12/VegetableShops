@@ -1,4 +1,5 @@
 const userModel = require('../models/UserModel');
+const requestPassword = require('../models/RequestPasswordModel');
 
 exports.register = async ( user ) => {
     const item = new userModel(user);
@@ -44,4 +45,17 @@ exports.getUserToken = async ( id ) => {
 
 exports.getShopInfo = async (id) => {
     return await userModel.findOne({ _id: id }, 'id shopName shopAddress phone avatar createdAt');
+}
+
+exports.saveToken = async (uid, token) => {
+    const item = new requestPassword({
+        _id: uid,
+        token,
+        createdAt: new Date()
+    })
+    return await item.save();
+}
+
+exports.getToken = async (uid) => {
+    return await requestPassword.findById(uid);
 }

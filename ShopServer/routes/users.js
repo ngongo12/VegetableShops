@@ -113,4 +113,10 @@ router.get('/getShopInfo', async (req, res, next) => {
   }
 })
 
+router.get('/requestToken', async (req, res, next) => {
+  const { phone } = req.query;
+  const result = await userController.requestToken(phone);
+  res.json(result)
+})
+
 module.exports = router;
