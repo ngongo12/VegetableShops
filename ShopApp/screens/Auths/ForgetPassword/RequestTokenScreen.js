@@ -20,14 +20,13 @@ import StrokeButton from '../../../components/Button/StrokeButton';
 import LoadingModal from '../../../components/LoadingModal';
 import { goBack } from '../../../config/rootNavigation';
 import { LIGHT_GREEN } from '../../../constants/colors';
+import { userURL } from '../../../api/userAPI';
 
 const { height } = Dimensions.get('window');
 
 const RequestTokenScreen = (props) => {
     const { navigation: { navigate }, actions, user } = props;
     const [phone, setPhone] = useState('');
-    const [email, setEmail] = useState('');
-    const [method, setMethod] = useState('phone');
     const isFocused = useIsFocused();
     const value = new Animated.Value(1);
 
@@ -44,14 +43,19 @@ const RequestTokenScreen = (props) => {
         outputRange: [height, 0]
     })
 
-    const chooseEmailMethod = () => {
-        setPhone('');
-        setMethod('email');
-    }
-
-    const choosePhoneMethod = () => {
-        setEmail('');
-        setMethod('phone');
+    const sendRequest = () => {
+        fetch(`${userURL}requestToken?phone=${phone}`)
+            .then(res => res.json())
+            .then(res => {
+                if(res?.success){
+                    navigate('FillToken', { phone })
+                    console.log(res?.message)
+                }
+                else{
+                    ToastAndroid.show('Yêu cầu thất bại: '+res?.message, ToastAndroid.SHORT);
+                }
+            })
+            .catch(e => console.log(e));
     }
 
     return (
@@ -66,30 +70,17 @@ const RequestTokenScreen = (props) => {
                 <Image source={require('../../../assets/images/background_login.png')} style={styles.image} />
                 <Animated.View style={[styles.content, { transform: [{ ...{ translateY } }] }]}>
                     <HeaderText>YÊU CẦU ĐỔI MẬT KHẨU</HeaderText>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 10}}>
-                        <DefautText onPress={choosePhoneMethod} style={styles.method}>Số điện thoại</DefautText>
-                        <DefautText onPress={chooseEmailMethod} style={styles.method}>Email</DefautText>
-                    </View>
-                    {method === 'phone' ? <TextInputLayout
+                    
+                    <TextInputLayout
                         placeholder='Số điện thoại'
                         maxLength={11}
                         autoCapitalize='none'
                         value={phone}
                         onChangeText={setPhone}
                         name='mobile1'
-                        keyboardType='phone-pad'
+                        keyboardType='numeric'
                     />
-                    :
-                    <TextInputLayout
-                        placeholder='Email'
-                        maxLength={11}
-                        autoCapitalize='none'
-                        value={email}
-                        onChangeText={setEmail}
-                        name='mobile1'
-                        keyboardType='email-address'
-                    />}
-                    <GradientButton onPress={() => navigate('FillToken', { method: { phone, email } })} disabled={user.isLoading} >Gửi Token</GradientButton>
+                    <GradientButton onPress={sendRequest} disabled={user.isLoading} >Gửi Token</GradientButton>
                     <StrokeButton onPress={goBack} disabled={user.isLoading} >Quay lại</StrokeButton>
 
                 </Animated.View>

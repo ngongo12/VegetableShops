@@ -12,7 +12,17 @@ exports.sendSMS = async (_phone, token) => {
     //         from: '+12565791156',
     //         to: phone
     //     })
-    //     .then(message => e)
-    //     .catch(e => e);
-    return { phone, token}
+    //     .then(message => ({
+    //         message: message.body,
+    //         success: true,
+    //     }))
+    //     .catch(e => ({
+    //         success: false,
+    //         message: e
+    //     }));
+    console.log('token ', token )
+    return { 
+        success: true,
+        message: `Gửi thành công`
+    }
 }

@@ -8,7 +8,8 @@ import {
     Animated,
     View,
     TextInput,
-    Keyboard
+    Keyboard,
+    ToastAndroid
 } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { connect } from 'react-redux';
@@ -21,11 +22,12 @@ import StrokeButton from '../../../components/Button/StrokeButton';
 import LoadingModal from '../../../components/LoadingModal';
 import { goBack } from '../../../config/rootNavigation';
 import { DARK_GREEN, LIGHT_GREEN } from '../../../constants/colors';
+import { userURL } from '../../../api/userAPI';
 
 const { height } = Dimensions.get('window');
 
 const FillToken = (props) => {
-    const { navigation: { navigate }, actions, user, route: { params: { method } } } = props;
+    const { navigation: { navigate }, actions, user, route: { params: {phone} } } = props;
     const [token, setToken] = useState('')
     const isFocused = useIsFocused();
     const value = new Animated.Value(1);
@@ -43,6 +45,21 @@ const FillToken = (props) => {
         outputRange: [height, 0]
     })
 
+    const checkToken = () => {
+        fetch(`${userURL}checkToken?phone=${phone}&token=${token}`)
+            .then(res => res.json())
+            .then(res => {
+                if(res?.success){
+                    navigate('ChangePassword', { phone })
+                    console.log(res)
+                }
+                else{
+                    ToastAndroid.show('Yêu cầu thất bại: '+res?.message, ToastAndroid.SHORT);
+                }
+            })
+            .catch(e => console.log(e));
+    }
+
     return (
         <>
             <StatusBar translucent={true} backgroundColor={'transparent'} />
@@ -56,7 +73,7 @@ const FillToken = (props) => {
                 <Animated.View style={[styles.content, { transform: [{ ...{ translateY } }] }]}>
                     <HeaderText>ĐIỀN TOKEN</HeaderText>
                     <TokenFillView token={token} setToken={setToken} />
-                    <GradientButton onPress={() => navigate('ChangePassword', { method, token })} disabled={user.isLoading || token.length < 6} >Tiếp tục</GradientButton>
+                    <GradientButton onPress={checkToken} disabled={user.isLoading || token.length < 6} >Tiếp tục</GradientButton>
                     <StrokeButton onPress={goBack} disabled={user.isLoading} >Quay lại</StrokeButton>
 
                 </Animated.View>

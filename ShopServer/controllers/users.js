@@ -135,13 +135,14 @@ exports.getShopInfo = async (id) => {
 }
 
 exports.requestToken = async (phone) => {
+    console.log(phone)
     if (phone) {
         const user = await userService.getUserByPhone(phone);
         if (user !== null) {
             let token = Math.random().toString().slice(2, 8);
             const salt = bcrypt.genSaltSync(10);
             const hash = bcrypt.hashSync(token, salt);
-
+            console.log(user)
             await userService.saveToken(user._id, hash);
 
             return await sendSMS.sendSMS(phone, token);
@@ -156,5 +157,42 @@ exports.requestToken = async (phone) => {
     return {
         success: false,
         message: 'Số điện thoại bị sai'
+    }
+}
+
+exports.checkToken = async (phone, _token) => {
+    const user = await userService.getUserByPhone(phone);
+    if(!user){
+        return {
+            success: false,
+            message: 'Số điện thoại này chưa được đăng ký'
+        }
+    }
+    const reqToken = await userService.getToken(user._id);
+    console.log(reqToken)
+    if(reqToken){
+        const { createdAt, _id, token } = reqToken;
+        console.log('createdAt ', typeof(createdAt));
+        let time = new Date() - createdAt;
+        time = time / 1000 / 60;
+        if(time > 5){
+            return {
+                success: false,
+                message: 'Token này đã quá hạn'
+            }
+        }
+        const check = bcrypt.compareSync(_token, token);
+        console.log('>>>>>>>>>>check',check);
+        if(check){
+            return {
+                success: true,
+                uid: user._id,
+                message: 'Hẫy nhập mật khẩu cần đổi'
+            }
+        }
+    }
+    return {
+        success: false,
+        message: 'Token này không tồn tại'
     }
 }

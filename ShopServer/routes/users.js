@@ -119,4 +119,10 @@ router.get('/requestToken', async (req, res, next) => {
   res.json(result)
 })
 
+router.get('/checkToken', async (req, res, next) => {
+  const { phone, token } = req.query;
+  const result = await userController.checkToken(phone, token);
+  res.json(result)
+})
+
 module.exports = router;

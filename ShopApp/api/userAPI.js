@@ -106,6 +106,8 @@ export const getShopInfo = id => {
         .catch(e => 'undefine');
 }
 
+export const userURL = `${apiURL}users/`;
+
 export default {
     login,
     editProfiles,
@@ -114,5 +116,6 @@ export default {
     addFavorite,
     getUserByID,
     changePassword,
-    getShopInfo
+    getShopInfo,
+    userURL
 };
