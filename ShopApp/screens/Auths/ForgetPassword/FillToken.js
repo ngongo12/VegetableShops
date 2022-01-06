@@ -25,7 +25,7 @@ import { DARK_GREEN, LIGHT_GREEN } from '../../../constants/colors';
 const { height } = Dimensions.get('window');
 
 const FillToken = (props) => {
-    const { navigation: { navigate }, actions, user } = props;
+    const { navigation: { navigate }, actions, user, route: { params: { method } } } = props;
     const [token, setToken] = useState('')
     const isFocused = useIsFocused();
     const value = new Animated.Value(1);
@@ -53,10 +53,10 @@ const FillToken = (props) => {
                 colors={['#7BE495', '#529D9C']}
                 style={styles.container}>
                 <Image source={require('../../../assets/images/background_login.png')} style={styles.image} />
-                <Animated.View style={[styles.content, { transform: [{ ...{ translateY } }]}]}>
+                <Animated.View style={[styles.content, { transform: [{ ...{ translateY } }] }]}>
                     <HeaderText>ĐIỀN TOKEN</HeaderText>
                     <TokenFillView token={token} setToken={setToken} />
-                    <GradientButton onPress={() => navigate('ChangePassword')} disabled={user.isLoading || token.length < 6} >Tiếp tục</GradientButton>
+                    <GradientButton onPress={() => navigate('ChangePassword', { method, token })} disabled={user.isLoading || token.length < 6} >Tiếp tục</GradientButton>
                     <StrokeButton onPress={goBack} disabled={user.isLoading} >Quay lại</StrokeButton>
 
                 </Animated.View>
@@ -102,7 +102,7 @@ const TokenFillView = (props) => {
                     tokenMap.map(item => (
                         <Text
                             style={styles.tokenItem}
-                            onPress={()=>onPressTokenView(item)}
+                            onPress={() => onPressTokenView(item)}
                             key={item}
                         >{token.length === item ? '_' : token.toString().charAt(item)}</Text>
                     ))

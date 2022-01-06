@@ -23,7 +23,7 @@ import { goBack } from '../../../config/rootNavigation';
 const { height } = Dimensions.get('window');
 
 const ChangePassword = (props) => {
-    const { navigation: { navigate }, actions, user } = props;
+    const { navigation: { navigate }, actions, user, route: { params: { method } } } = props;
     const [password, setPassword] = useState('');
     const isFocused = useIsFocused();
     const value = new Animated.Value(0);
@@ -52,7 +52,7 @@ const ChangePassword = (props) => {
                 style={styles.container}>
                 <Image source={require('../../../assets/images/background_login.png')} style={styles.image} />
                 <Animated.View style={[styles.content, { transform: [{ ...{ translateY } }] }]}>
-                    <HeaderText>YÊU CẦU ĐỔI MẬT KHẨU</HeaderText>
+                    <HeaderText>ĐỔI MẬT KHẨU MỚI</HeaderText>
                     <TextInputLayout
                         placeholder='Mật khẩu mới'
                         secureTextEntry={true}
@@ -61,7 +61,7 @@ const ChangePassword = (props) => {
                         onChangeText={setPassword}
                         name='lock'
                     />
-                    <GradientButton onPress={() => navigate('FillToken', { phone })} disabled={user.isLoading} >Gửi Token</GradientButton>
+                    <GradientButton disabled={user.isLoading} >Đổi mật khẩu</GradientButton>
                     <StrokeButton onPress={goBack} disabled={user.isLoading} >Quay lại</StrokeButton>
 
                 </Animated.View>

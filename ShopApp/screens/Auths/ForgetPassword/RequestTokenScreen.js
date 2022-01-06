@@ -3,7 +3,7 @@ import {
     StyleSheet,
     StatusBar,
     Image,
-    Text,
+    View,
     Dimensions,
     Animated,
     ToastAndroid
@@ -13,20 +13,23 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import userActions from '../../../actions/userActions';
 import LinearGradient from 'react-native-linear-gradient';
-import { HeaderText } from '../../../components/Text/AppTexts';
+import { DefautText, HeaderText } from '../../../components/Text/AppTexts';
 import TextInputLayout from '../../../components/Text/TextInputLayout';
 import GradientButton from '../../../components/Button/GradientButton';
 import StrokeButton from '../../../components/Button/StrokeButton';
 import LoadingModal from '../../../components/LoadingModal';
 import { goBack } from '../../../config/rootNavigation';
+import { LIGHT_GREEN } from '../../../constants/colors';
 
 const { height } = Dimensions.get('window');
 
 const RequestTokenScreen = (props) => {
     const { navigation: { navigate }, actions, user } = props;
     const [phone, setPhone] = useState('');
+    const [email, setEmail] = useState('');
+    const [method, setMethod] = useState('phone');
     const isFocused = useIsFocused();
-    const value = new Animated.Value(0);
+    const value = new Animated.Value(1);
 
     useEffect(() => {
         Animated.timing(value, {
@@ -41,6 +44,16 @@ const RequestTokenScreen = (props) => {
         outputRange: [height, 0]
     })
 
+    const chooseEmailMethod = () => {
+        setPhone('');
+        setMethod('email');
+    }
+
+    const choosePhoneMethod = () => {
+        setEmail('');
+        setMethod('phone');
+    }
+
     return (
         <>
             <StatusBar translucent={true} backgroundColor={'transparent'} />
@@ -53,7 +66,11 @@ const RequestTokenScreen = (props) => {
                 <Image source={require('../../../assets/images/background_login.png')} style={styles.image} />
                 <Animated.View style={[styles.content, { transform: [{ ...{ translateY } }] }]}>
                     <HeaderText>YÊU CẦU ĐỔI MẬT KHẨU</HeaderText>
-                    <TextInputLayout
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 10}}>
+                        <DefautText onPress={choosePhoneMethod} style={styles.method}>Số điện thoại</DefautText>
+                        <DefautText onPress={chooseEmailMethod} style={styles.method}>Email</DefautText>
+                    </View>
+                    {method === 'phone' ? <TextInputLayout
                         placeholder='Số điện thoại'
                         maxLength={11}
                         autoCapitalize='none'
@@ -62,7 +79,17 @@ const RequestTokenScreen = (props) => {
                         name='mobile1'
                         keyboardType='phone-pad'
                     />
-                    <GradientButton onPress={() => navigate('FillToken', { phone })} disabled={user.isLoading} >Gửi Token</GradientButton>
+                    :
+                    <TextInputLayout
+                        placeholder='Email'
+                        maxLength={11}
+                        autoCapitalize='none'
+                        value={email}
+                        onChangeText={setEmail}
+                        name='mobile1'
+                        keyboardType='email-address'
+                    />}
+                    <GradientButton onPress={() => navigate('FillToken', { method: { phone, email } })} disabled={user.isLoading} >Gửi Token</GradientButton>
                     <StrokeButton onPress={goBack} disabled={user.isLoading} >Quay lại</StrokeButton>
 
                 </Animated.View>
@@ -119,7 +146,15 @@ const styles = StyleSheet.create({
         textAlign: 'right',
         paddingRight: 16
     },
-
+    method: {
+        width: 150,
+        height: 50,
+        textAlign: 'center',
+        textAlignVertical: 'center',
+        backgroundColor: LIGHT_GREEN,
+        fontSize: 15,
+        borderRadius: 20
+    }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(RequestTokenScreen)
