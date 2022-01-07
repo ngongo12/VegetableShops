@@ -78,13 +78,13 @@ const ContactItem = (props) => {
             .then(res => setLastMessage(res))
             .catch(e => console.log(e))
     }, [])
-    console.log(lastMessage)
+    //console.log(lastMessage)
     return (
         <TouchableOpacity onPress={() => navigate('ChatScreen', { userID: shopId })} style={[styles.content]}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <FastImage source={{ uri: shopInfo?.avatar }} style={styles.avatar} />
+                <FastImage source={shopInfo?.avatar ? { uri: shopInfo?.avatar } : require('../../assets/images/default_avatar.png')} style={styles.avatar} />
                 <View style={{ paddingHorizontal: 10, flex: 1 }}>
-                    <Title style={styles.title}>{shopInfo?.shopName}</Title>
+                    <Title style={styles.title}>{shopInfo?.shopName ? shopInfo.shopName : shopInfo?.fullname}</Title>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         {lastMessage ?
                             <DefautText

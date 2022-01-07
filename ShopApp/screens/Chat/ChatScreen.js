@@ -304,9 +304,9 @@ const ShopHeader = (props) => {
         <View style={[styles.content, { backgroundColor: MainColor }]}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <AntDesign onPress={goBack} name='arrowleft' size={26} color={'#fff'} style={{ paddingRight: 16, paddingLeft: 6 }} />
-                <FastImage source={{ uri: shopInfo?.avatar }} style={styles.avatar} />
+                <FastImage source={shopInfo?.avatar ? { uri: shopInfo?.avatar } : require('../../assets/images/default_avatar.png')} style={styles.avatar} />
                 <View style={{ paddingHorizontal: 10, flex: 1 }}>
-                    <Title style={styles.white}>{shopInfo?.shopName}</Title>
+                    <Title style={styles.white}>{shopInfo?.shopName ? shopInfo.shopName : shopInfo?.fullname}</Title>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <DefautText style={{ fontSize: 13, paddingHorizontal: 5, color: '#fff' }}>{shopInfo?.shopAddress?.province?.name}</DefautText>
                     </View>
@@ -336,7 +336,8 @@ const styles = StyleSheet.create({
     avatar: {
         width: 42,
         height: 42,
-        borderRadius: 50
+        borderRadius: 50,
+        backgroundColor: '#fff'
     },
     box: {
         flex: 1,
