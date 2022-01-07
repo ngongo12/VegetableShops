@@ -48,16 +48,16 @@ const CountDownTime = props => {
             getNextSaleTime()
         }
         let distance = (nextSaleTime.getTime() - myCurrentTime.getTime()) / 1000;
-        let s = Math.round(distance % 60);
+        let s = Math.floor(distance % 60);
         if (s < 10) {
             s = '0' + s;
         }
-        distance = Math.round(distance / 60);
+        distance = Math.floor(distance / 60);
         let m = distance % 60;
         if (m < 10) {
             m = '0' + m;
         }
-        let h = Math.round(distance / 60) % 24;
+        let h = Math.floor(distance / 60) % 24;
         if(h < 10){
             h = '0' + h;
         }

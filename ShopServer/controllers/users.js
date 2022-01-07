@@ -162,7 +162,7 @@ exports.requestToken = async (phone) => {
 
 exports.checkToken = async (phone, _token) => {
     const user = await userService.getUserByPhone(phone);
-    if(!user){
+    if (!user) {
         return {
             success: false,
             message: 'Số điện thoại này chưa được đăng ký'
@@ -170,20 +170,20 @@ exports.checkToken = async (phone, _token) => {
     }
     const reqToken = await userService.getToken(user._id);
     console.log(reqToken)
-    if(reqToken){
+    if (reqToken) {
         const { createdAt, _id, token } = reqToken;
-        console.log('createdAt ', typeof(createdAt));
+        console.log('createdAt ', typeof (createdAt));
         let time = new Date() - createdAt;
         time = time / 1000 / 60;
-        if(time > 5){
+        if (time > 5) {
             return {
                 success: false,
                 message: 'Token này đã quá hạn'
             }
         }
         const check = bcrypt.compareSync(_token, token);
-        console.log('>>>>>>>>>>check',check);
-        if(check){
+        console.log('>>>>>>>>>>check', check);
+        if (check) {
             return {
                 success: true,
                 uid: user._id,
@@ -195,4 +195,16 @@ exports.checkToken = async (phone, _token) => {
         success: false,
         message: 'Token này không tồn tại'
     }
+}
+
+exports.setNewPassword = async (uid, newPass) => {
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(newPass, salt);
+    const newUser = {
+        _id: uid,
+        password: hash,
+        salt,
+        lastUpdate: new Date()
+    }
+    return await this.editProfile(newUser);
 }

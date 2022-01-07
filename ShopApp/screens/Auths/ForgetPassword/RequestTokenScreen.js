@@ -28,6 +28,7 @@ const RequestTokenScreen = (props) => {
     const { navigation: { navigate }, actions, user } = props;
     const [phone, setPhone] = useState('');
     const isFocused = useIsFocused();
+    const [isLoading, setIsLoading] = useState(false)
     const value = new Animated.Value(1);
 
     useEffect(() => {
@@ -80,12 +81,12 @@ const RequestTokenScreen = (props) => {
                         name='mobile1'
                         keyboardType='numeric'
                     />
-                    <GradientButton onPress={sendRequest} disabled={user.isLoading} >Gửi Token</GradientButton>
-                    <StrokeButton onPress={goBack} disabled={user.isLoading} >Quay lại</StrokeButton>
+                    <GradientButton onPress={sendRequest} disabled={isLoading} >Gửi Token</GradientButton>
+                    <StrokeButton onPress={goBack} disabled={isLoading} >Quay lại</StrokeButton>
 
                 </Animated.View>
                 {isFocused && (<LoadingModal
-                    visible={user.isLoading}
+                    visible={isLoading}
                     style={styles.modal}
                     animationType='fade'
                     transparent={true}

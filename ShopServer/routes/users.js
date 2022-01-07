@@ -125,4 +125,10 @@ router.get('/checkToken', async (req, res, next) => {
   res.json(result)
 })
 
+router.get('/setNewPassword', async (req, res, next) => {
+  const { uid, password } = req.query;
+  const result = await userController.setNewPassword(uid, password);
+  res.json(result)
+})
+
 module.exports = router;

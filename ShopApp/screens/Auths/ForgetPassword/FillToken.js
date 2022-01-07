@@ -28,7 +28,10 @@ const { height } = Dimensions.get('window');
 
 const FillToken = (props) => {
     const { navigation: { navigate }, actions, user, route: { params: {phone} } } = props;
-    const [token, setToken] = useState('')
+    const [token, setToken] = useState('');
+    const [timer, setTimer] = useState('05:00');
+    const [isLoading, setIsLoading] = useState(false)
+    let totalTime = 300;
     const isFocused = useIsFocused();
     const value = new Animated.Value(1);
 
@@ -45,12 +48,22 @@ const FillToken = (props) => {
         outputRange: [height, 0]
     })
 
+    useEffect(() => {
+        setInterval(() => {
+            totalTime -= 1;
+            if(timer == 0) goBack();
+            let s = totalTime % 60;
+            let m = Math.floor(totalTime / 60);
+            setTimer(`0${m}:${s < 10 ? '0'+ s: s}`)
+        }, 1000);
+    }, [])
+
     const checkToken = () => {
         fetch(`${userURL}checkToken?phone=${phone}&token=${token}`)
             .then(res => res.json())
             .then(res => {
                 if(res?.success){
-                    navigate('ChangePassword', { phone })
+                    navigate('ChangePassword', { uid: res?.uid })
                     console.log(res)
                 }
                 else{
@@ -72,18 +85,19 @@ const FillToken = (props) => {
                 <Image source={require('../../../assets/images/background_login.png')} style={styles.image} />
                 <Animated.View style={[styles.content, { transform: [{ ...{ translateY } }] }]}>
                     <HeaderText>ĐIỀN TOKEN</HeaderText>
+                    <HeaderText>{timer}</HeaderText>
                     <TokenFillView token={token} setToken={setToken} />
-                    <GradientButton onPress={checkToken} disabled={user.isLoading || token.length < 6} >Tiếp tục</GradientButton>
-                    <StrokeButton onPress={goBack} disabled={user.isLoading} >Quay lại</StrokeButton>
+                    <GradientButton onPress={checkToken} disabled={isLoading || token.length < 6} >Tiếp tục</GradientButton>
+                    <StrokeButton onPress={goBack} disabled={isLoading} >Quay lại</StrokeButton>
 
                 </Animated.View>
                 {isFocused && (<LoadingModal
-                    visible={user.isLoading}
+                    visible={isLoading}
                     style={styles.modal}
                     animationType='fade'
                     transparent={true}
                     statusBarTranslucent={true}
-                    message='Đang gửi token'
+                    message='Đang kiểm tra token'
                 />)}
             </LinearGradient>
 
@@ -130,6 +144,7 @@ const TokenFillView = (props) => {
                 ref={inputRef}
                 onChangeText={setToken}
                 autoCapitalize='none'
+                keyboardType='phone-pad'
                 style={{
                     height: 0,
                 }}

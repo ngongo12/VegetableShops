@@ -19,12 +19,14 @@ import GradientButton from '../../../components/Button/GradientButton';
 import StrokeButton from '../../../components/Button/StrokeButton';
 import LoadingModal from '../../../components/LoadingModal';
 import { goBack } from '../../../config/rootNavigation';
+import { userURL } from '../../../api/userAPI';
 
 const { height } = Dimensions.get('window');
 
 const ChangePassword = (props) => {
-    const { navigation: { navigate }, actions, user, route: { params: { method } } } = props;
+    const { navigation: { navigate }, actions, user, route: { params: { uid } } } = props;
     const [password, setPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(false)
     const isFocused = useIsFocused();
     const value = new Animated.Value(0);
 
@@ -40,6 +42,26 @@ const ChangePassword = (props) => {
         inputRange: [0, 1],
         outputRange: [height, 0]
     })
+
+    const changePassword = () => {
+        if(password.trim().length < 6){
+            ToastAndroid.show('Mật khẩu quá ngắn'), ToastAndroid.SHORT;
+            return;
+        }
+
+        fetch(`${userURL}setNewPassword?uid=${uid}&password=${password.trim()}`)
+            .then(res => res.json())
+            .then(res => {
+                console.log(res)
+                if(res?.result){
+                    navigate('LoginScreen')
+                }
+                else{
+                    ToastAndroid.show('Yêu cầu thất bại: '+res?.message, ToastAndroid.SHORT);
+                }
+            })
+            .catch(e => console.log(e));
+    }
 
     return (
         <>
@@ -61,17 +83,17 @@ const ChangePassword = (props) => {
                         onChangeText={setPassword}
                         name='lock'
                     />
-                    <GradientButton disabled={user.isLoading} >Đổi mật khẩu</GradientButton>
-                    <StrokeButton onPress={goBack} disabled={user.isLoading} >Quay lại</StrokeButton>
+                    <GradientButton onPress={changePassword} disabled={isLoading} >Đổi mật khẩu</GradientButton>
+                    <StrokeButton onPress={goBack} disabled={isLoading} >Quay lại</StrokeButton>
 
                 </Animated.View>
                 {isFocused && (<LoadingModal
-                    visible={user.isLoading}
+                    visible={isLoading}
                     style={styles.modal}
                     animationType='fade'
                     transparent={true}
                     statusBarTranslucent={true}
-                    message='Đang gửi token'
+                    message='Đang làm mới mật khẩu'
                 />)}
             </LinearGradient>
 
