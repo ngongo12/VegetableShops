@@ -7,6 +7,7 @@ import {
     ToastAndroid,
     FlatList,
     Keyboard,
+    TouchableOpacity,
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -275,13 +276,14 @@ const InputView = (props) => {
                     onEndEditing={sendTextMessage}
                     style={{ flex: 1, fontSize: 13 }}
                 />
+                <TouchableOpacity>
                 <MaterialCommunityIcons
                     name='send' size={26}
                     style={styles.icon}
                     onPress={sendTextMessage}
                     color={text?.trim().length === 0 ? 'grey' : MainColor}
 
-                />
+                /></TouchableOpacity>
             </View>
         </View>
     )

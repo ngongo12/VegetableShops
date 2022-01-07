@@ -9,7 +9,8 @@ import {
     ToastAndroid,
     View,
     ScrollView,
-    Pressable
+    Pressable,
+    TouchableOpacity
 } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -306,7 +307,9 @@ const ShopInfo = (props) => {
                     </View>
                 </View>
                 {shopId !== uid && (<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 16 }}>
+                    <TouchableOpacity>
                     <DefautText onPress={()=> navigate('ChatScreen', { userID : shopInfo._id })} style={[styles.btn,]}>Chat Ngay</DefautText>
+                    </TouchableOpacity>
                     <DefautText onPress={() => navigate('ShopDetailScreen', { shopId })} style={[styles.btn, { marginLeft: 10, backgroundColor: MainColor, color: '#fff', borderColor: MainColor }]}>Xem Shop</DefautText>
                 </View>)}
             </View>)}

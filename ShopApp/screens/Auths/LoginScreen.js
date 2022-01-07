@@ -53,22 +53,22 @@ const LoginScreen = (props) => {
     //console.log(user);
 
     useEffect(() => {
-        // getData('user')
-        //     .then(res => {
-        //         const { phone, password } = res;
-        //         if (phone) {
-        //             setPhone(phone);
-        //         }
-        //         if (password) {
-        //             setPassword(password)
-        //         }
-        //         if (!user?.notFirst) {
-        //             actions.actionLogin({
-        //                 phone,
-        //                 password
-        //             });
-        //         }
-        //     });
+        getData('user')
+            .then(res => {
+                const { phone, password } = res;
+                if (phone) {
+                    setPhone(phone);
+                }
+                if (password) {
+                    setPassword(password)
+                }
+                if (!user?.notFirst) {
+                    actions.actionLogin({
+                        phone,
+                        password
+                    });
+                }
+            });
     }, [isFocused])
 
     useEffect(() => {

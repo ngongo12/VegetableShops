@@ -8,7 +8,8 @@ import {
     FlatList,
     Keyboard,
     ScrollView,
-    Pressable
+    Pressable,
+    TouchableOpacity
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -79,7 +80,7 @@ const ContactItem = (props) => {
     }, [])
     console.log(lastMessage)
     return (
-        <Pressable onPress={() => navigate('ChatScreen', { userID: shopId })} style={[styles.content]}>
+        <TouchableOpacity onPress={() => navigate('ChatScreen', { userID: shopId })} style={[styles.content]}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <FastImage source={{ uri: shopInfo?.avatar }} style={styles.avatar} />
                 <View style={{ paddingHorizontal: 10, flex: 1 }}>
@@ -97,7 +98,7 @@ const ContactItem = (props) => {
                     </DateTimeFm>}
                 </View>
             </View>
-        </Pressable>
+        </TouchableOpacity>
     )
 }
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
     StyleSheet,
     View,
-    Pressable,
+    TouchableOpacity,
     Text
 } from 'react-native';
 import { MainColor } from '../../constants/colors';
@@ -10,13 +10,13 @@ import { MainColor } from '../../constants/colors';
 const NomalButton = ( props ) => {
     const  { children, style, color } = props;
     return (
-        <Pressable {...props} style={style}>
+        <TouchableOpacity {...props} style={style}>
             <View
                 style={[styles.container, color && { backgroundColor: color}]}
             >
                 <Text style={styles.text}>{children}</Text>
             </View>
-        </Pressable>
+        </TouchableOpacity>
     )
 }
 

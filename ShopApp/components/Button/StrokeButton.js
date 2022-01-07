@@ -4,16 +4,17 @@ import {
     View,
     StatusBar,
     Pressable,
-    Text
+    Text,
+    TouchableOpacity
 } from 'react-native';
 import { DARK_GREEN } from '../../constants/colors';
 
 const StrokeButton = (props) => {
     const { children, style } = props;
     return (
-        <Pressable {...props} style={[styles.container, style]}>
+        <TouchableOpacity {...props} style={[styles.container, style]}>
             <Text style={styles.text}>{children}</Text>
-        </Pressable>
+        </TouchableOpacity>
     )
 }
 

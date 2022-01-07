@@ -29,14 +29,16 @@ const CountDownTime = props => {
     }, [nextSaleTime])
 
     const getNextSaleTime = () => {
+        let flag = true;
         saleHours.forEach(e => {
-            if (currentHour < e) {
-                //console.log('nextSale time, ', e);
+            if (currentHour < e && flag) {
+                console.log('nextSale time, ', e);
                 nextSaleTime.setHours(e, 0, 0);
-    
+                flag = false;
                 return;
             }
             //Nếu lớn hơn 21 giờ sẽ là ngày tiếp theo
+            if(!flag) return; 
             nextSaleTime = new Date(currentTime.getTime() + 1000 * 60 * 60 * 24);
             nextSaleTime.setHours(9, 0, 0);
         })
@@ -44,6 +46,8 @@ const CountDownTime = props => {
 
     const getDistanceTime = () => {
         const myCurrentTime = new Date();
+        // console.log(currentTime.toLocaleTimeString());
+        // console.log(nextSaleTime.toLocaleTimeString());
         if(myCurrentTime > nextSaleTime){
             getNextSaleTime()
         }

@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 import {
     StyleSheet,
     Pressable,
-    Text
+    Text,
+    TouchableOpacity
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 const GradientButton = ( props ) => {
     const  { children, style } = props;
     return (
-        <Pressable {...props} style={style}>
+        <TouchableOpacity {...props} style={style}>
             <LinearGradient
                 locations={[0, 1.0]}
                 start={{ x: 1.0, y: 1.0 }}
@@ -19,7 +20,7 @@ const GradientButton = ( props ) => {
             >
                 <Text style={styles.text}>{children}</Text>
             </LinearGradient>
-        </Pressable>
+        </TouchableOpacity>
     )
 }
 

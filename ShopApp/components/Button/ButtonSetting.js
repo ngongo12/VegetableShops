@@ -1,7 +1,8 @@
 import React from 'react'
 import {
     StyleSheet,
-    Pressable
+    Pressable,
+    TouchableOpacity
 } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { MainColor } from '../../constants/colors';
@@ -10,7 +11,7 @@ import { DefautText } from '../Text/AppTexts';
 const ButtonSetting = ( props ) =>{
     const {iconName, name, style, onPress, children} = props;
     return (
-        <Pressable 
+        <TouchableOpacity 
             onPress={onPress}
             style={[buttonStyles.container, style]}
         >
@@ -19,7 +20,7 @@ const ButtonSetting = ( props ) =>{
             {children}
             {!children && <Icon name='right' size={20} color={MainColor} />}
             
-        </Pressable>
+        </TouchableOpacity>
     )
 }
 

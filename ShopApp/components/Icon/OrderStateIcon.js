@@ -4,7 +4,8 @@ import {
     ScrollView,
     Text,
     StyleSheet,
-    Pressable
+    Pressable,
+    TouchableOpacity
 } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { MainColor } from '../../constants/colors';
@@ -13,10 +14,10 @@ import { DefautText } from '../Text/AppTexts';
 const OrderStateIcon = (props) => {
     const { name, title, onPress } = props;
     return (
-        <Pressable style={styles.container} onPress={onPress} >
+        <TouchableOpacity style={styles.container} onPress={onPress} >
             <Icon name={name} size={32} color={ MainColor } />
             <DefautText style={styles.text}>{title}</DefautText>
-        </Pressable>
+        </TouchableOpacity>
     )
 }
 
