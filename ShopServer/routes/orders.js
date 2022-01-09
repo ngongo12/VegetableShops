@@ -78,4 +78,20 @@ router.post('/sendNotification', async (req, res, next) =>{
     })
 });
 
+router.get('/statistic', async (req, res, next) =>{
+    const { uid, time } = req.query;
+    
+    const arr = time.split('-');
+    const firstDate = new Date(arr[0], arr[1]-1, 1);
+    const lastDate = new Date(arr[0], arr[1], 1);
+
+    const result = await orderController.statistic(uid, firstDate, lastDate);
+
+    res.json({
+        ...result,
+        firstDate: firstDate.toString(),
+        lastDate: lastDate.toString()
+    })
+});
+
 module.exports = router;

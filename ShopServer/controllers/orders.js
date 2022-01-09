@@ -220,3 +220,35 @@ exports.sendMessage = async (tokens, notification, data) => {
     //console.log('notification controller');
     return await notificationService.sendMessage(tokens, notification, data);
 }
+
+exports.statistic = async (uid, firstDate, lastDate) => {
+    let result = {};
+
+    const countOrder = await orderService.countOrderAtMonth(uid, firstDate, lastDate);
+    const products = await orderService.getTopProductSoldAtMonth(uid, firstDate, lastDate);
+    let productMap = new Map();
+    products.forEach(e => {
+        e?.products?.forEach(item => {
+            let temp = productMap.get(item._id);
+            productMap.set(item._id, {
+                amount: !temp ? temp?.amount : 0 + item?.amount,
+                totalPrice: !temp ? temp?.totalPrice : 0 + item?.amount * item?.sellPrice,
+                images: item?.images,
+                name: item.name
+            })
+        })
+    })
+
+    const productOnMonth = await orderService.getAllOrderDoneOnMont(uid, firstDate, lastDate);
+    const numDay = (new Date(lastDate - 1)).getDate();
+    let month = new Array(numDay).fill(0);
+    productOnMonth.forEach(e => {
+        month[e?.doneAt.getDate()-1] += 1;
+    })
+
+    return {
+        countOrder,
+        products: Array.from(productMap, ([name, value]) => ({ name, ...value })),
+        orderPerDay: month
+    };
+}
