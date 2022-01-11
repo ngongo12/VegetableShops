@@ -51,7 +51,9 @@ const FillToken = (props) => {
     useEffect(() => {
         setInterval(() => {
             totalTime -= 1;
-            if(timer == 0) goBack();
+            if(totalTime === 0) {
+                goBack();
+            };
             let s = totalTime % 60;
             let m = Math.floor(totalTime / 60);
             setTimer(`0${m}:${s < 10 ? '0'+ s: s}`)

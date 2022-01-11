@@ -142,10 +142,11 @@ exports.requestToken = async (phone) => {
             let token = Math.random().toString().slice(2, 8);
             const salt = bcrypt.genSaltSync(10);
             const hash = bcrypt.hashSync(token, salt);
-            console.log(user)
             await userService.saveToken(user._id, hash);
 
-            return await sendSMS.sendSMS(phone, token);
+            const sendRest = await sendSMS.sendSMS(phone, token);
+            console.log(sendRest);
+            return sendRest;
         }
         else {
             return {
