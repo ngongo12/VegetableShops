@@ -8,21 +8,21 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { useIsFocused } from '@react-navigation/native';
 import userActions from '../../actions/userActions';
-
-import FastImage from 'react-native-fast-image';
 import productAPI, { productUrl } from '../../api/productAPI';
 import { PressableText, Title } from '../Text/AppTexts';
-import { navigate } from '../../config/rootNavigation';
 import ProductItem from './ProductItem';
 
 const SeenProductList = (props) => {
     const { user: { user } } = props;
     const [products, setProducts] = useState(null);
+    const isFocused = useIsFocused();
     //dconsole.log(user.seenProducts)
     useEffect(() => {
-        fetchData();
-    }, []);
+        if (isFocused)
+            fetchData();
+    }, [isFocused]);
 
 
     const fetchData = () => {
@@ -57,11 +57,11 @@ const SeenProductList = (props) => {
                     </View>
                     <FlatList
                         data={products}
-                        renderItem={({item})=><ProductItem item={item} hasBorder={true} />}
+                        renderItem={({ item }) => <ProductItem item={item} hasBorder={true} />}
                         nestedScrollEnabled={true}
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}
-                        style={{flex: 1}}
+                        style={{ flex: 1 }}
                     />
                 </View>
             )}
