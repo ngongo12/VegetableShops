@@ -11,7 +11,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import userActions from '../actions/userActions';
 import { MainColor } from '../constants/colors';
 import { productUrl } from '../api/productAPI';
-import ProductItem from '../components/List/MyProductItem';
+import ProductItem from '../components/List/ProductItem';
 import { SearchBarInput } from '../components/Header/SearchBar';
 import { DefautText } from '../components/Text/AppTexts';
 import { BackIcon } from '../components/Icon/AppIcons';

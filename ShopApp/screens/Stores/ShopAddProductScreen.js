@@ -24,6 +24,7 @@ import TextInputForProduct from '../../components/Text/TextInputForProduct';
 import NomalButton from '../../components/Button/NomalButton';
 import CategoryPicker from '../../components/CategoryPicker';
 import { getNew, updateProduct } from '../../api/productAPI';
+import LoadingModal from '../../components/LoadingModal';
 
 const { width, height } = Dimensions.get('window');
 const ShopAddProductScreen = (props) => {
@@ -35,6 +36,8 @@ const ShopAddProductScreen = (props) => {
     const [selectedImages, setSelectedImages] = useState();
     const [choosenImage, setChoosenImage] = useState();
     const [isVisibleModal, setIsVisibleModal] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState('');
     const [pName, setPName] = useState('');
     const [pBrand, setPBrand] = useState('');
     const [pOrigin, setPOrigin] = useState('');
@@ -96,11 +99,14 @@ const ShopAddProductScreen = (props) => {
 
     const onSubmit = async () => {
         if (validated()) {
+            setLoading(true);
+            setMessage('Đang khởi tạo sản phẩm');
             if (!pId) {
                 //Chưa có pId tạo mới một product rỗng
                 pId = await getNew();
             }
             //upload tất cả hình ảnh lên firebase
+            setMessage('Đang tải ảnh lên');
             const images = await uploadMultiFile(selectedImages, `products/${pId}`);
             //console.log('images ',images);
             const product = {
@@ -117,6 +123,7 @@ const ShopAddProductScreen = (props) => {
                 originPrice,
                 owner: user._id
             }
+            setMessage('Đang lưu sản phẩm vào cơ sở dữ liệu');
             const result = await updateProduct(product);
             if (result.result) {
                 ToastAndroid.show('Thêm sản phẩm thành công', ToastAndroid.SHORT);
@@ -124,6 +131,7 @@ const ShopAddProductScreen = (props) => {
             }
             else {
                 ToastAndroid.show('Thêm sản phẩm thất bại', ToastAndroid.SHORT);
+                setLoading(false);
             }
         }
     }
@@ -251,6 +259,14 @@ const ShopAddProductScreen = (props) => {
                 transparent={true}
                 animationType='slide'
                 onItemPress={[openGallery, openCamera]}
+            />
+            <LoadingModal
+                visible={loading}
+                style={styles.modal}
+                animationType='fade'
+                transparent={true}
+                statusBarTranslucent={true}
+                message={message}
             />
         </ScrollView>
         </>

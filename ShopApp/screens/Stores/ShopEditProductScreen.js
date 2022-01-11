@@ -25,6 +25,7 @@ import TextInputForProduct from '../../components/Text/TextInputForProduct';
 import NomalButton from '../../components/Button/NomalButton';
 import CategoryPicker from '../../components/CategoryPicker';
 import { productUrl, updateProduct } from '../../api/productAPI';
+import LoadingModal from '../../components/LoadingModal';
 
 const { width, height } = Dimensions.get('window');
 const ShopEditProductScreen = (props) => {
@@ -38,6 +39,8 @@ const ShopEditProductScreen = (props) => {
     const [allImages, setAllImages] = useState([]); //Tất cả hình ảnh show lên
     const [dataImages, setDataImages] = useState([]); //Ảnh trong database phân biệt với ảnh trên thiết bị
     const [deletedDataImages, setDeletedDataImages] = useState([]); //Ảnh trên data mà yêu cầu bị xóa;
+    const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState('');
     const [choosenImage, setChoosenImage] = useState();
     const [isVisibleModal, setIsVisibleModal] = useState(false);
     const [pName, setPName] = useState('');
@@ -157,6 +160,8 @@ const ShopEditProductScreen = (props) => {
 
     const onSubmit = async () => {
         if (validated()) {
+            setLoading(true);
+            setMessage('Đang chuẩn bị hình ảnh');
             //upload tất cả hình ảnh đã thêm lên firebase
             const addImages = await uploadMultiFile(selectedImages, `products/${productID}`);
             //console.log('images ',images);
@@ -178,6 +183,7 @@ const ShopEditProductScreen = (props) => {
                 originPrice,
                 owner: user._id
             }
+            setMessage('Đang lưu sản phẩm vào cơ sở dữ liệu');
             const result = await updateProduct(product);
             
             if (result.result) {
@@ -186,6 +192,7 @@ const ShopEditProductScreen = (props) => {
             }
             else {
                 ToastAndroid.show('Thêm sản phẩm thất bại', ToastAndroid.SHORT);
+                setLoading(false);
             }
         }
     }
@@ -311,6 +318,14 @@ const ShopEditProductScreen = (props) => {
                 transparent={true}
                 animationType='slide'
                 onItemPress={[openGallery, openCamera]}
+            />
+            <LoadingModal
+                visible={loading}
+                style={styles.modal}
+                animationType='fade'
+                transparent={true}
+                statusBarTranslucent={true}
+                message={message}
             />
         </ScrollView>
     )

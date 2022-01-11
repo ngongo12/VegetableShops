@@ -33,7 +33,7 @@ const ProductMainList = (props) => {
 
 
     const fetchtData = () => {
-        fetch(productUrl + `getWithLimit?uid=${user?._id}&startAt=0&num=2`)
+        fetch(productUrl + `getWithLimit?uid=${user?._id}&startAt=0&num=4`)
             .then((respone) => respone.json())
             .then((data) => {
                 if (data.products) {
@@ -52,7 +52,7 @@ const ProductMainList = (props) => {
         if(startAt < 0) startAt = 0;
         setIsLoading(true);
 
-        fetch(productUrl + `getWithLimit?uid=${user?._id}&startAt=${startAt}&num=2`)
+        fetch(productUrl + `getWithLimit?uid=${user?._id}&startAt=${startAt}&num=4`)
             .then((respone) => respone.json())
             .then((data) => {
                 if (data.products) {
