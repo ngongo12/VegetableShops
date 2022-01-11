@@ -14,7 +14,7 @@ const TextInputLayout = (props) => {
     const [isShowPassword, setIsShowPassword] = useState(false);
     const [onFocused, setOnFocused] = useState(false)
     return (
-        <View style={[styles.container, onFocused && { backgroundColor: '#7BE495' }]}>
+        <View style={[styles.container, onFocused && { borderWidth: 1 }]}>
             <AntDesign name={name} size={22} color={DARK_GREEN} />
             <TextInput
                 onFocus={() => setOnFocused(true)}

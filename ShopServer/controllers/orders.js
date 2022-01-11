@@ -231,12 +231,13 @@ exports.statistic = async (uid, firstDate, lastDate) => {
         e?.products?.forEach(item => {
             let temp = productMap.get(item._id);
             productMap.set(item._id, {
-                amount: !temp ? temp?.amount : 0 + item?.amount,
-                totalPrice: !temp ? temp?.totalPrice : 0 + item?.amount * item?.sellPrice,
+                amount: (temp ? temp?.amount : 0) + item?.amount,
+                totalPrice: (temp ? temp?.totalPrice : 0) + item?.amount * item?.sellPrice,
                 images: item?.images,
                 name: item.name
             })
         })
+        console.log(productMap)
     })
 
     const productOnMonth = await orderService.getAllOrderDoneOnMont(uid, firstDate, lastDate);

@@ -17,6 +17,7 @@ import { getShopName } from '../api/userAPI';
 import { DARK_GREEN, MainColor } from '../constants/colors';
 import { navigate } from '../config/rootNavigation';
 import onBackPress from '../config/backPressHandler';
+import NothingFound from '../components/NothingFound';
 
 const CartScreen = (props) => {
     const { cart, cAction, user: { user }, navigation: { goBack }, route: { name } } = props;
@@ -29,7 +30,7 @@ const CartScreen = (props) => {
     useEffect(() => {
         onBackPress(() => {
             if (name === 'CartScreen') {
-                cAction.clearChosen({uid: user._id});
+                cAction.clearChosen({ uid: user._id });
             }
         })
     }, [])
@@ -40,7 +41,7 @@ const CartScreen = (props) => {
         if (productList) {
             onCheckOut();
         }
-        
+
     }, [cart]);
 
     useEffect(() => {
@@ -89,6 +90,7 @@ const CartScreen = (props) => {
     }
     return (
         <>
+            {cartProducts?.length === 0 && <NothingFound type='cart' message='Không có sản phẩm nào trong giỏ hàng' />}
             <SectionList
                 sections={cartProducts}
                 keyExtractor={(item, index) => item + index}
@@ -97,6 +99,7 @@ const CartScreen = (props) => {
                     <SectionHeader id={key} />
                 )}
             />
+
             {address.length === 0 && (<DefautText style={styles.text}
                 onPress={() => navigate('NewAddressScreen')}
             >
@@ -108,7 +111,7 @@ const CartScreen = (props) => {
                     <DefautText style={styles.totalPrice}>Thành tiền: <SellPrice>{totalPrice}</SellPrice></DefautText>
                     <DefautText
                         style={styles.buyButton}
-                        onPress = {() => navigate('PaymentScreen', {...{productList, cartProducts, totalPrice}})}
+                        onPress={() => navigate('PaymentScreen', { ...{ productList, cartProducts, totalPrice } })}
                     > Mua hàng</DefautText>
                 </View>
             )}

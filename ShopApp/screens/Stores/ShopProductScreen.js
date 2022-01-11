@@ -13,6 +13,7 @@ import userActions from '../../actions/userActions';
 import { MainColor } from '../../constants/colors';
 import { productUrl } from '../../api/productAPI';
 import ProductItem from '../../components/List/MyProductItem';
+import NothingFound from '../../components/NothingFound';
 
 const ShopProductScreen = (props) => {
     const {
@@ -40,7 +41,9 @@ const ShopProductScreen = (props) => {
     //console.log(products);
     return (
         <View style={styles.container}>
-            {products && (
+            {products?.length === 0 ?
+                <NothingFound message='Bạn chưa đăng sản phẩm nào' />
+            : (
                 <FlatList
                     data={products}
                     renderItem={({ item }) => <ProductItem {...{ item, navigate }} />}

@@ -7,6 +7,7 @@ import { useIsFocused } from '@react-navigation/native';
 import userActions from '../../actions/userActions';
 import orderAPI from '../../api/orderAPI';
 import OrderItem from '../../components/List/OrderItem';
+import NothingFound from '../../components/NothingFound';
 
 const ContainScreen = (props) => {
     const { user: { user } } = props;
@@ -29,15 +30,18 @@ const ContainScreen = (props) => {
     }
 
     return (
-        <FlatList
-            data={orders}
-            renderItem={({ item }) => (
-                <OrderItem
-                    item={item}
-                    deliveryState='Đang chờ lấy hàng'
-                />
-            )}
-        />
+
+        orders?.length === 0 ? <NothingFound type='order' message='Không có đơn hàng nào' />
+            :
+            <FlatList
+                data={orders}
+                renderItem={({ item }) => (
+                    <OrderItem
+                        item={item}
+                        deliveryState='Đang chờ lấy hàng'
+                    />
+                )}
+            />
     )
 }
 

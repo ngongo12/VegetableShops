@@ -23,6 +23,7 @@ import userAPI from '../../api/userAPI';
 import FastImage from 'react-native-fast-image';
 import { SearchBarInput } from '../../components/Header/SearchBar';
 import ProductItem from '../../components/List/ProductItem';
+import NothingFound from '../../components/NothingFound';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -171,6 +172,9 @@ const ShopDetailScreen = (props) => {
                     nestedScrollEnabled={true}
                     showsVerticalScrollIndicator={false}
                 />
+            )}
+            {products?.length === 0 && (
+                <NothingFound />
             )}
         </>
     )

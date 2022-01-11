@@ -12,7 +12,7 @@ import { bindActionCreators } from 'redux';
 import categoryActions from '../../actions/categoryActions';
 import { productUrl } from '../../api/productAPI';
 import ProductItem from '../../components/List/ProductItem';
-import MainListHeader from '../../components/Header/MainListHeader';
+import NothingFound from '../../components/NothingFound';
 import LoadMore from '../../components/List/LoadMore';
 import { DefautText } from '../../components/Text/AppTexts';
 import { MainColor } from '../../constants/colors';
@@ -104,7 +104,9 @@ const ProductOfCategoryScreen = (props) => {
                     }
                 </ScrollView>
             </View>
-            {products ? <FlatList
+            {products ? ( products?.length === 0 ? 
+            <NothingFound type='product' />
+            : <FlatList
                 data={products}
                 renderItem={({ item }) => <ProductItem {...{ item, navigate }} />}
                 numColumns={2}
@@ -116,7 +118,7 @@ const ProductOfCategoryScreen = (props) => {
                 onRefresh={fetchtData}
                 refreshing={refreshing}
                 ListFooterComponent={() => <LoadMore isLoading={isLoading} />}
-            /> :
+            />) :
             <LoadingView message="Tải danh sách ..." />
         }
         </View>

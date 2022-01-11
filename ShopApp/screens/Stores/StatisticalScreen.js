@@ -10,12 +10,10 @@ import {
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import userActions from '../../actions/userActions';
-import Icon from 'react-native-vector-icons/Foundation';
 import { DefautText, SellPrice, Title } from '../../components/Text/AppTexts';
 import { MainColor, RED } from '../../constants/colors';
 import { orderURL } from '../../api/orderAPI';
 import { LineChart } from 'react-native-chart-kit';
-import LoadingModal from '../../components/LoadingModal';
 import { Picker } from '@react-native-picker/picker';
 import FastImage from 'react-native-fast-image';
 
