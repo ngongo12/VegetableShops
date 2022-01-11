@@ -10,6 +10,7 @@ import DefaultHeader from '../../components/Header/DefaultHeader';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import ShopOrderScreen from '../ShopOrderScreen.js';
 import ShopProductScreen from './ShopProductScreen';
+import StatisticalScreen from './StatisticalScreen';
 import { MainColor } from '../../constants/colors';
 import NomalButton from '../../components/Button/NomalButton';
 import { navigate } from '../../config/rootNavigation';
@@ -31,6 +32,11 @@ const StoreScreen = (props) => {
                     name='ShopProductScreen'
                     component={ShopProductScreen}
                     options={{title: 'Sản phẩm'}}
+                />
+                <Tab.Screen
+                    name='StatisticalScreen'
+                    component={StatisticalScreen}
+                    options={{title: 'Thống kê'}}
                 />
                 <Tab.Screen
                     name='ShopOrderScreen'

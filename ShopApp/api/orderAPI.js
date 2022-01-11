@@ -1,6 +1,6 @@
 import apiURL from "../constants/api_url";
 
-const orderURL = `${apiURL}orders/`;
+export const orderURL = `${apiURL}orders/`;
 
 export const createNewOrder = (order) => {
     return fetch(`${orderURL}createOrder`, {
@@ -68,5 +68,6 @@ export default {
     setOrder,
     getShopOrderByState,
     getMyOrderByState,
-    cancelOrder
+    cancelOrder,
+    orderURL
 }
