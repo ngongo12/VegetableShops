@@ -45,7 +45,8 @@ const ChatScreen = (props) => {
     const [contact, setContact] = useState();
     const [fetchedContact, setFetchedContact] = useState(false);
     //const [messages, setMessages] = useState([]);
-    const [isSendProduct, setIsSendProduct] = useState(false);
+    let isSendProduct = false;
+    const [loadedMessage, setLoadedMessage] = useState(false);
     const [keyboardIsShow, setKeyboardIsShow] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [canLoadMore, setCanLoadMore] = useState(true);
@@ -119,10 +120,13 @@ const ChatScreen = (props) => {
     useEffect(() => {
         if (contact) {
             chatAPI.getListMessage(contact._id)
-                .then(res => messageAction.add({
-                    msg: res,
-                    isAddNew: true
-                }))
+                .then(res => {
+                    messageAction.add({
+                        msg: res,
+                        isAddNew: true
+                    })
+                    setLoadedMessage(true);
+                })
                 .catch(e => console.log(e))
             //
             if (socket.hasListeners(contact._id)) {
@@ -141,24 +145,29 @@ const ChatScreen = (props) => {
                 })
             })
 
-            //Gửi sản phẩm cần hỏi nếu có
-            if (product && !isSendProduct) {
-                chatAPI.sendMessage({
-                    msg: {
-                        contactId: contact?._id,
-                        sendBy: user?._id,
-                        messageContent: {
-                            type: 'product',
-                            message: `[1 Sản phẩm]`,
-                            product
-                        }
-                    },
-                    token: contact?._id
-                })
-                setIsSendProduct(true);
-            }
+            
         }
     }, [contact]);
+
+    useEffect(() => {
+        //Gửi sản phẩm cần hỏi nếu có
+        if (product && !isSendProduct) {
+            
+            chatAPI.sendMessage({
+                msg: {
+                    contactId: contact?._id,
+                    sendBy: user?._id,
+                    messageContent: {
+                        type: 'product',
+                        message: `[1 Sản phẩm]`,
+                        product
+                    }
+                },
+                token: contact?._id
+            })
+            isSendProduct = true;
+        }
+    }, [loadedMessage]) //Sau khi load message về rồi mới gửi
 
     useEffect(() => {
         if (canScroll)
@@ -277,13 +286,13 @@ const InputView = (props) => {
                     style={{ flex: 1, fontSize: 13 }}
                 />
                 <TouchableOpacity>
-                <MaterialCommunityIcons
-                    name='send' size={26}
-                    style={styles.icon}
-                    onPress={sendTextMessage}
-                    color={text?.trim().length === 0 ? 'grey' : MainColor}
+                    <MaterialCommunityIcons
+                        name='send' size={26}
+                        style={styles.icon}
+                        onPress={sendTextMessage}
+                        color={text?.trim().length === 0 ? 'grey' : MainColor}
 
-                /></TouchableOpacity>
+                    /></TouchableOpacity>
             </View>
         </View>
     )
