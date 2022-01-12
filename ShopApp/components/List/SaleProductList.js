@@ -3,7 +3,7 @@ import {
     StyleSheet,
     View,
     FlatList,
-    Image,
+    Dimensions,
     Pressable,
     ImageBackground
 } from 'react-native';
@@ -18,6 +18,7 @@ import { Title, PressableText, DefautText, SellPrice, OriginPrice, SalePercent }
 import { navigate } from '../../config/rootNavigation';
 import CountDownTime from '../Text/CountDownTime';
 
+const { width, height } = Dimensions.get('screen')
 const SaleProductList = (props) => {
     const { user:{user} } = props;
     const [products, setProducts] = useState(null);
@@ -109,7 +110,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         margin: 5,
         overflow: 'hidden',
-        maxWidth: 150,
+        maxWidth: width*5/12,
     },
     itemContent: {
         backgroundColor: '#fff',

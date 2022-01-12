@@ -26,3 +26,15 @@ exports.sendNotification = async (notification, uid) => {
 exports.getNotificationByUserID = async (uid) => {
     return await notificationService.getNotificationByUserID(uid);
 }
+
+exports.getNotSeenNotificationByUserID = async (uid) => {
+    return await notificationService.getNotSeenNotificationByUserID(uid);
+}
+
+exports.seenNotification = async (notifyID) => {
+    return await notificationService.seenNotification(notifyID);
+}
+
+exports.seenAll = async (uid) => {
+    return await notificationService.seenAll(uid);
+}

@@ -12,6 +12,7 @@ const notificationSchema = new Schema({
     uid: { type: String },
     type: { type: String },
     linkID: { type: String },
+    state: { type: String }
 })
 
 module.exports = mongoose.model('notification', notificationSchema);

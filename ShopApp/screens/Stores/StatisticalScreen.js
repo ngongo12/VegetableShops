@@ -11,7 +11,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import userActions from '../../actions/userActions';
 import { DefautText, SellPrice, Title } from '../../components/Text/AppTexts';
-import { MainColor, RED } from '../../constants/colors';
+import { DARK_GREEN, LIGHT_GREEN, MainColor, RED } from '../../constants/colors';
 import { orderURL } from '../../api/orderAPI';
 import { LineChart } from 'react-native-chart-kit';
 import { Picker } from '@react-native-picker/picker';
@@ -186,9 +186,9 @@ const Chart = props => {
                 height={220}
                 yAxisInterval={1} // optional, defaults to 1
                 chartConfig={{
-                    backgroundColor: "#e26a00",
-                    backgroundGradientFrom: "#fb8c00",
-                    backgroundGradientTo: "#ffa726",
+                    backgroundColor: LIGHT_GREEN,
+                    backgroundGradientFrom: DARK_GREEN,
+                    backgroundGradientTo: LIGHT_GREEN,
                     decimalPlaces: 1, // optional, defaults to 2dp
                     color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
                     labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
@@ -198,7 +198,7 @@ const Chart = props => {
                     propsForDots: {
                         r: "2",
                         strokeWidth: "2",
-                        stroke: "#ffa726"
+                        stroke: DARK_GREEN
                     }
                 }}
                 bezier

@@ -11,7 +11,7 @@ import messageActions from '../actions/messageActions';
 import { MainColor } from '../constants/colors';
 import Icon from 'react-native-vector-icons/AntDesign';
 import HomeScreen from './HomeScreen';
-import NotificationScreen from './NotificationScreen';
+import NotificationScreen from './Notification';
 import StoreScreen from './Stores/StoreScreen';
 import ProfileScreen from './Profiles/ProfileScreen';
 import { getData, clearAllData } from '../api/asyncStorage';

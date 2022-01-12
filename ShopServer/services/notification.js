@@ -24,3 +24,19 @@ exports.createNotification = async (notification) => {
 exports.getNotificationByUserID = async (uid) => {
     return await notificationModel.find({ uid }).sort({ createdAt: -1 });
 }
+
+exports.getNotSeenNotificationByUserID = async (uid) => {
+    return await notificationModel.find({ uid, state: { $ne: 'seen' } }).sort({ createdAt: -1 });
+}
+
+exports.seenNotification = async (notifyID) => {
+    return await notificationModel.updateOne({ _id: notifyID }, {
+        state: 'seen'
+    })
+}
+
+exports.seenAll = async (uid) => {
+    return await notificationModel.updateMany({ uid, state: { $ne: 'seen' } }, {
+        state: 'seen'
+    })
+}
