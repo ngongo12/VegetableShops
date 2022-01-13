@@ -18,6 +18,7 @@ import { getShopByID } from '../../api/userAPI';
 import { DARK_GREEN, MainColor, MAIN_BACKGROUND, RED } from '../../constants/colors';
 import FastImage from 'react-native-fast-image';
 import { getDisctanceB2P } from '../../api/mapAPI';
+import DefaultHeader from '../../components/Header/DefaultHeader'
 
 const PaymentItem = props => {
     const { item, cart, chosenAddress, orders, setOrders } = props;

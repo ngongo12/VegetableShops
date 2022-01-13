@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useIsFocused } from '@react-navigation/native';
 import userActions from '../actions/userActions';
 import { MainColor } from '../constants/colors';
 import { productUrl } from '../api/productAPI';
@@ -22,7 +22,7 @@ const SearchScreen = (props) => {
         user: { user }
     } = props;
     const [text, setText] = useState('');
-
+    const isFocused = useIsFocused();
     const [products, setProducts] = useState();
 
     const onSearch = () => {
@@ -36,6 +36,7 @@ const SearchScreen = (props) => {
 
         }
     }
+
     //console.log(products);
     return (
         <View style={styles.container}>

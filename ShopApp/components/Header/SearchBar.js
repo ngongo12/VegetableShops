@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import {
     StyleSheet,
     Pressable,
@@ -24,11 +24,16 @@ const SearchBar = (props) => {
 }
 
 export const SearchBarInput = props => {
-    const { onPress, value, onChangeText, onEndEditing, notFocus } = props
+    const { onPress, value, onChangeText, onEndEditing, notFocus } = props;
+    let searchRef = useRef();
+    useEffect(() => {
+        searchRef.current.focus();
+    }, [])
     return (
         <Pressable style={styles.constainer} onPress={() => navigate('SearchScreen')} >
             <ScanIcon />
             <TextInput style={styles.text}
+                ref={searchRef}
                 placeholder='Tìm sản phẩm, danh mục'
                 value={value}
                 onChangeText={onChangeText}
