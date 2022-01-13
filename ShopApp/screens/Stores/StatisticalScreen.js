@@ -10,6 +10,7 @@ import {
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import userActions from '../../actions/userActions';
+import { useIsFocused } from '@react-navigation/native';
 import { DefautText, SellPrice, Title } from '../../components/Text/AppTexts';
 import { DARK_GREEN, LIGHT_GREEN, MainColor, RED } from '../../constants/colors';
 import { orderURL } from '../../api/orderAPI';
@@ -22,6 +23,7 @@ const StatisticalScreen = props => {
     const [selectedMonth, setSelectedMonth] = useState();
     const [statistical, setStatistical] = useState();
     const [months, setMonths] = useState([]);
+    const isFocused = useIsFocused();
     useEffect(() => {
         const temp = getTimeListData();
         setMonths(temp);
@@ -33,10 +35,10 @@ const StatisticalScreen = props => {
     }, [months])
 
     useEffect(() => {
-        if (selectedMonth) {
+        if (selectedMonth && isFocused) {
             fetchStatiscal();
         }
-    }, [selectedMonth])
+    }, [selectedMonth, isFocused])
 
     const fetchStatiscal = () => {
         fetch(`${orderURL}statistic?uid=${user._id}&time=${selectedMonth?.y}-${selectedMonth?.m}`)
