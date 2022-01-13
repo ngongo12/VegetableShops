@@ -1,0 +1,272 @@
+[{
+  "_id": {
+    "$oid": "6189d20e21cf538e4c4f7b06"
+  },
+  "images": [
+    "https://firebasestorage.googleapis.com/v0/b/vegetalbeshop.appspot.com/o/products%2F6189d20e21cf538e4c4f7b06%2Fc4360a00-f9be-4315-872d-f7fbb6291e6a.jpg?alt=media&token=9b3ddf47-c2f2-4f1d-8e72-5fb2460facfc",
+    "https://firebasestorage.googleapis.com/v0/b/vegetalbeshop.appspot.com/o/products%2F6189d20e21cf538e4c4f7b06%2F76a357bb-2bd0-42e3-9f8e-ac3c868ea6b4.jpg?alt=media&token=53ac6312-bb7c-44e2-9485-53e1935e8d0f",
+    "https://firebasestorage.googleapis.com/v0/b/vegetalbeshop.appspot.com/o/products%2F6189d20e21cf538e4c4f7b06%2F6f27e25f-2b46-4f06-b35d-5d61fce8ab34.jpg?alt=media&token=19bfce6f-d397-40cb-9918-4ad000d11e93"
+  ],
+  "createdAt": {
+    "$date": "2021-11-09T01:42:38.962Z"
+  },
+  "__v": 0,
+  "amount": 500,
+  "brand": "",
+  "categoryId": {
+    "$oid": "6184f4bc4afb65fb8ce84338"
+  },
+  "lastUpdate": {
+    "$date": "2021-11-09T01:42:44.321Z"
+  },
+  "name": "CAM SÀNH HỮU CƠ",
+  "origin": "Đồng Tháp",
+  "originPrice": 20000,
+  "owner": {
+    "$oid": "618288a04bbe9cf6d7cfc59f"
+  },
+  "sellPrice": 20000,
+  "unit": "1 kg",
+  "nOSeen": 47
+},{
+  "_id": {
+    "$oid": "618a1536cdb88eef8d7bd5c5"
+  },
+  "images": [
+    "https://firebasestorage.googleapis.com/v0/b/vegetalbeshop.appspot.com/o/products%2F618a1536cdb88eef8d7bd5c5%2Fe6648cfe-e709-4f5c-968d-b4dd26ac703e.jpg?alt=media&token=9e2cde84-8177-49ba-a72c-eafbf2bcccb7",
+    "https://firebasestorage.googleapis.com/v0/b/vegetalbeshop.appspot.com/o/products%2F618a1536cdb88eef8d7bd5c5%2F854931eb-dd54-43f9-9332-1722452a6ed2.jpg?alt=media&token=4fc6773c-78a2-46c8-bd91-9b5326761530",
+    "https://firebasestorage.googleapis.com/v0/b/vegetalbeshop.appspot.com/o/products%2F618a1536cdb88eef8d7bd5c5%2F4427ca9f-6e80-4768-8fea-03a75198a4cd.jpg?alt=media&token=37738b6c-55c7-491f-a820-6fbc37e67dd5",
+    "https://firebasestorage.googleapis.com/v0/b/vegetalbeshop.appspot.com/o/products%2F618a1536cdb88eef8d7bd5c5%2F8b272939-e118-45cf-ae8a-1dbc7a7a253c.jpg?alt=media&token=fad99417-6ba7-415c-a297-846debae5b9c"
+  ],
+  "createdAt": {
+    "$date": "2021-11-09T06:29:10.511Z"
+  },
+  "__v": 0,
+  "amount": 200,
+  "brand": "",
+  "categoryId": {
+    "$oid": "6184f4bc4afb65fb8ce84338"
+  },
+  "lastUpdate": {
+    "$date": "2021-11-09T06:29:16.793Z"
+  },
+  "name": "Cam Xoàn nhà trồng",
+  "origin": "An Giang",
+  "originPrice": 50000,
+  "owner": {
+    "$oid": "618288a04bbe9cf6d7cfc59f"
+  },
+  "sellPrice": 50000,
+  "unit": "1 kg",
+  "nOSeen": 100
+},{
+  "_id": {
+    "$oid": "618b926880c155c6d7104c21"
+  },
+  "images": [
+    "https://firebasestorage.googleapis.com/v0/b/vegetalbeshop.appspot.com/o/products%2F618b926880c155c6d7104c21%2Ff264be5d-fae3-4f96-8288-77ecdedbc6cc.jpg?alt=media&token=20bc710f-2567-433f-872e-0fe14198f953",
+    "https://firebasestorage.googleapis.com/v0/b/vegetalbeshop.appspot.com/o/products%2F618b926880c155c6d7104c21%2F193eac1b-6a9e-4082-9ad7-198db0d32b72.jpg?alt=media&token=a1e4ae85-6f71-4357-ad22-188636fd66e3"
+  ],
+  "createdAt": {
+    "$date": "2021-11-10T09:35:36.195Z"
+  },
+  "__v": 0,
+  "amount": 993,
+  "brand": "",
+  "categoryId": {
+    "$oid": "6184f48b4afb65fb8ce84337"
+  },
+  "lastUpdate": {
+    "$date": "2021-11-18T09:29:48.402Z"
+  },
+  "name": "Dưa leo Nhật",
+  "origin": "Đà Lạt",
+  "originPrice": 60000,
+  "owner": {
+    "$oid": "618b8f9080c155c6d7104c14"
+  },
+  "sellPrice": 59000,
+  "unit": "1 kg",
+  "description": "Công dụng\n Về công dụng làm đẹp: Dưa leo giúp làm sáng da,trị lão hóa, ngăn ngừa mụn, làm mát da, làm sạch chất nhờn, phục hồi các vùng da bị cháy nắng....\n Về công dụng chữa bệnh: dưa leo giúp ta chữa đau họng, chữa mẫn đỏ trên da, chữa nẻ môi, trong người nóng khát khó chịu, chữa vàng da, bỏng lửa ...\nCách dùng\nDưa leo có thể dùng để đắp mặt, giúp làm mát da\nNgoài ra còn có thể ăn sống kèm với các món khác\nMột số lưu ý khi ăn dưa leo: Khi ăn dưa leo cùng với đậu phộng sẽ gây tiêu chảy. Dưa leo khi ăn cùng với cần tây, ớt, hay tiêu sọ, mướp đắng sẽ làm giảm khả năng hấp thụ vitamin C cho cơ thể. Quan trọng hơn, khi ăn dưa leo cùng với nấm sẽ giúp giải độc, giảm cân, loại bỏ chất béo. Hỗn hợp này chỉ được ăn ít, ăn nhiều sẽ gây tác dụng ngược.",
+  "sold": 7,
+  "nOSeen": 121
+},{
+  "_id": {
+    "$oid": "61dd2708aeca0c991dbe061f"
+  },
+  "images": [
+    "https://firebasestorage.googleapis.com/v0/b/vegetalbeshop.appspot.com/o/products%2F61dd2708aeca0c991dbe061f%2Fcb13c8d5-e25c-43ad-98aa-ed23adff7907.jpg?alt=media&token=5d0dad91-0eb7-491b-a1b9-18c0dff038a9",
+    "https://firebasestorage.googleapis.com/v0/b/vegetalbeshop.appspot.com/o/products%2F61dd2708aeca0c991dbe061f%2Fde75707d-c8b8-4400-8cc6-f11db257aec7.jpg?alt=media&token=a39966d8-565d-4afa-b9a4-e28a219cc234",
+    "https://firebasestorage.googleapis.com/v0/b/vegetalbeshop.appspot.com/o/products%2F61dd2708aeca0c991dbe061f%2F816b5857-469b-42c7-b597-b061d53b50ce.jpg?alt=media&token=fd1155bb-d15b-4622-a1f8-d9d51b0fff43"
+  ],
+  "createdAt": {
+    "$date": "2022-01-11T06:43:20.140Z"
+  },
+  "__v": 0,
+  "amount": 500,
+  "brand": "Ko",
+  "categoryId": {
+    "$oid": "6184f4bc4afb65fb8ce84338"
+  },
+  "description": "Vú sữa ngon ",
+  "lastUpdate": {
+    "$date": "2022-01-11T06:53:34.954Z"
+  },
+  "name": "Vú sữa",
+  "origin": "An Giang",
+  "originPrice": 90000,
+  "owner": {
+    "$oid": "618b8f9080c155c6d7104c14"
+  },
+  "sellPrice": 90000,
+  "unit": "Kg"
+},{
+  "_id": {
+    "$oid": "61dd29eaaeca0c991dbe0649"
+  },
+  "images": [
+    "https://firebasestorage.googleapis.com/v0/b/vegetalbeshop.appspot.com/o/products%2F61dd29eaaeca0c991dbe0649%2Ff64434a3-1bf8-419c-82e0-ba7d4316501c.jpg?alt=media&token=68fa378b-9e5c-46ac-b5ab-ebf7beac624f",
+    "https://firebasestorage.googleapis.com/v0/b/vegetalbeshop.appspot.com/o/products%2F61dd29eaaeca0c991dbe0649%2Fc576dc3a-e2de-4f65-a4dc-dbedff1e0a53.jpg?alt=media&token=a3d0a67a-b771-47fb-94a7-0f91b385253f",
+    "https://firebasestorage.googleapis.com/v0/b/vegetalbeshop.appspot.com/o/products%2F61dd29eaaeca0c991dbe0649%2F31dfa9e7-4d2d-46f5-b1d7-4c864845d393.jpg?alt=media&token=95379a98-c3f0-4de4-9080-b33301646cdd"
+  ],
+  "createdAt": {
+    "$date": "2022-01-11T06:55:38.035Z"
+  },
+  "__v": 0,
+  "amount": 300,
+  "brand": "Cát",
+  "categoryId": {
+    "$oid": "6184f4bc4afb65fb8ce84338"
+  },
+  "description": "Ejdjdjfj",
+  "lastUpdate": {
+    "$date": "2022-01-11T06:55:46.468Z"
+  },
+  "name": "Xoài",
+  "origin": "An Giang",
+  "originPrice": 50000,
+  "owner": {
+    "$oid": "618b8f9080c155c6d7104c14"
+  },
+  "sellPrice": 45000,
+  "unit": "Kg",
+  "nOSeen": 6
+},{
+  "_id": {
+    "$oid": "61dd2a6eaeca0c991dbe0652"
+  },
+  "images": [
+    "https://firebasestorage.googleapis.com/v0/b/vegetalbeshop.appspot.com/o/products%2F61dd2a6eaeca0c991dbe0652%2Ff945b486-ac8a-4ad7-90c1-1ce6c71dfa05.jpg?alt=media&token=a8d2dbd2-a22c-4abb-80ac-317bd673e2fb",
+    "https://firebasestorage.googleapis.com/v0/b/vegetalbeshop.appspot.com/o/products%2F61dd2a6eaeca0c991dbe0652%2Fee66366c-3e19-4f84-a713-d59ade645203.jpg?alt=media&token=bc468934-f80c-47ca-995e-13eb1df7d7ee"
+  ],
+  "createdAt": {
+    "$date": "2022-01-11T06:57:50.605Z"
+  },
+  "__v": 0,
+  "amount": 100,
+  "brand": "",
+  "categoryId": {
+    "$oid": "6184f4bc4afb65fb8ce84338"
+  },
+  "description": "Không",
+  "lastUpdate": {
+    "$date": "2022-01-11T06:57:56.186Z"
+  },
+  "name": "Quýt Úc",
+  "origin": "Ngoại nhập",
+  "originPrice": 90000,
+  "owner": {
+    "$oid": "618b8f9080c155c6d7104c14"
+  },
+  "sellPrice": 90000,
+  "unit": "Kg",
+  "nOSeen": 2
+},{
+  "_id": {
+    "$oid": "61dd2ae1aeca0c991dbe066d"
+  },
+  "images": [
+    "https://firebasestorage.googleapis.com/v0/b/vegetalbeshop.appspot.com/o/products%2F61dd2ae1aeca0c991dbe066d%2F6f622452-9592-40d3-9e5b-8a983a6c6c24.jpg?alt=media&token=2eacdb84-4779-46c7-ba42-05e0f8332314",
+    "https://firebasestorage.googleapis.com/v0/b/vegetalbeshop.appspot.com/o/products%2F61dd2ae1aeca0c991dbe066d%2F9f113138-439a-415a-997e-bccd9debf97e.jpg?alt=media&token=e4e5adeb-31dd-4191-a007-67f5cdd07be3"
+  ],
+  "createdAt": {
+    "$date": "2022-01-11T06:59:45.496Z"
+  },
+  "__v": 0,
+  "amount": 500,
+  "brand": "",
+  "categoryId": {
+    "$oid": "6184f48b4afb65fb8ce84337"
+  },
+  "description": "",
+  "lastUpdate": {
+    "$date": "2022-01-11T06:59:51.224Z"
+  },
+  "name": "Khoai Đà Lạt",
+  "origin": "Đà Lạt",
+  "originPrice": 30000,
+  "owner": {
+    "$oid": "618b8f9080c155c6d7104c14"
+  },
+  "sellPrice": 20000,
+  "unit": "Kg",
+  "nOSeen": 9
+},{
+  "_id": {
+    "$oid": "61dd2b95aeca0c991dbe0693"
+  },
+  "images": [
+    "https://firebasestorage.googleapis.com/v0/b/vegetalbeshop.appspot.com/o/products%2F61dd2b95aeca0c991dbe0693%2F389a7704-e8a6-402f-a583-84a2643076bb.jpg?alt=media&token=d2db35ac-18e7-40cf-a5ab-0e7a10c1cf83",
+    "https://firebasestorage.googleapis.com/v0/b/vegetalbeshop.appspot.com/o/products%2F61dd2b95aeca0c991dbe0693%2Fd5567b07-ec44-441f-853f-65b5c3b65907.jpg?alt=media&token=f9aa9619-0009-4183-8ce5-9eaf000bfd79"
+  ],
+  "createdAt": {
+    "$date": "2022-01-11T07:02:45.974Z"
+  },
+  "__v": 0,
+  "amount": 300,
+  "brand": "",
+  "categoryId": {
+    "$oid": "6184f4bc4afb65fb8ce84338"
+  },
+  "description": "Quýt ngon @@@",
+  "lastUpdate": {
+    "$date": "2022-01-13T06:54:14.920Z"
+  },
+  "name": "Quýt Đường",
+  "origin": "Cao Lãnh",
+  "originPrice": 30000,
+  "owner": {
+    "$oid": "618c70181d419663e3470e3a"
+  },
+  "sellPrice": 20000,
+  "unit": "500"
+},{
+  "_id": {
+    "$oid": "61dd2beeaeca0c991dbe06a6"
+  },
+  "images": [
+    "https://firebasestorage.googleapis.com/v0/b/vegetalbeshop.appspot.com/o/products%2F61dd2beeaeca0c991dbe06a6%2Fba5e3ee3-0862-46ff-9bba-52337bb8523f.jpg?alt=media&token=236fb716-6a19-41bd-bf57-15485696fcdb",
+    "https://firebasestorage.googleapis.com/v0/b/vegetalbeshop.appspot.com/o/products%2F61dd2beeaeca0c991dbe06a6%2F3b3e2161-f915-4475-99da-ee9817b5b675.jpg?alt=media&token=788b5fc3-236c-4cd3-81b7-acb8b73b1bf0"
+  ],
+  "createdAt": {
+    "$date": "2022-01-11T07:04:14.330Z"
+  },
+  "__v": 0,
+  "amount": 500,
+  "brand": "",
+  "categoryId": {
+    "$oid": "6184f4bc4afb65fb8ce84338"
+  },
+  "description": "",
+  "lastUpdate": {
+    "$date": "2022-01-11T08:16:47.118Z"
+  },
+  "name": "Quýt Hồng",
+  "origin": "Lai Vung",
+  "originPrice": 60000,
+  "owner": {
+    "$oid": "618c70181d419663e3470e3a"
+  },
+  "sellPrice": 40000,
+  "unit": "Kg"
+}]

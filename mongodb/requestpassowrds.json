@@ -1,0 +1,10 @@
+[{
+  "_id": {
+    "$oid": "61d6a4271656462dafdf71e2"
+  },
+  "token": "$2b$10$aW7lNEIHENX/YbRTXEaczOlxeZtFv.SzGnykB5TFfZlYSxB9n5TJq",
+  "createdAt": {
+    "$date": "2022-01-11T08:40:43.030Z"
+  },
+  "__v": 0
+}]

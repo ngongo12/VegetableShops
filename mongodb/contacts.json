@@ -1,0 +1,53 @@
+[{
+  "_id": {
+    "$oid": "61cd1f0782fda6c11f131345"
+  },
+  "userIDs": [
+    "618b8f9080c155c6d7104c14",
+    "618c70181d419663e3470e3a"
+  ],
+  "createdAt": {
+    "$date": "2021-12-30T02:52:55.688Z"
+  },
+  "state": "new",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61ce86ad09ac35e8e9755e7c"
+  },
+  "userIDs": [
+    "618288a04bbe9cf6d7cfc59f",
+    "618c70181d419663e3470e3a"
+  ],
+  "createdAt": {
+    "$date": "2021-12-31T04:27:25.285Z"
+  },
+  "state": "new",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61cecbcc8374c7869d6aada5"
+  },
+  "userIDs": [
+    "618288a04bbe9cf6d7cfc59f",
+    "618b8f9080c155c6d7104c14"
+  ],
+  "createdAt": {
+    "$date": "2021-12-31T09:22:20.949Z"
+  },
+  "state": "new",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61d7eb8a1242dd59a7b42055"
+  },
+  "userIDs": [
+    "618288a04bbe9cf6d7cfc59f",
+    "61d6a4271656462dafdf71e2"
+  ],
+  "createdAt": {
+    "$date": "2022-01-07T07:28:10.718Z"
+  },
+  "state": "new",
+  "__v": 0
+}]

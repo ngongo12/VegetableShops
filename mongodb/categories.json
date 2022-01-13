@@ -1,0 +1,26 @@
+[{
+  "_id": {
+    "$oid": "6184f48b4afb65fb8ce84337"
+  },
+  "name": "Rau củ"
+},{
+  "_id": {
+    "$oid": "6184f4bc4afb65fb8ce84338"
+  },
+  "name": "Trái cây"
+},{
+  "_id": {
+    "$oid": "6184f4d44afb65fb8ce84339"
+  },
+  "name": "Các loại hạt"
+},{
+  "_id": {
+    "$oid": "6184f4e44afb65fb8ce8433a"
+  },
+  "name": "Cây cảnh"
+},{
+  "_id": {
+    "$oid": "61ce9d62b82c6df886623494"
+  },
+  "name": "Khác"
+}]

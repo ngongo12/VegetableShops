@@ -1,0 +1,299 @@
+[{
+  "_id": {
+    "$oid": "618288a04bbe9cf6d7cfc59f"
+  },
+  "phone": "0123456789",
+  "password": "$2b$10$DkFOlPMQ1Hefi1X.qSVO.eV1CvtDBvgRpp18.Wpe7H3VqIE90z7LC",
+  "salt": "$2b$10$DkFOlPMQ1Hefi1X.qSVO.e",
+  "fullname": "Ngô Quốc Vinh",
+  "address": [
+    {
+      "province": {
+        "name": "Tỉnh Đồng Tháp",
+        "code": 87
+      },
+      "district": {
+        "name": "Huyện Lai Vung",
+        "code": 876
+      },
+      "ward": {
+        "name": "Thị trấn Lai Vung",
+        "code": 30208
+      },
+      "details": "1234 Khong Biet Ten",
+      "coordinate": {
+        "longitude": 105.6372768804431,
+        "latitude": 10.287018369697268
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2021-11-03T13:03:28.656Z"
+  },
+  "__v": 0,
+  "gender": "Nam",
+  "dob": {
+    "$date": "1990-01-26T17:00:00Z"
+  },
+  "email": "vinh@gmail.com",
+  "avatar": "https://firebasestorage.googleapis.com/v0/b/vegetalbeshop.appspot.com/o/avatar%2F618288a04bbe9cf6d7cfc59f.jpg?alt=media&token=5915bae0-c7d3-47ae-aaef-376b69b59b37",
+  "lastUpdate": {
+    "$date": "2022-01-02T08:03:20.590Z"
+  },
+  "shopAddress": {
+    "province": {
+      "name": "Tỉnh Đồng Tháp",
+      "code": 87
+    },
+    "district": {
+      "name": "Huyện Cao Lãnh",
+      "code": 873
+    },
+    "ward": {
+      "name": "Xã Gáo Giồng",
+      "code": 30079
+    },
+    "details": "56 Không Nhớ",
+    "coordinate": {
+      "longitude": 105.61849873512983,
+      "latitude": 10.653174913032194
+    }
+  },
+  "shopName": "Cam Ngon",
+  "token": "e3OdaQ4gSTGDFld6e_9Vvl:APA91bF6LIdYq0lgl7t-4vjgP25Qye1Ih5t_G0ENU_GacifHLh7X5gc7KbtXv78kOS4e1KEEthGHS9PusEILApvtg-S066q4q-9pJbIX5o9hDwEO9Us4ha35mG5FFtK6wATwVIKcgVKH",
+  "seenProducts": [
+    "618b926880c155c6d7104c21",
+    "618a1536cdb88eef8d7bd5c5"
+  ],
+  "allowNotify": {
+    "notification": true
+  }
+},{
+  "_id": {
+    "$oid": "618b8f9080c155c6d7104c14"
+  },
+  "phone": "11111111111",
+  "password": "$2b$10$hE1qRf50c3SBI.6gGc6qVebshCsywPu111cIYfHtkfy8A1DG5eOFK",
+  "salt": "$2b$10$hE1qRf50c3SBI.6gGc6qVe",
+  "fullname": "Nguyễn Tèo",
+  "address": [
+    {
+      "province": {
+        "name": "Thành phố Hồ Chí Minh",
+        "code": 79
+      },
+      "district": {
+        "name": "Quận 11",
+        "code": 772
+      },
+      "ward": {
+        "name": "Phường 08",
+        "code": 27229
+      },
+      "details": "47 Dương Đình Nghệ",
+      "coordinate": {
+        "longitude": 106.64954001393613,
+        "latitude": 10.759810004737133
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2021-11-10T09:23:28.253Z"
+  },
+  "__v": 0,
+  "avatar": "https://firebasestorage.googleapis.com/v0/b/vegetalbeshop.appspot.com/o/avatar%2F618b8f9080c155c6d7104c14.jpg?alt=media&token=33363940-728f-4afd-b6c9-9f78f1aecce3",
+  "seenProducts": [
+    "618a1536cdb88eef8d7bd5c5",
+    "6189d20e21cf538e4c4f7b06",
+    "618b926880c155c6d7104c21"
+  ],
+  "shopAddress": {
+    "province": {
+      "name": "Tỉnh An Giang",
+      "code": 89
+    },
+    "district": {
+      "name": "Thành phố Châu Đốc",
+      "code": 884
+    },
+    "ward": {
+      "name": "Xã Vĩnh Châu",
+      "code": 30334
+    },
+    "details": "77 Ấp  Vĩnh Gì",
+    "coordinate": {
+      "longitude": 105.071487352252,
+      "latitude": 10.673250526137226
+    }
+  },
+  "shopName": "Buôn Dưa",
+  "token": "e3OdaQ4gSTGDFld6e_9Vvl:APA91bF6LIdYq0lgl7t-4vjgP25Qye1Ih5t_G0ENU_GacifHLh7X5gc7KbtXv78kOS4e1KEEthGHS9PusEILApvtg-S066q4q-9pJbIX5o9hDwEO9Us4ha35mG5FFtK6wATwVIKcgVKH",
+  "lastUpdate": {
+    "$date": "2021-12-27T07:41:53.594Z"
+  },
+  "favorites": [
+    "6189d20e21cf538e4c4f7b06",
+    "618a1536cdb88eef8d7bd5c5"
+  ],
+  "allowNotify": {
+    "notification": false
+  }
+},{
+  "_id": {
+    "$oid": "618c70181d419663e3470e3a"
+  },
+  "phone": "22222222222",
+  "password": "$2b$10$g2E/JzbHyysdKuxtAfr8pezZOCuSHGywGiHRFp4oRvI1kAtvYIZum",
+  "salt": "$2b$10$g2E/JzbHyysdKuxtAfr8pe",
+  "fullname": "Trần Teo",
+  "address": [
+    {
+      "province": {
+        "name": "Tỉnh Đồng Tháp",
+        "code": 87
+      },
+      "district": {
+        "name": "Huyện Lấp Vò",
+        "code": 875
+      },
+      "ward": {
+        "name": "Thị trấn Lấp Vò",
+        "code": 30169
+      },
+      "details": "7 Trần Hưng Đạo",
+      "coordinate": {
+        "longitude": 105.51930747026624,
+        "latitude": 10.355780772170537
+      }
+    },
+    {
+      "province": {
+        "name": "Tỉnh Bến Tre",
+        "code": 83
+      },
+      "district": {
+        "name": "Huyện Bình Đại",
+        "code": 835
+      },
+      "ward": {
+        "name": "Xã Thừa Đức",
+        "code": 29101
+      },
+      "details": "54 Ấp Gì Đó",
+      "coordinate": {
+        "longitude": 106.73364000000004,
+        "latitude": 10.172930000000065
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2021-11-11T01:21:28.735Z"
+  },
+  "__v": 0,
+  "favorites": [
+    "618a1536cdb88eef8d7bd5c5",
+    "618b926880c155c6d7104c21"
+  ],
+  "seenProducts": [
+    "61dd29eaaeca0c991dbe0649",
+    "61dd2ae1aeca0c991dbe066d",
+    "618a1536cdb88eef8d7bd5c5",
+    "618b926880c155c6d7104c21",
+    "61dd2a6eaeca0c991dbe0652",
+    "6189d20e21cf538e4c4f7b06"
+  ],
+  "avatar": "https://firebasestorage.googleapis.com/v0/b/vegetalbeshop.appspot.com/o/avatar%2F618c70181d419663e3470e3a.jpg?alt=media&token=4102aa9e-a7bc-4cd4-a2fc-a9d5ad8583d3",
+  "shopAddress": {
+    "province": {
+      "name": "Tỉnh Đồng Tháp",
+      "code": 87
+    },
+    "district": {
+      "name": "Huyện Lai Vung",
+      "code": 876
+    },
+    "ward": {
+      "name": "Xã Tân Thành",
+      "code": 30226
+    },
+    "details": "34 Ấp Tân Phú",
+    "coordinate": {
+      "longitude": 105.61965979635715,
+      "latitude": 10.280141145958462
+    }
+  },
+  "shopName": "Shop Quýt 4 Mùa",
+  "token": "e3OdaQ4gSTGDFld6e_9Vvl:APA91bF6LIdYq0lgl7t-4vjgP25Qye1Ih5t_G0ENU_GacifHLh7X5gc7KbtXv78kOS4e1KEEthGHS9PusEILApvtg-S066q4q-9pJbIX5o9hDwEO9Us4ha35mG5FFtK6wATwVIKcgVKH",
+  "email": "teo12@gmail.com",
+  "gender": "Nam",
+  "allowNotify": {
+    "notification": true
+  },
+  "dob": {
+    "$date": "1990-01-17T17:00:00Z"
+  }
+},{
+  "_id": {
+    "$oid": "61d6a4271656462dafdf71e2"
+  },
+  "phone": "0968654364",
+  "password": "$2b$10$vc4YhD737WMeVi5XRzdvKOOBe/Z5.uA.zQY982DxmPYRcLTNDpc0i",
+  "salt": "$2b$10$vc4YhD737WMeVi5XRzdvKO",
+  "fullname": "Ngô Quốc Vinh",
+  "address": [
+    {
+      "province": {
+        "name": "Tỉnh Bến Tre",
+        "code": 83
+      },
+      "district": {
+        "name": "Huyện Mỏ Cày Bắc",
+        "code": 838
+      },
+      "ward": {
+        "name": "Xã Khánh Thạnh Tân",
+        "code": 28948
+      },
+      "details": "56 Ấp Xxx",
+      "coordinate": {
+        "longitude": 106.27282429486512,
+        "latitude": 10.126234067857478
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2022-01-06T08:11:19.740Z"
+  },
+  "favorites": [],
+  "seenProducts": [
+    "6189d20e21cf538e4c4f7b06",
+    "618a1536cdb88eef8d7bd5c5",
+    "618b926880c155c6d7104c21"
+  ],
+  "allowNotify": {
+    "notification": false
+  },
+  "__v": 0,
+  "token": "e3OdaQ4gSTGDFld6e_9Vvl:APA91bF6LIdYq0lgl7t-4vjgP25Qye1Ih5t_G0ENU_GacifHLh7X5gc7KbtXv78kOS4e1KEEthGHS9PusEILApvtg-S066q4q-9pJbIX5o9hDwEO9Us4ha35mG5FFtK6wATwVIKcgVKH",
+  "lastUpdate": {
+    "$date": "2022-01-11T08:32:17.404Z"
+  }
+},{
+  "_id": {
+    "$oid": "61dfda7e466e0a315fee16cf"
+  },
+  "phone": "55555555555",
+  "password": "$2b$10$uWQSv0i3v7XhrQ/lso0hC.4CGrR1DTUKIODrg0.NtEACJmnNmmMoG",
+  "salt": "$2b$10$uWQSv0i3v7XhrQ/lso0hC.",
+  "fullname": "Noname",
+  "address": [],
+  "createdAt": {
+    "$date": "2022-01-13T07:53:34.773Z"
+  },
+  "favorites": [],
+  "seenProducts": [],
+  "allowNotify": {
+    "notification": true
+  },
+  "__v": 0
+}]
