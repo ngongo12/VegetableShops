@@ -285,6 +285,7 @@ const OrderDetailsScreen = (props) => {
                 {(user._id === order?.shopID && order?.state === 'confirm') && <NomalButton onPress={deliveryOrder} style={styles.button}>Xác nhận chuyển hàng</NomalButton>}
                 {(order?.state === 'delivery') && <NomalButton onPress={doneOrder} style={styles.button}>Xác nhận hoàn thành</NomalButton>}
                 {canCancel && <NomalButton onPress={() => setVisibleModal(true)} style={[styles.button]} color={RED}>Hủy đơn hàng</NomalButton>}
+                {(user._id === order?.owner && order?.state === 'done') && <NomalButton onPress={()=>navigate('RatingScreen', {products: order?.products, orderID: order._id})} style={styles.button}>Đánh giá sản phẩm</NomalButton>}
             </ScrollView>): <LoadingView message='Đang tải...' /> }
             <Modal
                 visible={visibleModal}

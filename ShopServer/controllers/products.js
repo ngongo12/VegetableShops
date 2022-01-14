@@ -63,7 +63,7 @@ exports.search = async (value) => {
 }
 
 exports.updateNOSeen = async (id) => {
-    return await productService.updateNOSeen(id);
+    return productService.updateNOSeen(id);
 }
 
 exports.countProductsOfShop = async (id) => {

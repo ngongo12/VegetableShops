@@ -511,7 +511,7 @@
       "sellPrice": 59000
     }
   ],
-  "state": "created",
+  "state": "done",
   "createdAt": {
     "$date": "2022-01-04T13:38:59.907Z"
   },
@@ -540,7 +540,19 @@
       "latitude": 10.172930000000065
     }
   },
-  "__v": 0
+  "__v": 0,
+  "confirmAt": {
+    "$date": "2022-01-13T08:33:59.153Z"
+  },
+  "deliveryAt": {
+    "$date": "2022-01-13T08:34:09.656Z"
+  },
+  "doneAt": {
+    "$date": "2022-01-13T08:34:21.826Z"
+  },
+  "doneBy": {
+    "$oid": "618b8f9080c155c6d7104c14"
+  }
 },{
   "_id": {
     "$oid": "61d44ec515428528849896a7"
@@ -1135,4 +1147,84 @@
     "$oid": "618b8f9080c155c6d7104c14"
   },
   "cancelReason": "jdjdueujf"
+},{
+  "_id": {
+    "$oid": "61e0eac8fc4d52c31d9bbec9"
+  },
+  "payMethod": "COD",
+  "deliveryMethod": {
+    "name": "Nhanh",
+    "time": [
+      2,
+      3
+    ],
+    "originPrice": 12000,
+    "pricePerKm": 650
+  },
+  "message": "",
+  "distance": 60,
+  "deliveryFee": 18500,
+  "totalPrice": 83500,
+  "products": [
+    {
+      "_id": "61dd2ae1aeca0c991dbe066d",
+      "amount": 1,
+      "images": [
+        "https://firebasestorage.googleapis.com/v0/b/vegetalbeshop.appspot.com/o/products%2F61dd2ae1aeca0c991dbe066d%2F6f622452-9592-40d3-9e5b-8a983a6c6c24.jpg?alt=media&token=2eacdb84-4779-46c7-ba42-05e0f8332314"
+      ],
+      "name": "Khoai Đà Lạt",
+      "sellPrice": 20000
+    },
+    {
+      "_id": "61dd29eaaeca0c991dbe0649",
+      "amount": 1,
+      "images": [
+        "https://firebasestorage.googleapis.com/v0/b/vegetalbeshop.appspot.com/o/products%2F61dd29eaaeca0c991dbe0649%2Ff64434a3-1bf8-419c-82e0-ba7d4316501c.jpg?alt=media&token=68fa378b-9e5c-46ac-b5ab-ebf7beac624f"
+      ],
+      "name": "Xoài",
+      "sellPrice": 45000
+    }
+  ],
+  "state": "done",
+  "createdAt": {
+    "$date": "2022-01-14T03:15:20.501Z"
+  },
+  "shopID": {
+    "$oid": "618b8f9080c155c6d7104c14"
+  },
+  "owner": {
+    "$oid": "618c70181d419663e3470e3a"
+  },
+  "address": {
+    "province": {
+      "name": "Tỉnh Đồng Tháp",
+      "code": 87
+    },
+    "district": {
+      "name": "Huyện Lấp Vò",
+      "code": 875
+    },
+    "ward": {
+      "name": "Thị trấn Lấp Vò",
+      "code": 30169
+    },
+    "details": "7 Trần Hưng Đạo",
+    "coordinate": {
+      "longitude": 105.51930747026624,
+      "latitude": 10.355780772170537
+    }
+  },
+  "__v": 0,
+  "confirmAt": {
+    "$date": "2022-01-14T03:16:04.611Z"
+  },
+  "deliveryAt": {
+    "$date": "2022-01-14T03:16:13.875Z"
+  },
+  "doneAt": {
+    "$date": "2022-01-14T03:16:28.146Z"
+  },
+  "doneBy": {
+    "$oid": "618b8f9080c155c6d7104c14"
+  }
 }]

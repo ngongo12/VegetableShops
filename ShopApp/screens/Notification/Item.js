@@ -17,7 +17,7 @@ const Item = (props) => {
     const { item, index } = props;
 
     const setSeenNotification = () => {
-        if (item.state==='seen')
+        if (item.state !== 'seen')
             fetch(`${apiURL}notification/seenNotification?notifyID=${item._id}`)
                 .then(res => res)
                 .catch(e => console.error(e));

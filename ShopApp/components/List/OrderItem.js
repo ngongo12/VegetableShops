@@ -17,8 +17,11 @@ const OrderItem = props => {
     const { item, isDone, deliveryState, isShop } = props;
     const { products } = item;
     const firstProduct = products[0];
+    const navigateScreen = () => {
+        navigate('OrderDetailScreen', { orderID: item._id });
+    }
     return (
-        <Pressable style={styles.container} onPress={()=>navigate('OrderDetailScreen', { orderID : item._id })}>
+        <Pressable style={styles.container} onPress={navigateScreen}>
             <ItemHeader shopID={item?.shopID} isDone={isDone} isShop={isShop} orderID={item._id} />
             <View style={[styles.itemContain, styles.bottomBorder]}>
                 <FastImage source={{ uri: firstProduct?.images[0] }} style={styles.image} />
@@ -31,7 +34,7 @@ const OrderItem = props => {
                 </View>
             </View>
             {products?.length > 1 && <DefautText style={styles.seeMore}>Xem thêm sản phẩm</DefautText>}
-            <View style={[styles.row, styles.bottomBorder,{ padding: 10, alignItems: 'center', justifyContent: 'center'}]}>
+            <View style={[styles.row, styles.bottomBorder, { padding: 10, alignItems: 'center', justifyContent: 'center' }]}>
                 <DefautText style={{ fontSize: 13, flex: 1 }}>{products?.length} sản phẩm</DefautText>
                 <DefautText>Thành tiền: </DefautText>
                 <SellPrice style={{ fontSize: 13 }}>{item?.totalPrice}</SellPrice>
@@ -61,7 +64,7 @@ const ItemHeader = props => {
                 size={20}
                 style={styles.icon}
             />
-            <Title style={styles.title}>{isShop? orderID :shopName}</Title>
+            <Title style={styles.title}>{isShop ? orderID : shopName}</Title>
             <DefautText style={styles.isDone}>{isDone ? 'Hoàn thành' : 'Chưa hoàn thành'}</DefautText>
         </View>
     )

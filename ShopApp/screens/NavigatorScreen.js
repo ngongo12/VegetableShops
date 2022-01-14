@@ -34,6 +34,7 @@ import ProductsOfCategoryScreen from './Products/ProductsOfCategoryScreen';
 import FavoriteProductScreen from './Products/FavoriteProductScreen';
 import EditStore from './Stores/EditStore';
 import ForgetPassword from './Auths/ForgetPassword';
+import RatingScreen from './MyOrder/RatingScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -214,6 +215,16 @@ const NavigatorScreen = props => {
                                 {
                                     ...options,
                                     title: 'Sản phẩm yêu thích'
+                                }
+                            }
+                        />
+                        <Stack.Screen
+                            name="RatingScreen"
+                            component={RatingScreen}
+                            options={
+                                {
+                                    ...options,
+                                    title: 'RatingScreen'
                                 }
                             }
                         />

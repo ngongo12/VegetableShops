@@ -19,7 +19,7 @@ const productSchema = new Schema({
     originPrice: { type: Number },
     createdAt: { type: Date },
     lastUpdate: { type: Date },
-    nOSeen: { type: Number }
+    nOSeen: { type: Number },
 })
 
 module.exports = mongoose.model('products', productSchema);

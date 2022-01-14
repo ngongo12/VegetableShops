@@ -38,7 +38,8 @@ const ProductDetailScreen = (props) => {
     const { actions, cActions, user: { user }, categories } = props;
     const { favorites, seenProducts } = user;
     const [product, setProduct] = useState();
-    const [rating, setRating] = useState(5);
+    const [rating, setRating] = useState(0);
+    const [rate, setRate] = useState();
     const [favorite, setFavorite] = useState(false);
     const [visibleHeader, setVisibleHeader] = useState(false);
     const [pressCount, setPressCount] = useState(0);
@@ -49,7 +50,14 @@ const ProductDetailScreen = (props) => {
         updateNOSeen();
         changeSeenProducts();
     }, []);
-
+    useEffect(() => {
+        if(rate){
+            console.log(rate)
+            if(rate?.numOfRate == 0) return;
+            let temp = rate?.totalRate / rate?.numOfRate;
+            setRating(temp)
+        }
+    }, [rate])
     useEffect(() => {
         if (categories) {
             const temp = categories.filter(e => e._id == product?.categoryId);
@@ -76,6 +84,7 @@ const ProductDetailScreen = (props) => {
             .then(res => res.json())
             .then(res => {
                 if (res.product) {
+                    setRate(res?.rate)
                     setProduct(res.product);
                     if (favorites?.indexOf(res.product._id) >= 0) {
                         setFavorite(true);
@@ -200,13 +209,13 @@ const ProductDetailScreen = (props) => {
                                     type='custom'
                                     imageSize={18}
                                     ratingCount={5}
-                                    backgroundColor='blue'
                                     ratingBackgroundColor='silver'
+                                    readonly={true}
                                     style={styles.rating}
                                     startingValue={rating}
                                     onFinishRating={setRating}
                                 />
-                                <DefautText style={{ flex: 1 }}>Đã bán {product.sold ? product.sold : 0}</DefautText>
+                                <DefautText style={{ flex: 1 }}>Đánh giá: {rate?.numOfRate ? rate?.numOfRate : 0}</DefautText>
                                 <Icon
                                     name={favorite ? 'heart' : 'hearto'}
                                     color={favorite ? RED : 'silver'}
@@ -226,6 +235,7 @@ const ProductDetailScreen = (props) => {
                             <Title>Thông tin sản phẩm</Title>
                             <TextFieldForProduct style={styles.textfield} name='Danh mục'>{category?.name}</TextFieldForProduct>
                             <TextFieldForProduct style={styles.textfield} name='Thương hiệu'>{product.brand}</TextFieldForProduct>
+                            <TextFieldForProduct style={styles.textfield} name='Đã bán'>{product.sold ? product.sold : 0}</TextFieldForProduct>
                             <TextFieldForProduct style={styles.textfield} name='Xuất xứ'>{product.origin}</TextFieldForProduct>
                             <TextFieldForProduct style={styles.textfield} name='Trạng thái'>{(product?.amount && product.amount > 0) ? 'Còn hàng' : 'Hết hàng'}</TextFieldForProduct>
                             <TextFieldForProduct style={styles.textfield} name='Đơn vị tính'>{product.unit}</TextFieldForProduct>

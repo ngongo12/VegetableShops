@@ -1,5 +1,6 @@
 var express = require('express');
 const productController = require('../controllers/products');
+const rateController = require('../controllers/rates');
 const socketIo = require('socket.io');
 const io = socketIo();
 var router = express.Router();
@@ -15,9 +16,11 @@ router.get('/newEmpty', async (req, res, next) =>{
 
 router.get('/getById', async (req, res, next) =>{
     const { id } = req.query;
-    const product = await productController.getById(id)
+    const product = await productController.getById(id);
+    const rate = await rateController.countRate(id);
     res.json({
-        product
+        product,
+        rate: rate[0]
     })
 });
 
@@ -97,7 +100,39 @@ router.get('/updateNOSeen', async (req, res, next) =>{
     //console.log('updateNOSeen')
     const { id } = req.query;
     //console.log('updateNOSeen ', id)
-    return await productController.updateNOSeen(id);
+    return productController.updateNOSeen(id);
+});
+
+router.get('/getRateByOrderID', async (req, res, next) =>{
+    //console.log('updateNOSeen')
+    const { orderID } = req.query;
+    //console.log('updateNOSeen ', id)
+    const rates = await rateController.getRateByOrderID(orderID);
+    
+    res.json({
+        rates
+    })
+});
+
+router.post('/saveRate', async (req, res, next) =>{
+    //console.log('updateNOSeen')
+    const { userID, orderID, productID, rate, message } = req.body;
+    
+    const _rate = await rateController.saveRate(userID, orderID, productID, rate, message);
+    
+    res.json({
+        rate: _rate
+    })
+});
+
+router.post('/updateRate', async (req, res, next) =>{
+    //console.log('updateNOSeen')
+    const { id, rate, message } = req.body;
+    const _rate = await rateController.update(id, rate, message);
+    
+    res.json({
+        rate: _rate
+    })
 });
 
 module.exports = router;
