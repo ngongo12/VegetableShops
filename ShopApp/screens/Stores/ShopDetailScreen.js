@@ -204,7 +204,7 @@ const ShopHeader = (props) => {
                         <DefautText style={{ fontSize: 13, paddingHorizontal: 5, color: '#fff' }}>{shopInfo?.shopAddress?.province?.name}</DefautText>
                     </View>
                 </View>
-                <DefautText style={styles.btn}>Chat ngay</DefautText>
+                <DefautText onPress={()=> navigate('ChatScreen', { userID : shopId })} style={styles.btn}>Chat ngay</DefautText>
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
                 <View style={styles.box}>
