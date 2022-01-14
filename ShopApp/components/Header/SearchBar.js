@@ -27,6 +27,7 @@ export const SearchBarInput = props => {
     const { onPress, value, onChangeText, onEndEditing, notFocus } = props;
     let searchRef = useRef();
     useEffect(() => {
+        if(notFocus) return;
         searchRef.current.focus();
     }, [])
     return (
