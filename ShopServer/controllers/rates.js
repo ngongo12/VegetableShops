@@ -26,3 +26,7 @@ exports.saveRate = async (userID, orderID, productID, rate, message) => {
 exports.update = async (id, rate, message) => {
     return await rateService.update(id, rate, message)
 }
+
+exports.getReview = async (pid) => {
+    return await rateService.getReview(pid);
+}

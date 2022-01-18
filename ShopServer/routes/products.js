@@ -135,4 +135,10 @@ router.post('/updateRate', async (req, res, next) =>{
     })
 });
 
+router.get('/getReview', async (req, res, next) =>{
+    const { productID } = req.query;
+    const reviews = await rateController.getReview(productID);
+    res.json(reviews)
+});
+
 module.exports = router;

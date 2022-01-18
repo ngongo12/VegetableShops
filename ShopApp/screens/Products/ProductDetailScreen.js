@@ -30,6 +30,7 @@ import ProductDetailHeader from '../../components/Header/ProductDetailHeader';
 import { navigate } from '../../config/rootNavigation';
 import userAPI from '../../api/userAPI';
 import FastImage from 'react-native-fast-image';
+import ReivewList from '../../components/List/ReivewList';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -45,6 +46,7 @@ const ProductDetailScreen = (props) => {
     const [pressCount, setPressCount] = useState(0);
     const [enableFavorite, setEnableFavorite] = useState(true);
     const [category, setCategory] = useState();
+    const [expiredAtString, setExpiredAtString] = useState('');
     useEffect(() => {
         fetchData();
         updateNOSeen();
@@ -78,6 +80,18 @@ const ProductDetailScreen = (props) => {
             setEnableFavorite(true);
         }
     }, [user, product])
+    useEffect(() => {
+        if(product?.expiredAt){
+            const date = new Date(product?.expiredAt);
+            let d = date.getDate();
+            d = (d < 10 ? '0': '') + d;
+            let m = date.getMonth() + 1;
+            m = (m < 10 ? '0': '') + m;
+            let y = date.getFullYear();
+            const s = `${d}-${m}-${y}`;
+            setExpiredAtString(s);
+        }
+    }, [product])
 
     const fetchData = () => {
         fetch(`${productUrl}getById?id=${productID}`)
@@ -183,6 +197,10 @@ const ProductDetailScreen = (props) => {
         navigate('CartScreen');
     }
 
+    const formatDate = (date) => {
+        
+    }
+
     return (
         <>
             {product && (
@@ -239,10 +257,15 @@ const ProductDetailScreen = (props) => {
                             <TextFieldForProduct style={styles.textfield} name='Xuất xứ'>{product.origin}</TextFieldForProduct>
                             <TextFieldForProduct style={styles.textfield} name='Trạng thái'>{(product?.amount && product.amount > 0) ? 'Còn hàng' : 'Hết hàng'}</TextFieldForProduct>
                             <TextFieldForProduct style={styles.textfield} name='Đơn vị tính'>{product.unit}</TextFieldForProduct>
+                            <TextFieldForProduct style={styles.textfield} name='Ngày hết hạn'>{expiredAtString}</TextFieldForProduct>
                         </View>
                         <View style={[styles.content, { marginTop: 10 }]}>
                             <Title>Mô tả sản phẩm</Title>
                             <DefautText>{product.description}</DefautText>
+                        </View>
+                        <View style={[styles.content, { marginTop: 10 }]}>
+                            <Title>Đánh giá</Title>
+                            <ReivewList productID={productID} />
                         </View>
                     </ScrollView>
                     {(user._id !== product?.owner) && (

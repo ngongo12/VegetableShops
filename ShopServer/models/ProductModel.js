@@ -12,6 +12,7 @@ const productSchema = new Schema({
     images: { type: Array },
     origin: { type: String },
     unit: { type: String },
+    expiredAt: { type: Date },
     description: { type: String },
     amount: { type: Number },
     sold: { type: Number },

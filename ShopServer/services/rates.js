@@ -55,3 +55,24 @@ exports.update = async (id, rate, message) => {
         updatedAt: date
     })
 }
+
+exports.getReview = async (pid) => {
+    return await rateModel.aggregate([
+        {
+            $match: { productID: new mongoose.Types.ObjectId(pid) }
+        },
+        {
+            $lookup: {
+                from: 'users',
+                localField: 'userID',
+                foreignField: '_id',
+                // pipeline: [
+                //     {
+                //         $match: { productID: new mongoose.Types.ObjectId(pid) }
+                //     }
+                // ],
+                as: 'users'
+            }
+        }
+    ])
+}
