@@ -16,6 +16,7 @@ import FastImage from 'react-native-fast-image';
 import { deleteFile, deleteMultiFile, uploadMultiFile } from '../../api/uploadFile';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import userActions from '../../actions/userActions';
 import DefaultHeader from '../../components/Header/DefaultHeader';
 import ModalChooseCamera from '../../components/ModalChooseCamera';
@@ -35,6 +36,8 @@ const ShopEditProductScreen = (props) => {
     } = props;
     const { route: { params: { productID } } } = props;
     //console.log('add product user ', goBack);
+    const [date, setDate] = useState(new Date());
+    const [isShowDatePicker, setIsShowDatePicker] = useState(false);
     const [selectedImages, setSelectedImages] = useState([]); // Hình ảnh chọn từ thiết bị
     const [allImages, setAllImages] = useState([]); //Tất cả hình ảnh show lên
     const [dataImages, setDataImages] = useState([]); //Ảnh trong database phân biệt với ảnh trên thiết bị
@@ -54,6 +57,7 @@ const ShopEditProductScreen = (props) => {
     const [description, setDescription] = useState('');
     const [isOwner, setIsOwner] = useState(false);
     const [product, setProduct] = useState();
+    const [expiredSt, setExpiredSt] = useState('')
 
     useEffect(() => {
         fetchProduct();
@@ -65,7 +69,7 @@ const ShopEditProductScreen = (props) => {
 
     useEffect(() => {
         if (product) {
-            const { name, images, amount, brand, categoryId, origin, originPrice, owner, sellPrice, unit, description } = product;
+            const { name, images, amount, brand, categoryId, origin, originPrice, owner, sellPrice, unit, description, expiredAt } = product;
             setPName(name);
             //setAllImages(images);
             setDataImages(images);
@@ -79,8 +83,14 @@ const ShopEditProductScreen = (props) => {
             setPUnit(unit);
             setDescription(description);
             setChoosenImage(images[0]);
+            setDate(new Date(expiredAt));
+            formatDate(new Date(expiredAt));
         }
     }, [product])
+
+    useEffect(() => {
+        formatDate(date)
+    }, [date])
 
     const openGallery = () => {
         //console.log('openGallery');
@@ -139,6 +149,16 @@ const ShopEditProductScreen = (props) => {
             })
     };
 
+    const formatDate = (date) => {
+        let d = date.getDate();
+        d = (d < 10 ? '0' : '') + d;
+        let m = date.getMonth() + 1;
+        m = (m < 10 ? '0' : '') + m;
+        let y = date.getFullYear();
+        const s = `${d}-${m}-${y}`;
+        setExpiredSt(s);
+    }
+
     const onDeleteItem = (item) => {
         if (selectedImages.indexOf(item) >= 0) {
             //Trường hợp hình được xóa nằm trong selected Image;
@@ -146,14 +166,14 @@ const ShopEditProductScreen = (props) => {
             temp = temp.filter(e => e !== item);
             setSelectedImages(temp);
         }
-        if(dataImages.indexOf(item) >= 0){
+        if (dataImages.indexOf(item) >= 0) {
             let temp = dataImages;
             temp = temp.filter(e => e !== item);
             setDataImages(temp);
             //Thêm vào list ảnh cần xóa để xóa sau khi update sản phẩm
             let delListTemp = deletedDataImages;
             delListTemp.push(item);
-            
+
             console.log('Ảnh sẽ bị xóa ', delListTemp);
         }
     }
@@ -167,7 +187,7 @@ const ShopEditProductScreen = (props) => {
             //console.log('images ',images);
             //Những file chưa thể xóa được
             const deletedFails = await deleteMultiFile(deletedDataImages);
-            console.log('deletedFails',deletedFails);
+            console.log('deletedFails', deletedFails);
             let images = dataImages.concat(addImages).concat(deletedFails);
             const product = {
                 _id: productID,
@@ -181,11 +201,12 @@ const ShopEditProductScreen = (props) => {
                 amount: pAmount,
                 sellPrice,
                 originPrice,
-                owner: user._id
+                owner: user._id,
+                expiredAt: date
             }
             setMessage('Đang lưu sản phẩm vào cơ sở dữ liệu');
             const result = await updateProduct(product);
-            
+
             if (result.result) {
                 ToastAndroid.show('Thêm sản phẩm thành công', ToastAndroid.SHORT);
                 goBack();
@@ -230,6 +251,14 @@ const ShopEditProductScreen = (props) => {
 
 
         return true;
+    }
+
+    const onChangeDate = (events , selectedDate) => {
+        setIsShowDatePicker(false);
+        if(selectedDate){
+            setDate(selectedDate);
+        }
+        
     }
 
     return (
@@ -297,6 +326,13 @@ const ShopEditProductScreen = (props) => {
                     onChangeText={setPOrigin}
                 />
                 <TextInputForProduct
+                    name='Ngày hết hạn'
+                    placeholder='dd-mm-yyyy'
+                    value={expiredSt}
+                    editable={false}
+                    onPress={()=> setIsShowDatePicker(true)}
+                />
+                <TextInputForProduct
                     name='Thương hiệu'
                     placeholder='Hãy điền tên thương hiệu'
                     value={pBrand}
@@ -327,6 +363,14 @@ const ShopEditProductScreen = (props) => {
                 statusBarTranslucent={true}
                 message={message}
             />
+            {isShowDatePicker && (
+                <DateTimePicker
+                    value={date}
+                    mode='date'
+                    minimumDate={new Date()}
+                    onChange={onChangeDate}
+                />
+            )}
         </ScrollView>
     )
 }

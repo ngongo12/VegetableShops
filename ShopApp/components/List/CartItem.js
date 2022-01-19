@@ -24,11 +24,26 @@ const CartItem = (props) => {
     const [toggleCheckBox, setToggleCheckBox] = useState(false);
     const [visibleModal, setVisibleModal] = useState(false);
     const [product, setProduct] = useState();
+    const [canBuy, setCanBuy] = useState(true);
+    const [message, setMessage] = useState('')
 
     useEffect(() => {
         let temp = cart?.filter(e => e.productID === item._id)[0];
         setProduct(temp)
     }, [cart])
+    
+    useEffect(() => {
+        if(item?.count == 0){
+            setCanBuy(false);
+            setMessage('Sản phẩm đã hết hàng');
+        }
+        let temp = new Date(item?.expiredAt);
+        const today = new Date();
+        if(temp < today){
+            setCanBuy(false);
+            setMessage('Sản phẩm đã hết hạn')
+        }
+    }, [item])
 
     const increaseAmount = () => {
         cActions.addToCart({
@@ -91,6 +106,10 @@ const CartItem = (props) => {
                     </View>
                 </View>
                 <Icon name='trash-can-outline' color={RED} size={25} onPress={()=>setVisibleModal(true)} />
+                {!canBuy && <View style={styles.expiredContent}>
+                    <DefautText style={styles.expiredText}>{message}</DefautText>
+                    <DefautText onPress={onDelete} style={[styles.expiredText, styles.textButton]}>Nhấp để xóa</DefautText>
+                </View>}
             </View>
             <AlerModal
                 title = 'Xóa sản phẩm'
@@ -163,6 +182,26 @@ const styles = StyleSheet.create({
         padding: 40,
         borderTopLeftRadius: 40,
         borderTopRightRadius: 40
+    },
+    expiredContent: {    
+        position: 'absolute',
+        height: '100%',
+        width: '105%',
+        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    expiredText: {
+        textAlign: 'center',
+        color: '#000',
+    },
+    textButton: {
+        paddingHorizontal: 10,
+        paddingVertical: 3,
+        backgroundColor: RED,
+        color: '#fff',
+        borderRadius: 3,
+        margin: 5
     }
 })
 

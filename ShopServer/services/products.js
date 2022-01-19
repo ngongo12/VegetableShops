@@ -93,7 +93,7 @@ exports.getProductsInArray = async (arr) => {
         .find({
             _id: { $in: arr }
         },
-            '_id name images sellPrice originPrice owner amount'
+            '_id name images sellPrice originPrice owner amount expiredAt'
         ).sort({ createdAt: -1 })
     return products;
 }

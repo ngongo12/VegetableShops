@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
     View,
     ScrollView,
@@ -14,6 +14,7 @@ import { connect } from 'react-redux';
 import FastImage from 'react-native-fast-image';
 import { uploadMultiFile } from '../../api/uploadFile';
 import ImageCropPicker from 'react-native-image-crop-picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import userActions from '../../actions/userActions';
 import DefaultHeader from '../../components/Header/DefaultHeader';
@@ -28,11 +29,14 @@ import LoadingModal from '../../components/LoadingModal';
 
 const { width, height } = Dimensions.get('window');
 const ShopAddProductScreen = (props) => {
-    const { 
+    const {
         user: { user },
         navigation: { goBack }
-     } = props;
+    } = props;
     //console.log('add product user ', goBack);
+    const [date, setDate] = useState(new Date());
+    const [isShowDatePicker, setIsShowDatePicker] = useState(false);
+    const [expiredSt, setExpiredSt] = useState('')
     const [selectedImages, setSelectedImages] = useState();
     const [choosenImage, setChoosenImage] = useState();
     const [isVisibleModal, setIsVisibleModal] = useState(false);
@@ -67,6 +71,20 @@ const ShopAddProductScreen = (props) => {
                 }
             }).catch(e => console.log(e))
     };
+
+    useEffect(() => {
+        formatDate(date)
+    }, [date]);
+
+    const formatDate = (date) => {
+        let d = date.getDate();
+        d = (d < 10 ? '0' : '') + d;
+        let m = date.getMonth() + 1;
+        m = (m < 10 ? '0' : '') + m;
+        let y = date.getFullYear();
+        const s = `${d}-${m}-${y}`;
+        setExpiredSt(s);
+    }
 
     const openCamera = () => {
         //console.log('openCamera');
@@ -121,7 +139,8 @@ const ShopAddProductScreen = (props) => {
                 amount: pAmount,
                 sellPrice,
                 originPrice,
-                owner: user._id
+                owner: user._id,
+                expiredAt: date
             }
             setMessage('Đang lưu sản phẩm vào cơ sở dữ liệu');
             const result = await updateProduct(product);
@@ -134,6 +153,14 @@ const ShopAddProductScreen = (props) => {
                 setLoading(false);
             }
         }
+    }
+
+    const onChangeDate = (events, selectedDate) => {
+        setIsShowDatePicker(false);
+        if (selectedDate) {
+            setDate(selectedDate);
+        }
+
     }
 
     const validated = () => {
@@ -173,102 +200,117 @@ const ShopAddProductScreen = (props) => {
 
     return (
         <>
-        <DefaultHeader isBack={true} title='Thêm sản phẩm' />
-        <ScrollView style={styles.container}
-            nestedScrollEnabled={true}
-        >
-            
-            <Pressable>
-                <FastImage source={choosenImage ? { uri: choosenImage } : require('../../assets/images/item_not_found.png')} style={styles.cover} />
-            </Pressable>
-            <FlatList
-                data={selectedImages}
-                renderItem={({ item, index }) => (<SmallImage
-                    item={item}
-                    onPress={() => setChoosenImage(item)}
-                    deleteItem={() => onDeleteItem(item)}
-                    key={index}
-                />)}
+            <DefaultHeader isBack={true} title='Thêm sản phẩm' />
+            <ScrollView style={styles.container}
                 nestedScrollEnabled={true}
-                ListHeaderComponent={() => <ListHeader onPress={() => setIsVisibleModal(true)} />}
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-            />
-            <View style={styles.editView}>
-                <Title>Thông tin sản phẩm</Title>
-                <DefautText style={{ color: 'red', fontStyle: 'italic' }}>(* là thành phần quan trọng bắt buộc phải điền)</DefautText>
-                <TextInputForProduct
-                    name='Tên sản phẩm'
-                    placeholder='Hãy điền tên sản phẩm*'
-                    value={pName}
-                    onChangeText={setPName}
+            >
+
+                <Pressable>
+                    <FastImage source={choosenImage ? { uri: choosenImage } : require('../../assets/images/item_not_found.png')} style={styles.cover} />
+                </Pressable>
+                <FlatList
+                    data={selectedImages}
+                    renderItem={({ item, index }) => (<SmallImage
+                        item={item}
+                        onPress={() => setChoosenImage(item)}
+                        deleteItem={() => onDeleteItem(item)}
+                        key={index}
+                    />)}
+                    nestedScrollEnabled={true}
+                    ListHeaderComponent={() => <ListHeader onPress={() => setIsVisibleModal(true)} />}
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
                 />
-                <TextInputForProduct
-                    name='Giá gốc'
-                    keyboardType='number-pad'
-                    placeholder='Hãy điền giá gốc*'
-                    value={originPrice}
-                    onChangeText={setOriginPrice}
+                <View style={styles.editView}>
+                    <Title>Thông tin sản phẩm</Title>
+                    <DefautText style={{ color: 'red', fontStyle: 'italic' }}>(* là thành phần quan trọng bắt buộc phải điền)</DefautText>
+                    <TextInputForProduct
+                        name='Tên sản phẩm'
+                        placeholder='Hãy điền tên sản phẩm*'
+                        value={pName}
+                        onChangeText={setPName}
+                    />
+                    <TextInputForProduct
+                        name='Giá gốc'
+                        keyboardType='number-pad'
+                        placeholder='Hãy điền giá gốc*'
+                        value={originPrice}
+                        onChangeText={setOriginPrice}
+                    />
+                    <TextInputForProduct
+                        name='Giá bán'
+                        keyboardType='number-pad'
+                        placeholder='Hãy điền giá bán*'
+                        value={sellPrice}
+                        onChangeText={setSellPrice}
+                    />
+                    <TextInputForProduct
+                        name='Số lượng'
+                        keyboardType='number-pad'
+                        placeholder='Hãy điền số lượng sản phẩm*'
+                        value={pAmount}
+                        onChangeText={setPAmount}
+                    />
+                    <TextInputForProduct
+                        name='Đơn vị tính'
+                        placeholder='Hãy điền đơn vị tính'
+                        value={pUnit}
+                        onChangeText={setPUnit}
+                    />
+                    <CategoryPicker {...{ category, setCategory }} />
+                    <TextInputForProduct
+                        name='Xuất xứ'
+                        placeholder='Hãy điền xuất xứ'
+                        value={pOrigin}
+                        onChangeText={setPOrigin}
+                    />
+                    <TextInputForProduct
+                    name='Ngày hết hạn'
+                    placeholder='dd-mm-yyyy'
+                    value={expiredSt}
+                    editable={false}
+                    onPress={()=> setIsShowDatePicker(true)}
                 />
-                <TextInputForProduct
-                    name='Giá bán'
-                    keyboardType='number-pad'
-                    placeholder='Hãy điền giá bán*'
-                    value={sellPrice}
-                    onChangeText={setSellPrice}
+                    <TextInputForProduct
+                        name='Thương hiệu'
+                        placeholder='Hãy điền tên thương hiệu'
+                        value={pBrand}
+                        onChangeText={setPBrand}
+                    />
+                    <Title>Mô tả sản phẩm</Title>
+                    <TextInput
+                        value={description}
+                        onChangeText={setDescription}
+                        placeholder='Đâu là điểm nổi bật của sản phẩm này?'
+                        multiline={true}
+                        style={styles.input}
+                    />
+                    <NomalButton onPress={onSubmit}>Hoàn Thành</NomalButton>
+                </View>
+                <ModalChooseCamera
+                    visible={isVisibleModal}
+                    dimissModal={() => setIsVisibleModal(false)}
+                    transparent={true}
+                    animationType='slide'
+                    onItemPress={[openGallery, openCamera]}
                 />
-                <TextInputForProduct
-                    name='Số lượng'
-                    keyboardType='number-pad'
-                    placeholder='Hãy điền số lượng sản phẩm*'
-                    value={pAmount}
-                    onChangeText={setPAmount}
+                <LoadingModal
+                    visible={loading}
+                    style={styles.modal}
+                    animationType='fade'
+                    transparent={true}
+                    statusBarTranslucent={true}
+                    message={message}
                 />
-                <TextInputForProduct
-                    name='Đơn vị tính'
-                    placeholder='Hãy điền đơn vị tính'
-                    value={pUnit}
-                    onChangeText={setPUnit}
-                />
-                <CategoryPicker {...{ category, setCategory }} />
-                <TextInputForProduct
-                    name='Xuất xứ'
-                    placeholder='Hãy điền xuất xứ'
-                    value={pOrigin}
-                    onChangeText={setPOrigin}
-                />
-                <TextInputForProduct
-                    name='Thương hiệu'
-                    placeholder='Hãy điền tên thương hiệu'
-                    value={pBrand}
-                    onChangeText={setPBrand}
-                />
-                <Title>Mô tả sản phẩm</Title>
-                <TextInput
-                    value={description}
-                    onChangeText={setDescription}
-                    placeholder='Đâu là điểm nổi bật của sản phẩm này?'
-                    multiline={true}
-                    style={styles.input}
-                />
-                <NomalButton onPress={onSubmit}>Hoàn Thành</NomalButton>
-            </View>
-            <ModalChooseCamera
-                visible={isVisibleModal}
-                dimissModal={() => setIsVisibleModal(false)}
-                transparent={true}
-                animationType='slide'
-                onItemPress={[openGallery, openCamera]}
-            />
-            <LoadingModal
-                visible={loading}
-                style={styles.modal}
-                animationType='fade'
-                transparent={true}
-                statusBarTranslucent={true}
-                message={message}
-            />
-        </ScrollView>
+                {isShowDatePicker && (
+                    <DateTimePicker
+                        value={date}
+                        mode='date'
+                        minimumDate={new Date()}
+                        onChange={onChangeDate}
+                    />
+                )}
+            </ScrollView>
         </>
     )
 }

@@ -7,7 +7,7 @@ import {
     Modal,
     ToastAndroid
 } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker'
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Title } from '../../components/Text/AppTexts';

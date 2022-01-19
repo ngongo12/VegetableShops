@@ -2,18 +2,18 @@ import React, { useState } from 'react';
 import {
     StyleSheet,
     View,
-    Text,
+    Pressable,
     TextInput
 } from 'react-native';
 import { DefautText } from './AppTexts';
 
 const TextInputForProduct = ( props ) => {
-    const { name } = props;
+    const { name, onPress } = props;
     return (
-        <View style={styles.container}>
+        <Pressable onPress={onPress} style={styles.container}>
             <DefautText style={styles.text}>{name}</DefautText>
             <TextInput {...props} style={styles.input} />
-        </View>
+        </Pressable>
     )
 }
 
@@ -28,7 +28,8 @@ const styles = StyleSheet.create({
         marginLeft: 8,
     },
     text:{
-        minWidth: 100
+        minWidth: 100,
+        
     }
 })
 
