@@ -16,7 +16,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import userActions from '../../../actions/userActions';
 import LinearGradient from 'react-native-linear-gradient';
-import SmsRetriever from 'react-native-sms-retriever';
+import SmsListener from 'react-native-android-sms-listener';
 import { HeaderText } from '../../../components/Text/AppTexts';
 import GradientButton from '../../../components/Button/GradientButton';
 import StrokeButton from '../../../components/Button/StrokeButton';
@@ -25,9 +25,9 @@ import { goBack } from '../../../config/rootNavigation';
 import { DARK_GREEN, LIGHT_GREEN } from '../../../constants/colors';
 import { userURL } from '../../../api/userAPI';
 import AlerModal from '../../../components/AlertModal';
+import { requestReadSMSPermission, requestReceiveSMSPermission } from '../../../components/RequestPermission';
 
 const { height } = Dimensions.get('window');
-
 const FillToken = (props) => {
     const { navigation: { navigate }, actions, user, route: { params: { phone } } } = props;
     const [token, setToken] = useState('');
@@ -39,6 +39,8 @@ const FillToken = (props) => {
     let totalTime = 300;
     const isFocused = useIsFocused();
     const value = new Animated.Value(1);
+    const [otp, setOtp] = useState('');
+    let subscription = null;
 
     // useEffect(() => {
     //     Animated.timing(value, {
@@ -54,37 +56,60 @@ const FillToken = (props) => {
     })
 
     useEffect(() => {
+        if(subscription){
+            subscription.remove();
+        }
+    }, [isFocused]);
+    
+
+    useEffect(() => {
         setInterval(() => {
             totalTime -= 1;
-            if (totalTime === 0) {
+            if (totalTime === 0 && isFocused) {
                 goBack();
             };
             let s = totalTime % 60;
             let m = Math.floor(totalTime / 60);
             setTimer(`0${m}:${s < 10 ? '0' + s : s}`)
         }, 1000);
-
+        requestReadSMSPermission();
+        requestReceiveSMSPermission();
         //Listen sms
         listenSMS();
+
     }, [])
 
     const listenSMS = async () => {
-        try {
-            const registered = await SmsRetriever.startSmsRetriever();
-            if (!registered) {
-                console.log('>>>>> sms registered null')
-                return
+        // try {
+        //     const registered = await SmsRetriever.startSmsRetriever();
+        //     if (!registered) {
+        //         console.log('>>>>> sms registered null')
+        //         return
+        //     }
+        //     console.log('registered sms true')
+        //     await SmsRetriever.addSmsListener(event => {
+        //         console.log('>>>>>>>>>> event');
+        //         console.log('>>>>>>>>>> event', event);
+        //         SmsRetriever.removeSmsListener();
+        //     })
+        // }
+        // catch (e) {
+        //     console.log('>>>>>>>>> sms error: ', JSON.stringify(e));
+        // }
+        //Sent from your Twilio trial account - Mã token của bạn là 831942
+        console.log('>>>>> sms listener')
+        subscription = SmsListener.addListener(message => {
+            console.info(message);
+            const { body } = message;
+            if(body.includes('Sent from your Twilio trial account')){
+                setMessage(body);
+                setVisibleModal(true);
+                setOtp(body.slice(-6));
+                console.log(otp)
             }
-            console.log('registered sms true')
-            await SmsRetriever.addSmsListener(event => {
-                console.log('>>>>>>>>>> event');
-                console.log('>>>>>>>>>> event', event);
-                SmsRetriever.removeSmsListener();
-            })
-        }
-        catch (e) {
-            console.log('>>>>>>>>> sms error: ', JSON.stringify(e));
-        }
+        })
+
+        //subscription.remove();
     }
 
     const checkToken = () => {
@@ -100,6 +125,12 @@ const FillToken = (props) => {
                 }
             })
             .catch(e => console.log(e));
+    }
+
+    const onFill = () => {
+        setToken(otp);
+        console.log(otp)
+        setVisibleModal(false)
     }
 
     return (
@@ -134,7 +165,7 @@ const FillToken = (props) => {
                 question={message}
                 visibleModal={visibleModal}
                 setVisibleModal={setVisibleModal}
-                onConfirm={() => { }}
+                onConfirm={onFill}
                 confirmText='Đồng ý'
             />
         </>
