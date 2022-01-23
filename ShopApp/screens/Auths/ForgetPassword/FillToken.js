@@ -16,6 +16,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import userActions from '../../../actions/userActions';
 import LinearGradient from 'react-native-linear-gradient';
+import SmsRetriever from 'react-native-sms-retriever';
 import { HeaderText } from '../../../components/Text/AppTexts';
 import GradientButton from '../../../components/Button/GradientButton';
 import StrokeButton from '../../../components/Button/StrokeButton';
@@ -23,14 +24,18 @@ import LoadingModal from '../../../components/LoadingModal';
 import { goBack } from '../../../config/rootNavigation';
 import { DARK_GREEN, LIGHT_GREEN } from '../../../constants/colors';
 import { userURL } from '../../../api/userAPI';
+import AlerModal from '../../../components/AlertModal';
 
 const { height } = Dimensions.get('window');
 
 const FillToken = (props) => {
-    const { navigation: { navigate }, actions, user, route: { params: {phone} } } = props;
+    const { navigation: { navigate }, actions, user, route: { params: { phone } } } = props;
     const [token, setToken] = useState('');
     const [timer, setTimer] = useState('05:00');
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
+    const [visibleModal, setVisibleModal] = useState(false);
+    const [message, setMessage] = useState('');
+
     let totalTime = 300;
     const isFocused = useIsFocused();
     const value = new Animated.Value(1);
@@ -51,25 +56,47 @@ const FillToken = (props) => {
     useEffect(() => {
         setInterval(() => {
             totalTime -= 1;
-            if(totalTime === 0) {
+            if (totalTime === 0) {
                 goBack();
             };
             let s = totalTime % 60;
             let m = Math.floor(totalTime / 60);
-            setTimer(`0${m}:${s < 10 ? '0'+ s: s}`)
+            setTimer(`0${m}:${s < 10 ? '0' + s : s}`)
         }, 1000);
+
+        //Listen sms
+        listenSMS();
     }, [])
+
+    const listenSMS = async () => {
+        try {
+            const registered = await SmsRetriever.startSmsRetriever();
+            if (!registered) {
+                console.log('>>>>> sms registered null')
+                return
+            }
+            console.log('registered sms true')
+            await SmsRetriever.addSmsListener(event => {
+                console.log('>>>>>>>>>> event');
+                console.log('>>>>>>>>>> event', event);
+                SmsRetriever.removeSmsListener();
+            })
+        }
+        catch (e) {
+            console.log('>>>>>>>>> sms error: ', JSON.stringify(e));
+        }
+    }
 
     const checkToken = () => {
         fetch(`${userURL}checkToken?phone=${phone}&token=${token}`)
             .then(res => res.json())
             .then(res => {
-                if(res?.success){
+                if (res?.success) {
                     navigate('ChangePassword', { uid: res?.uid })
                     console.log(res)
                 }
-                else{
-                    ToastAndroid.show('Yêu cầu thất bại: '+res?.message, ToastAndroid.SHORT);
+                else {
+                    ToastAndroid.show('Yêu cầu thất bại: ' + res?.message, ToastAndroid.SHORT);
                 }
             })
             .catch(e => console.log(e));
@@ -102,7 +129,14 @@ const FillToken = (props) => {
                     message='Đang kiểm tra token'
                 />)}
             </LinearGradient>
-
+            <AlerModal
+                title='Tự động điền OTP'
+                question={message}
+                visibleModal={visibleModal}
+                setVisibleModal={setVisibleModal}
+                onConfirm={() => { }}
+                confirmText='Đồng ý'
+            />
         </>
     )
 }

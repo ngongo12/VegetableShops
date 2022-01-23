@@ -11,7 +11,8 @@ const Stack = createNativeStackNavigator();
 
 const App = () => {
   LogBox.ignoreLogs([
-    "Can't perform a React state update on an unmounted component."
+    "Can't perform a React state update on an unmounted component.",
+    "Possible Unhandled Promise Rejection (id: 1)"
   ])
 
   // useEffect(() => {

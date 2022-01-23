@@ -68,7 +68,7 @@ const LoginScreen = (props) => {
                         password
                     });
                 }
-            });
+            }).catch(e => console.log(e));
     }, [isFocused])
 
     useEffect(() => {
