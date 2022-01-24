@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         borderBottomWidth: 0.5,
         borderColor: 'silver',
-        paddingTop: 5
+        paddingTop: 10
     },
     image: {
         width: 30,
