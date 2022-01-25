@@ -168,6 +168,6 @@ exports.sumSold = async (id) => {
 }
 
 // productModel.updateMany({}, {
-//     expiredAt: new Date('2022-01-25')
+//     expiredAt: new Date('2022-01-27')
 // }).then(res => console.log(res))
 // .catch(e => console.log(e))

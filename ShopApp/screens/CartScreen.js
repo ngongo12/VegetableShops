@@ -9,6 +9,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import userActions from '../actions/userActions';
 import cartActions from '../actions/cartActions';
+import { useIsFocused } from '@react-navigation/native';
 import { getCartProduct } from '../api/cartAPI';
 import Icon from 'react-native-vector-icons/AntDesign';
 import CartItem from '../components/List/CartItem';
@@ -26,6 +27,7 @@ const CartScreen = (props) => {
     const [cartProducts, setCartProducts] = useState([]);
     const [productList, setProductList] = useState();
     const [totalPrice, setTotalPrice] = useState(0);
+    const isFocused = useIsFocused();
 
     useEffect(() => {
         onBackPress(() => {
@@ -33,7 +35,14 @@ const CartScreen = (props) => {
                 cAction.clearChosen({ uid: user._id });
             }
         })
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        if(!isFocused){
+            cAction.clearChosen({ uid: user._id });
+        }
+    }, [isFocused]);
+    
 
     useEffect(() => {
         fetchCartProducts();

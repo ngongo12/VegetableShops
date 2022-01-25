@@ -43,7 +43,8 @@ const ProductMainList = (props) => {
                     setCanFetchMore(false);
                     ToastAndroid.show('Lấy danh sách bị lỗi', ToastAndroid.SHORT);
                 }
-            })
+            });
+        setCanFetchMore(true)
     }
 
     const fetchMoreData = () => {
