@@ -38,7 +38,7 @@ const CartScreen = (props) => {
     }, []);
 
     useEffect(() => {
-        if(!isFocused){
+        if(isFocused){
             cAction.clearChosen({ uid: user._id });
         }
     }, [isFocused]);
