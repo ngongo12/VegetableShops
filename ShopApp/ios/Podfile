@@ -20,6 +20,8 @@ target 'ShopApp' do
 
   pod 'react-native-maps', :path => '../node_modules/react-native-maps'
 
+  pod 'RNBootSplash', :path => '../node_modules/react-native-bootsplash'
+
   target 'ShopAppTests' do
     inherit! :complete
     # Pods for testing

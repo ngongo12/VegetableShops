@@ -35,13 +35,16 @@ import FavoriteProductScreen from './Products/FavoriteProductScreen';
 import EditStore from './Stores/EditStore';
 import ForgetPassword from './Auths/ForgetPassword';
 import RatingScreen from './MyOrder/RatingScreen';
+import SplashScreen from 'react-native-bootsplash';
 
 const Stack = createNativeStackNavigator();
 
 const NavigatorScreen = props => {
     const { user: { user } } = props;
     return (
-        <NavigationContainer ref={navigationRef}>
+        <NavigationContainer ref={navigationRef} 
+            onReady={()=> SplashScreen.hide({fade: true})} 
+        >
             <Stack.Navigator
                 screenOptions={{ headerShown: false }}
                 backBehavior='none'
