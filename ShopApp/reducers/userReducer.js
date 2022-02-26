@@ -1,4 +1,5 @@
-import * as actions from '../constants/userActionType'
+import * as actions from '../constants/userActionType';
+import { storeData } from '../api/asyncStorage';
 const initData = {
     isLoading: false,
     isLogined: false,
@@ -50,6 +51,7 @@ const userReducer = (state = initData, { type, payload }) => {
                 isLogined: payload
             }
         case actions.LOGOUT:
+            storeData('user', {phone: null, password: null})
             return {
                 isLoading: false,
                 isLogined: false,

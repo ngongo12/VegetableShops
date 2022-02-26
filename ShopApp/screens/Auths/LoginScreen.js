@@ -62,7 +62,7 @@ const LoginScreen = (props) => {
                 if (password) {
                     setPassword(password)
                 }
-                if (!user?.notFirst) {
+                if (!user?.notFirst && phone) {
                     actions.actionLogin({
                         phone,
                         password
