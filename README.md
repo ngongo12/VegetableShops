@@ -17,5 +17,4 @@
 - App: React Native, Google Map, Firebase, Redux, Saga, Socket Client,...
 
 ## Demo
-[![Watch the video]](https://drive.google.com/file/d/1yR2U0IvLyFlhd-ShOmLRTK_SKy9fjJv2/view?usp=sharing)
-<video src="https://drive.google.com/file/d/1yR2U0IvLyFlhd-ShOmLRTK_SKy9fjJv2/view?usp=sharing"></video>
+[![Watch Video](https://i9.ytimg.com/vi/x03a6EvGYCM/mq1.jpg?sqp=CPDq55AG&rs=AOn4CLB5E4im85hKcy2BFjUH-EF9iXCqDg)](https://youtu.be/T-D1KVIuvjA)
