@@ -16,6 +16,12 @@
 - Server: NodeJs, Firabase Admin, Socket.io, MongoDB, Twilio.  
 - App: React Native, Google Map, Firebase, Redux, Saga, Socket Client,...
 
+## Run App
+- Step 1: Clone repo.  
+- Step 2: npm i for ShopApp and Shop Server.
+- Step 3: ShopApp\constants\api_url.js change apiURL with IPv4 Address.
+- Step 4: Start server and run app (not run with ios).
+
 ## Demo
 [![Watch Video](https://i9.ytimg.com/vi/x03a6EvGYCM/mq1.jpg?sqp=CPDq55AG&rs=AOn4CLB5E4im85hKcy2BFjUH-EF9iXCqDg)](https://youtu.be/x03a6EvGYCM)
 <video src='https://youtu.be/x03a6EvGYCM' width=480/>
