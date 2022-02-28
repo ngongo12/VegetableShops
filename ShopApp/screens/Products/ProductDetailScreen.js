@@ -221,7 +221,7 @@ const ProductDetailScreen = (props) => {
                         <View style={styles.content}>
                             <Title>{product?.name}</Title>
                             <View style={styles.ratingView}>
-                                <DefautText style={{ fontSize: 15, fontWeight: 'bold' }}>{rating}</DefautText>
+                                <DefautText style={{ fontSize: 15, fontWeight: 'bold' }}>{rating.toFixed(1)}</DefautText>
                                 <DefautText style={{ fontSize: 15 }}>/5</DefautText>
                                 <Rating
                                     type='custom'
